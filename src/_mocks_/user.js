@@ -9,9 +9,15 @@ const users = [...Array(24)].map((_, index) => ({
   id: faker.datatype.uuid(),
   avatarUrl: mockImgAvatar(index + 1),
   name: faker.name.findName(),
-  company: faker.company.companyName(),
+  project: sample([
+    'water studies',
+    'causes of femicide',
+    'study of the life origins',
+    'superconductors',
+    'factors assimilated to violence'
+  ]),
   isVerified: faker.datatype.boolean(),
-  status: sample(['pending', 'authorized', 'banned']),
+  status: sample(['pending', 'authorized', 'No-Authorized']),
   role: sample(['Student', 'Leader', 'Administrator'])
 }));
 
