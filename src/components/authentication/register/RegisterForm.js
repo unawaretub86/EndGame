@@ -21,6 +21,7 @@ export default function RegisterForm() {
       .max(50, 'Too Long!')
       .required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
+    identification: Yup.string().required('Identification is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required')
   });
@@ -29,6 +30,7 @@ export default function RegisterForm() {
     initialValues: {
       firstName: '',
       lastName: '',
+      identification: '',
       email: '',
       password: ''
     },
@@ -61,6 +63,14 @@ export default function RegisterForm() {
               helperText={touched.lastName && errors.lastName}
             />
           </Stack>
+
+          <TextField
+            fullWidth
+            label="Identification"
+            {...getFieldProps('identification')}
+            error={Boolean(touched.identification && errors.identification)}
+            helperText={touched.identification && errors.identification}
+          />
 
           <TextField
             fullWidth

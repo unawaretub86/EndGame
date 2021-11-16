@@ -62,7 +62,7 @@
       }
     ],
     "prettier/prettier": [
-      2,
+      0,
       "error",
       {
         "endOfLine":"auto",
