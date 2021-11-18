@@ -16,8 +16,6 @@ const users = [...Array(24)].map((_, index) => ({
     'superconductors',
     'factors assimilated to violence'
   ]),
-  isVerified: faker.datatype.boolean(),
-  status: sample(['pending', 'authorized', 'No-Authorized']),
   role: sample(['Student', 'Leader', 'Administrator'])
 }));
 

@@ -1,28 +1,29 @@
 import { filter } from 'lodash';
-import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState } from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
+import * as React from 'react';
 // material
 import {
   Card,
   Table,
   Stack,
   Avatar,
-  Button,
   Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
   Typography,
+  NativeSelect,
+  FormControl,
+  InputLabel,
   TableContainer,
   TablePagination
 } from '@mui/material';
 // components
 import Page from '../components/Page';
-import Label from '../components/Label';
+// import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
@@ -35,7 +36,6 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'project', label: 'Project', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
@@ -138,14 +138,6 @@ export default function User() {
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            startIcon={<Icon icon={plusFill} />}
-          >
-            New User
-          </Button>
         </Stack>
 
         <Card>
@@ -171,7 +163,7 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, project, avatarUrl, isVerified } = row;
+                      const { id, name, role, status, project, avatarUrl } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -199,14 +191,22 @@ export default function User() {
                           </TableCell>
                           <TableCell align="left">{project}</TableCell>
                           <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
                           <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={(status === 'banned' && 'error') || 'success'}
-                            >
-                              {sentenceCase(status)}
-                            </Label>
+                            <FormControl fullWidth>
+                              <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                select
+                              </InputLabel>
+                              <NativeSelect
+                                inputProps={{
+                                  name: 'select',
+                                  id: 'uncontrolled-native'
+                                }}
+                              >
+                                <option>Pending</option>
+                                <option>Authorized</option>
+                                <option>No-authorized</option>
+                              </NativeSelect>
+                            </FormControl>
                           </TableCell>
 
                           <TableCell align="right">
