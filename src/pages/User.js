@@ -1,5 +1,4 @@
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useState } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
 import * as React from 'react';
@@ -163,7 +162,7 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, project, avatarUrl } = row;
+                      const { id, name, role, project, avatarUrl } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
@@ -6,7 +7,17 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { useNavigate } from 'react-router-dom';
 // material
-import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
+import {
+  Stack,
+  TextField,
+  IconButton,
+  InputAdornment,
+  Box,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 // ----------------------------------------------------------------------
@@ -14,6 +25,7 @@ import { LoadingButton } from '@mui/lab';
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = React.useState('');
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -40,6 +52,10 @@ export default function RegisterForm() {
     }
   });
 
+  const handleChange = (event) => {
+    setRole(event.target.value);
+  };
+
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (
@@ -63,14 +79,32 @@ export default function RegisterForm() {
               helperText={touched.lastName && errors.lastName}
             />
           </Stack>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <TextField
+              fullWidth
+              label="Identification"
+              {...getFieldProps('identification')}
+              error={Boolean(touched.identification && errors.identification)}
+              helperText={touched.identification && errors.identification}
+            />
 
-          <TextField
-            fullWidth
-            label="Identification"
-            {...getFieldProps('identification')}
-            error={Boolean(touched.identification && errors.identification)}
-            helperText={touched.identification && errors.identification}
-          />
+            <Box sx={{ minWidth: 230 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={role}
+                  label="Role"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={1}>Student</MenuItem>
+                  <MenuItem value={2}>Leader</MenuItem>
+                  <MenuItem value={3}>Administrator</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </Stack>
 
           <TextField
             fullWidth
