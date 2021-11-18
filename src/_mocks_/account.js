@@ -1,8 +1,9 @@
 // ----------------------------------------------------------------------
+import { useAuth0 } from '@auth0/auth0-react';
 
 const account = {
-  displayName: 'Jaydon Frankie',
-  email: 'demo@minimals.cc',
+  displayName: 'Vivian Mejia',
+  email: 'vivian@mail.cc',
   photoURL: '/static/mock-images/avatars/avatar_default.jpg'
 };
 
