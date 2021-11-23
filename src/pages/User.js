@@ -200,6 +200,7 @@ export default function User() {
                                   name: 'select',
                                   id: 'uncontrolled-native'
                                 }}
+                                onChange={(e) => console.log(e.target.value)}
                               >
                                 <option>Pending</option>
                                 <option>Authorized</option>

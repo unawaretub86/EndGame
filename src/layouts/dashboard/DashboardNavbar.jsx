@@ -48,7 +48,6 @@ export default function DashboardNavbar({ onOpenSidebar }) {
             <Icon icon={menu2Fill} />
           </IconButton>
         </MHidden>
-
         <Searchbar />
         <Box sx={{ flexGrow: 1 }} />
         <AccountPopover />
