@@ -7,3 +7,5 @@
 - **Esteban Andrey Gomez Alvarado** [GitHub profile](https://github.com/unawaretub86): I'm a backend developer, I have knowledges about frontEnd .
 
 - **Andrés Roca P.** [GitHub profile](https://github.com/andresrokp): Hi. Mechanical engineer getting into FullStack WebDev, committed to contribute and succeed on this challenge.
+
+- **Andrés Ricardo Betancourt Castañeda.** [GitHub profile](https://github.com/Pharaohghost7): I am an electronic engineer who is passionate about programming, data analysis and artificial intelligence .
