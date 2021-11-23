@@ -10,8 +10,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 
-// ----------------------------------------------------------------------
-
 ReactDOM.render(
   <Auth0Provider
     domain="endgame1.us.auth0.com"

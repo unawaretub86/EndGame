@@ -7,25 +7,30 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { useNavigate } from 'react-router-dom';
 // material
-import {
-  Stack,
-  TextField,
-  IconButton,
-  InputAdornment,
-  Box,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select
-} from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+// import { resolvePlugin } from '@babel/core';
 
 // ----------------------------------------------------------------------
+const role = [
+  {
+    value: 'student',
+    label: 'Student'
+  },
+  {
+    value: 'leader',
+    label: 'Leader'
+  },
+  {
+    value: 'administrator',
+    label: 'Administrator'
+  }
+];
 
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = React.useState('');
+  const [values, setValues] = React.useState('');
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -43,6 +48,7 @@ export default function RegisterForm() {
       firstName: '',
       lastName: '',
       identification: '',
+      role: '',
       email: '',
       password: ''
     },
@@ -53,7 +59,10 @@ export default function RegisterForm() {
   });
 
   const handleChange = (event) => {
-    setRole(event.target.value);
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
   };
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
@@ -88,22 +97,23 @@ export default function RegisterForm() {
               helperText={touched.identification && errors.identification}
             />
 
-            <Box sx={{ minWidth: 230 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Role</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={role}
-                  label="Role"
-                  onChange={handleChange}
-                >
-                  <MenuItem value={1}>Student</MenuItem>
-                  <MenuItem value={2}>Leader</MenuItem>
-                  <MenuItem value={3}>Administrator</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
+            <TextField
+              fullWidth
+              label="Select Role"
+              name="role"
+              onChange={handleChange}
+              required
+              select
+              SelectProps={{ native: true }}
+              value={values.state}
+              variant="outlined"
+            >
+              {role.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
           </Stack>
 
           <TextField
