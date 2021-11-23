@@ -1,4 +1,17 @@
 import { useState } from 'react';
+
+// import { GET_USER } from 'graphql/user/queries'; //useEffect debe ir arriba,//
+// import { useParams, Link } from 'react-router-dom';
+// import { useQuery } from '@apollo/client';
+// import { useMutation } from '@apollo/client';
+// import useFormData from 'hooks/useFormData';
+// import Input from 'components/Input';
+// import DropDown from 'components/DropDown';
+// import { EDIT_USER } from 'graphql/user/mutations';
+// import { toast } from 'react-toastify';
+// import ButtonLoading from 'components/ButtonLoading';
+// import { Enum_Rol } from 'utils/enums';
+
 import {
   Box,
   Button,
@@ -10,20 +23,62 @@ import {
   TextField
 } from '@mui/material';
 
-const role = [
-  {
-    value: 'student',
-    label: 'Student'
-  },
-  {
-    value: 'leader',
-    label: 'Leader'
-  },
-  {
-    value: 'administrator',
-    label: 'Administrator'
-  }
-];
+// const EditUser = () => {
+//   const [userData, setUserData] = useState({});
+//   const { form, formData, updateFormData } = useFormData(null);
+//   const { _id } = useParams();
+//   const {
+//     loading: loadingQuery,
+//     error: errorQuery,
+//     data: dataQuery,
+//   } = useQuery(GET_USER, {
+//     variables: { _id },
+//   });
+
+// const [editUser, { data: dataMutation, loading: loadingMutation, error: errorMutation }] =
+//   useMutation(EDIT_USER);
+
+// const submitForm = async (e) => {
+//   e.preventDefault();
+//   console.log(formData);
+//   await editUser({
+//     variables: { _id, ...formData },
+//   });
+// };
+
+// useEffect(() => {
+//   if (dataMutation) {
+//     toast.success('User successfully modified');
+//     setUserData(dataMutation.editUser);
+//   }
+//   if (dataQuery) {
+//     console.log('dq', dataQuery);
+//     setUserData(dataQuery.User);
+//   }
+// }, [dataMutation, dataQuery]);
+
+// useEffect(() => {
+//   if (errorMutation) {
+//     toast.error('Error: User modification failed');
+//   }
+// }, [errorMutation]);
+
+// if (loadingQuery) return <div>Loading</div>;
+
+// const role = [
+//   {
+//     value: 'student',
+//     label: 'Student'
+//   },
+//   {
+//     value: 'leader',
+//     label: 'Leader'
+//   },
+//   {
+//     value: 'administrator',
+//     label: 'Administrator'
+//   }
+// ];
 
 export default function ProfileForm(props) {
   const [values, setValues] = useState({
@@ -31,7 +86,8 @@ export default function ProfileForm(props) {
       firstName: '',
       lastName: '',
       identification: '',
-      role: '',
+      email: '',
+      // role: '',
       password: ''
     }
   });
@@ -87,6 +143,17 @@ export default function ProfileForm(props) {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
+                label="Email Address"
+                name="email"
+                onChange={handleChange}
+                required
+                value={values.email}
+                variant="outlined"
+              />
+            </Grid>
+            {/* <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
                 label="Select Role"
                 name="role"
                 onChange={handleChange}
@@ -102,14 +169,14 @@ export default function ProfileForm(props) {
                   </option>
                 ))}
               </TextField>
-            </Grid>
+            </Grid> */}
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Password"
                 name="password"
                 onChange={handleChange}
-                equired
+                required
                 value={values.password}
                 variant="outlined"
               />
