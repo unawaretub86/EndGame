@@ -4,7 +4,7 @@ import { Box, Grid, Container, Typography } from '@mui/material';
 import Page from '../components/Page';
 import {
   AppTasks,
-  AppNewUsers,
+  AppNewProjects,
   AppBugReports,
   AppItemOrders,
   AppNewsUpdate,
@@ -31,7 +31,7 @@ export default function DashboardApp() {
             <AppWeeklySales />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <AppNewUsers />
+            <AppNewProjects />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AppItemOrders />

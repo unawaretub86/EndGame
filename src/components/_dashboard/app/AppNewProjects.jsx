@@ -1,3 +1,4 @@
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 // material
 import { alpha, styled } from '@mui/material/styles';
@@ -34,12 +35,14 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 export default function AppNewProjects() {
   return (
     <RootStyle>
-      <IconWrapperStyle>
-        <Icon icon="simple-icons:diagramsdotnet" width={24} height={24} />
-      </IconWrapperStyle>
-      <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        Projects
-      </Typography>
+      <RouterLink to="/dashboard/products">
+        <IconWrapperStyle>
+          <Icon icon="simple-icons:diagramsdotnet" width={24} height={24} />
+        </IconWrapperStyle>
+        <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+          Projects
+        </Typography>
+      </RouterLink>
     </RootStyle>
   );
 }
