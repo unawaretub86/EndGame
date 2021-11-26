@@ -1,10 +1,8 @@
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
-import appleFilled from '@iconify/icons-ant-design/apple-filled';
 // material
 import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
-// utils
-import { fShortenNumber } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -34,18 +32,17 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const TOTAL = 1352831;
-
-export default function AppNewUsers() {
+export default function AppNewProjects() {
   return (
     <RootStyle>
-      <IconWrapperStyle>
-        <Icon icon={appleFilled} width={24} height={24} />
-      </IconWrapperStyle>
-      <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
-      <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        New Users
-      </Typography>
+      <RouterLink to="/dashboard/products">
+        <IconWrapperStyle>
+          <Icon icon="simple-icons:diagramsdotnet" width={24} height={24} />
+        </IconWrapperStyle>
+        <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+          Projects
+        </Typography>
+      </RouterLink>
     </RootStyle>
   );
 }
