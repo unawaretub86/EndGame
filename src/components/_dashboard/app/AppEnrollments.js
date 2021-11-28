@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 // material
 import { alpha, styled } from '@mui/material/styles';
@@ -34,9 +35,11 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 export default function AppEnrollments() {
   return (
     <RootStyle>
-      <IconWrapperStyle>
-        <Icon icon="eos-icons:subscription-management" width={24} height={24} />
-      </IconWrapperStyle>
+      <Link to="/dashboard/enrollments">
+        <IconWrapperStyle>
+          <Icon icon="eos-icons:subscription-management" width={24} height={24} />
+        </IconWrapperStyle>
+      </Link>
       <Typography variant="title" sx={{ opacity: 0.72 }}>
         Enrollments
       </Typography>
