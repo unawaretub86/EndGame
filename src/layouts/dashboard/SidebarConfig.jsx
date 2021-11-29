@@ -5,7 +5,7 @@ import shoppingBagFill from '@iconify/icons-eva/shopping-bag-fill';
 import fileTextFill from '@iconify/icons-eva/file-text-fill';
 import lockFill from '@iconify/icons-eva/lock-fill';
 import personAddFill from '@iconify/icons-eva/person-add-fill';
-import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill';
+import BarChartFill from '@iconify/icons-eva/bar-chart-fill';
 
 // ----------------------------------------------------------------------
 
@@ -23,14 +23,19 @@ const sidebarConfig = [
     icon: getIcon(peopleFill)
   },
   {
-    title: 'product',
-    path: '/dashboard/products',
+    title: 'project',
+    path: '/dashboard/project',
     icon: getIcon(shoppingBagFill)
   },
   {
-    title: 'blog',
-    path: '/dashboard/blog',
+    title: 'enrollments',
+    path: '/dashboard/enrollments',
     icon: getIcon(fileTextFill)
+  },
+  {
+    title: 'advance',
+    path: '/dashboard/advance',
+    icon: getIcon(BarChartFill)
   },
   {
     title: 'login',
@@ -41,11 +46,6 @@ const sidebarConfig = [
     title: 'register',
     path: '/register',
     icon: getIcon(personAddFill)
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: getIcon(alertTriangleFill)
   }
 ];
 

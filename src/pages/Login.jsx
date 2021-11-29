@@ -2,7 +2,7 @@ import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { Card, Stack, Link, Container, Typography } from '@mui/material';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
 // components
@@ -38,11 +38,10 @@ const ContentStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0)
 }));
 
-const LoginButton = () => {
-  const { loginWithRedirect } = useAuth0();
-
-  return <button onClick={() => loginWithRedirect()}>Log In</button>;
-};
+// const LoginButton = () => {
+//   const { loginWithRedirect } = useAuth0();
+//   return <button onClick={() => loginWithRedirect()}>Log In</button>;
+// };
 // ----------------------------------------------------------------------
 
 export default function Login() {
