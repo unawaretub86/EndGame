@@ -14,7 +14,7 @@ import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 
 const httpLink = createHttpLink({
-  uri: 'https://api.github.com/graphql'
+  uri: 'https://end-game-release.herokuapp.com/graphql'
 });
 
 const authLink = setContext((_, { headers }) => {

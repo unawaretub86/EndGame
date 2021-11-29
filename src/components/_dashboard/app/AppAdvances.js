@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import * as React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 // material
 import { alpha, styled } from '@mui/material/styles';
@@ -31,18 +32,17 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-
 export default function AppAdvances() {
   return (
     <RootStyle>
-      <Link to="/dashboard/advance">
+      <RouterLink to="/dashboard/advance" style={{ color: 'inherit', textDecoration: 'inherit' }}>
         <IconWrapperStyle>
           <Icon icon="carbon:skill-level-advanced" width={24} height={24} />
         </IconWrapperStyle>
-      </Link>
-      <Typography variant="title" sx={{ opacity: 0.72 }}>
-        Advances
-      </Typography>
+        <Typography underline="none" variant="title" sx={{ opacity: 0.72 }}>
+          Advances
+        </Typography>
+      </RouterLink>
     </RootStyle>
   );
 }

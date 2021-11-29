@@ -35,14 +35,14 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 export default function AppNewProjects() {
   return (
     <RootStyle>
-      <Link to="/dashboard/project">
+      <Link to="/dashboard/project" style={{ color: 'inherit', textDecoration: 'inherit' }}>
         <IconWrapperStyle>
           <Icon icon="simple-icons:diagramsdotnet" width={24} height={24} />
         </IconWrapperStyle>
+        <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+          Projects
+        </Typography>
       </Link>
-      <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        Projects
-      </Typography>
     </RootStyle>
   );
 }

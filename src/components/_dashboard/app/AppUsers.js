@@ -35,14 +35,14 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 export default function AppUsers() {
   return (
     <RootStyle>
-      <Link to="/dashboard/user">
+      <Link to="/dashboard/user" style={{ color: 'inherit', textDecoration: 'inherit' }}>
         <IconWrapperStyle>
           <Icon icon="clarity:users-solid" width={24} height={24} />
         </IconWrapperStyle>
+        <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+          Users
+        </Typography>
       </Link>
-      <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        Users
-      </Typography>
     </RootStyle>
   );
 }

@@ -35,14 +35,14 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 export default function AppEnrollments() {
   return (
     <RootStyle>
-      <Link to="/dashboard/enrollments">
+      <Link to="/dashboard/enrollments" style={{ color: 'inherit', textDecoration: 'inherit' }}>
         <IconWrapperStyle>
           <Icon icon="eos-icons:subscription-management" width={24} height={24} />
         </IconWrapperStyle>
+        <Typography variant="title" sx={{ opacity: 0.72 }}>
+          Enrollments
+        </Typography>
       </Link>
-      <Typography variant="title" sx={{ opacity: 0.72 }}>
-        Enrollments
-      </Typography>
     </RootStyle>
   );
 }
