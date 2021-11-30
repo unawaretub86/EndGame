@@ -53,14 +53,14 @@ export default function DashboardApp() {
       <div>
         {data?.viewer?.map(({ name, login }) => (
           <>
-            <p>
+            <p>bar
               {}
               {name} - {login}
             </p>
           </>
         ))}
       </div> */}
-      .
+
       <Page title="Dashboard | Minimal-UI">
         <Container maxWidth="xl">
           <Box sx={{ pb: 5 }}>

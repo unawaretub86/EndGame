@@ -1,6 +1,90 @@
+import { Grid, Paper, styled } from '@mui/material';
 import React from 'react';
+import MediaCard from '../components/card/MediaCard';
 
-const Project = () => <div>esta es la pagina de proyectos</div>;
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary
+}));
+
+function Project() {
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={4}>
+        <Item>
+          <MediaCard
+            titulo="water studies"
+            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+            alt="H2O"
+          />
+        </Item>
+      </Grid>
+      <Grid item xs={4}>
+        <Item>
+          <MediaCard
+            titulo="water studies"
+            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+            alt="H2O"
+          />
+        </Item>
+      </Grid>
+      <Grid item xs={4}>
+        <Item>
+          <MediaCard
+            titulo="water studies"
+            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+            alt="H2O"
+          />
+        </Item>
+      </Grid>
+      <Grid item xs={4}>
+        <Item>
+          <MediaCard
+            titulo="water studies"
+            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+            alt="H2O"
+          />
+        </Item>
+      </Grid>
+      <Grid item xs={4}>
+        <Item>
+          <MediaCard
+            titulo="water studies"
+            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+            alt="H2O"
+          />
+        </Item>
+      </Grid>
+      <Grid item xs={4}>
+        <Item>
+          <MediaCard
+            titulo="water studies"
+            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+            alt="H2O"
+          />
+        </Item>
+      </Grid>
+      <Grid item xs={4}>
+        <Item>
+          <MediaCard
+            titulo="water studies"
+            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+            alt="H2O"
+          />
+        </Item>
+      </Grid>
+    </Grid>
+  );
+}
 
 export default Project;
 
