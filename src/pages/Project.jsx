@@ -1,5 +1,6 @@
 import { Grid, Paper, styled } from '@mui/material';
 import React from 'react';
+import NestedModal from '../components/modal/ChildModal';
 import MediaCard from '../components/card/MediaCard';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -82,6 +83,7 @@ function Project() {
           />
         </Item>
       </Grid>
+      
     </Grid>
   );
 }

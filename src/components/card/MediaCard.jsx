@@ -5,10 +5,17 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import ChildModal from '../modal/ChildModal';
+import NestedModal from '../modal/ChildModal';
+import { FormModal } from '../modal/FomModal';
 
-const AbrirModal = () => {
-  return <ChildModal />;
+
+function AbrirModal  ()  {
+  return (
+  <>
+    <NestedModal/>
+  </>
+  
+  )
 };
 
 export default function MediaCard({ titulo, explicacion, imagen, alt }) {
@@ -24,7 +31,9 @@ export default function MediaCard({ titulo, explicacion, imagen, alt }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Enroll</Button>
+        <Button
+        
+        size="small"><FormModal/></Button>
         <Button size="small">Learn More</Button>
       </CardActions>
     </Card>

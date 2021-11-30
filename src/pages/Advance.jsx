@@ -1,6 +1,63 @@
-import React from 'react';
+import { Grid, Paper, styled } from '@mui/material';
 
-const Advance = () => <div>esta es la pagina de avances</div>;
+import React from 'react';
+import CardTimeLineTwo from '../components/card/CardTimeLineTwo';
+import CardTimeLineThree from '../components/card/CardTimeLineThree';
+import CardTimeLine from '../components/card/CardTimeLine';
+
+const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary
+  }));
+
+function Advance () {
+    return(
+        <>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <Item>
+                        <CardTimeLine
+                            title="water studies"
+                            fase1="Inscripciones"
+                        />
+                    </Item>
+                </Grid>
+                <Grid item xs={4}>
+                    <Item>
+                        <CardTimeLineTwo 
+                            title="causes of femicide"
+                            fase1="Inscriciones"
+                            fase2="Inicio"
+                        />
+                    </Item>
+                </Grid>
+                <Grid item xs={4}>
+                    <Item>
+                        <CardTimeLineTwo 
+                            title="superconductors"
+                            fase1="Inscriciones"
+                            fase2="Inicio"
+                        />
+                    </Item>
+                </Grid>
+                <Grid item xs={4}>
+                    <Item>
+                        <CardTimeLineThree
+                            title="factors assimilated to violence"
+                            fase1="Inscriciones"
+                            fase2="Inicio"
+                            fase3="Visitas"
+                        />
+                    </Item>
+                </Grid>
+
+
+            </Grid>
+        </>
+    )
+}
 
 export default Advance;
 
