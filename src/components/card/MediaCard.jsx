@@ -7,16 +7,16 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import NestedModal from '../modal/ChildModal';
 import { FormModal } from '../modal/FomModal';
+import Form from '../Form/Form';
+import InfoProject from '../projects/InfoProject';
 
-
-function AbrirModal  ()  {
+function AbrirModal() {
   return (
-  <>
-    <NestedModal/>
-  </>
-  
-  )
-};
+    <>
+      <NestedModal />
+    </>
+  );
+}
 
 export default function MediaCard({ titulo, explicacion, imagen, alt }) {
   return (
@@ -31,10 +31,12 @@ export default function MediaCard({ titulo, explicacion, imagen, alt }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-        
-        size="small"><FormModal/></Button>
-        <Button size="small">Learn More</Button>
+        <Button size="small">
+          <FormModal contenidoModal={<InfoProject />} modalName="Learn More" />
+        </Button>
+        <Button size="small">
+          <FormModal contenidoModal={<Form />} modalName="Enroll" />
+        </Button>
       </CardActions>
     </Card>
   );

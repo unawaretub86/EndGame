@@ -49,31 +49,32 @@ function ChildModal() {
   );
 }
 
-export function FormModal(){
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {
-      setOpen(true);
-    };
-    const handleClose = () => {
-      setOpen(false);
-    };
-  
-    return (
-      <div>
-        <Button onClick={handleOpen}>Enroll</Button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="parent-modal-title"
-          aria-describedby="parent-modal-description"
-        >
-          <Box sx={{ ...style, width: 600, height:400 }}>
-            <h2 id="parent-modal-title">Enroll</h2>
-            <Form/>
-            <br/>
-            <ChildModal />
-          </Box>
-        </Modal>
-      </div>
-    );
+export function FormModal(props) {
+  const [open, setOpen] = React.useState(false);
+  console.log(props);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button onClick={handleOpen}>{props.modalName}</Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 600, height: 400 }}>
+          <h2 id="parent-modal-title">{props.modalName}</h2>
+          {props.contenidoModal}
+          <br />
+          <ChildModal />
+        </Box>
+      </Modal>
+    </div>
+  );
 }
