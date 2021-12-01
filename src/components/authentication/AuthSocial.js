@@ -5,13 +5,24 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 // material
 import { Stack, Button, Divider, Typography } from '@mui/material';
 
+
+// mis imports
+
+import googleLogin from '../../firebase/auth-control';
+
 // ----------------------------------------------------------------------
 
 export default function AuthSocial() {
+
+  const hdlClickGoogle = () => {
+    googleLogin();
+  };
+
+
   return (
     <>
       <Stack direction="row" spacing={2}>
-        <Button fullWidth size="large" color="inherit" variant="outlined">
+        <Button onClick={hdlClickGoogle} fullWidth size="large" color="inherit" variant="outlined">
           <Icon icon={googleFill} color="#DF3E30" height={24} />
         </Button>
 
