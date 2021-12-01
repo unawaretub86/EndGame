@@ -97,8 +97,29 @@ export default function LoginForm() {
           type="submit"
           variant="contained"
           loading={isSubmitting}
+          sx={{ mb: 6 }}
         >
           Login
+        </LoadingButton>
+        <LoadingButton
+          fullWidth
+          size="small"
+          type="button"
+          variant="contained"
+          loading={isSubmitting}
+          sx={{ mb: 2 }}
+        >
+          Como Estudiante
+        </LoadingButton>
+        <LoadingButton
+          fullWidth
+          size="small"
+          type="button"
+          variant="contained"
+          loading={isSubmitting}
+          sx={{ mb: 2 }}
+        >
+          Como Líder
         </LoadingButton>
       </Form>
     </FormikProvider>
