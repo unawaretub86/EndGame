@@ -72,7 +72,7 @@ export function FormModal({  dataModal }) {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style }}>
+        <Box sx={{ ...style, width: 600 }}>
           <h2 id="parent-modal-title">{dataModal.name}</h2>
           {dataModal.content}
           <br />

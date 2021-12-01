@@ -1,6 +1,6 @@
 import { Grid, Paper, styled } from '@mui/material';
 import React from 'react';
-import NestedModal from '../components/modal/ChildModal';
+import { Icon } from '@iconify/react';
 import MediaCard from '../components/card/MediaCard';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -12,79 +12,82 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function Project() {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={4}>
-        <Item>
-          <MediaCard
-            titulo="water studies"
-            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-            alt="H2O"
-          />
-        </Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>
-          <MediaCard
-            titulo="water studies"
-            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-            alt="H2O"
-          />
-        </Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>
-          <MediaCard
-            titulo="water studies"
-            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-            alt="H2O"
-          />
-        </Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>
-          <MediaCard
-            titulo="water studies"
-            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-            alt="H2O"
-          />
-        </Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>
-          <MediaCard
-            titulo="water studies"
-            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-            alt="H2O"
-          />
-        </Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>
-          <MediaCard
-            titulo="water studies"
-            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-            alt="H2O"
-          />
-        </Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>
-          <MediaCard
-            titulo="water studies"
-            explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-            imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-            alt="H2O"
-          />
-        </Item>
-      </Grid>
+    <>
+      <Icon icon="simple-icons:diagramsdotnet" width={24} height={24} />
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <Item>
+            <MediaCard
+              titulo="water studies"
+              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+              alt="H2O"
+            />
+          </Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>
+            <MediaCard
+              titulo="water studies"
+              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+              alt="H2O"
+            />
+          </Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>
+            <MediaCard
+              titulo="water studies"
+              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+              alt="H2O"
+            />
+          </Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>
+            <MediaCard
+              titulo="water studies"
+              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+              alt="H2O"
+            />
+          </Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>
+            <MediaCard
+              titulo="water studies"
+              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+              alt="H2O"
+            />
+          </Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>
+            <MediaCard
+              titulo="water studies"
+              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+              alt="H2O"
+            />
+          </Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>
+            <MediaCard
+              titulo="water studies"
+              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
+              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
+              alt="H2O"
+            />
+          </Item>
+        </Grid>
       
-    </Grid>
+      </Grid>
+    </>
   );
 }
 

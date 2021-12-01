@@ -9,6 +9,7 @@ import NestedModal from '../modal/ChildModal';
 import { FormModal } from '../modal/FomModal';
 import Form from '../Form/Form';
 import InfoProject from '../projects/InfoProject';
+import FormUpdateProject from '../projects/FormUpdateProject';
 
 function AbrirModal() {
   return (
@@ -32,7 +33,8 @@ export default function MediaCard({ titulo, explicacion, imagen, alt }) {
       </CardContent>
       <CardActions>
         <FormModal dataModal={{content: <InfoProject />, name: "Learn More"}} />
-        <FormModal dataModal={{content: <InfoProject />, name: "Enroll"}} />
+        <FormModal dataModal={{content: <Form />, name: "Enroll"}} />
+        <FormModal dataModal={{content: <FormUpdateProject />, name: "Update"}} />
         {/*
         // :::::NOTA::::: >>> Podria que sea mejor sacar el botón del modal y ponerlo en el card
         <Button size="small">

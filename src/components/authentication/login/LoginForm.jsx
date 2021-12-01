@@ -109,7 +109,7 @@ export default function LoginForm() {
           loading={isSubmitting}
           sx={{ mb: 2 }}
         >
-          Como Estudiante
+          As Student
         </LoadingButton>
         <LoadingButton
           fullWidth
@@ -119,7 +119,7 @@ export default function LoginForm() {
           loading={isSubmitting}
           sx={{ mb: 2 }}
         >
-          Como Líder
+          As Leader
         </LoadingButton>
       </Form>
     </FormikProvider>
