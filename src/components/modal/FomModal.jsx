@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import Form from '../Form/Form';
+import PropTypes from 'prop-types';
 
 const style = {
   position: 'absolute',
@@ -49,9 +49,13 @@ function ChildModal() {
   );
 }
 
-export function FormModal(props) {
+FormModal.propTypes = {
+  dataModal: PropTypes.object
+};
+
+export function FormModal({  dataModal }) {
   const [open, setOpen] = React.useState(false);
-  console.log(props);
+  console.log(dataModal);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -61,16 +65,16 @@ export function FormModal(props) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>{props.modalName}</Button>
+      <Button onClick={handleOpen}>{dataModal.name}</Button>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 600, height: 400 }}>
-          <h2 id="parent-modal-title">{props.modalName}</h2>
-          {props.contenidoModal}
+        <Box sx={{ ...style, width: 600 }}>
+          <h2 id="parent-modal-title">{dataModal.name}</h2>
+          {dataModal.content}
           <br />
           <ChildModal />
         </Box>

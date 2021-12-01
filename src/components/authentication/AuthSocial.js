@@ -8,7 +8,7 @@ import { Stack, Button, Divider, Typography } from '@mui/material';
 
 // mis imports
 
-import googleLogin from '../../firebase/auth-control';
+import { googleLogin } from '../../firebase/auth-control';
 
 // ----------------------------------------------------------------------
 
