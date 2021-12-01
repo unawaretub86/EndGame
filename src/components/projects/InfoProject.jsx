@@ -12,7 +12,7 @@ export default function InfoProject() {
   // POR AHORA >>>
   const projectInfo = {
       name: 'Proyecto 1',
-      id: 'JA-0112-01',
+      _id: '5RDXCFT5RDFGY65RFGYTR327',
       generalObjective: 'Objetivo general',
       specificObjectives: 'El objetivo especifico número 1$$El objetivo especifico número 2$$El objetivo especifico número 3',
       budget: '$11,000,000',
@@ -28,7 +28,7 @@ export default function InfoProject() {
     <>
       <ul>
         <li><h2>Project Name : {projectInfo.name}</h2></li>
-        <li><h3>Project ID : {projectInfo.id} OJO '(*)'</h3></li>
+        <li><h3>Project ID : {projectInfo._id} OJO '(*solo 4*)'</h3></li>
         <li><h2>General Objective:</h2></li>
         <li><p>{projectInfo.generalObjective}</p></li>
         <li><h2>Specific objectives</h2></li>
