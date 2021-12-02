@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Paper, styled } from '@mui/material';
+import { Grid, Paper, styled, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
 import Button from '@mui/material/Button';
 import MediaCard from '../components/card/MediaCard';
@@ -14,15 +14,16 @@ const Item = styled(Paper)(({ theme }) => ({
 function Project() {
   return (
     <>
-      <Button
-            fullWidth
+        <Button
             size="small"
             type="button"
             variant="contained"
             sx={{ mb: 2 }}
           >
-          <Icon icon="simple-icons:diagramsdotnet" width={24} height={24} />
-          New Project
+          <Icon icon="bi:plus-circle" width={24} height={24}/>
+          <Typography>
+            Add Project
+          </Typography>
         </Button>
       <Grid container spacing={2}>
         <Grid item xs={4}>
