@@ -1,29 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function InfoProject() {
+// >>> ejemplo BORRAR luego
+import dataProjectsInfoAll from '../../graphql/test-mientras/jsons-de-prueba'
+// ejemplo <<<
+
+InfoProject.propTypes = {
+  firstProjectData: PropTypes.object
+};
+
+export default function InfoProject({ firstProjectData }) {
   
   // HABILITAR REAL >>>
   // const { data, error, loading } = useQuery(GET_PROJECT_INFO);
-  // const projectInfo = data.project;
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error</p>;
   // <<<
 
   // POR AHORA >>>
-  const projectInfo = {
-      name: 'Proyecto 1',
-      _id: '5RDXCFT5RDFGY65RFGYTR32LK7',
-      generalObjective: 'Objetivo general',
-      specificObjectives: 'El objetivo especifico número 1$$El objetivo especifico número 2$$El objetivo especifico número 3',
-      budget: '$11,000,000',
-      startDate: '01/12/2020',
-      endDate: '29/02/2021',
-      leader_id: '123456789',
-      status: 'En proceso',
-      phase: 'started'
-  };
-  // <<<
-
+  const data = dataProjectsInfoAll.filter((proj)=>(proj._id === firstProjectData._id))
+  const projectInfo = data.project;
+  
   return(
     <>
       <ul>
