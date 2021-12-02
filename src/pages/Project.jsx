@@ -2,7 +2,11 @@ import React from 'react';
 import { Grid, Paper, styled, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
 import Button from '@mui/material/Button';
+import { useQuery } from '@apollo/client';
+// components
 import MediaCard from '../components/card/MediaCard';
+// utilities
+import { GET_PROJECTS_ALL, GET_PROJECT_ID } from '../graphql/projects/prj-queries'
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -12,14 +16,31 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function Project() {
+  const [projects, setProjects] = React.useState([]);
+
+  const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
+  
+  if (loading) return <p>Loading...</p>;
+  if (error) {
+    console.log(error);
+    return <p>Error :x</p>;
+  }
+
+  const prjFirstData = data.allProjects;
+
+  console.log(prjFirstData);
+
   return (
     <>
+    <pre>
+      {JSON.stringify(prjFirstData, null, 2)}
+    </pre>
         <Button
             size="small"
             type="button"
             variant="contained"
             sx={{ mb: 2 }}
-          >
+        >
           <Icon icon="bi:plus-circle" width={24} height={24}/>
           <Typography>
             Add Project
