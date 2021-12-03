@@ -17,11 +17,11 @@ function typoCouple(first, second) {
   );
 }
 
-export default function InfoProject({ firstProjectData }) {
+export default function InfoProject({ dataID }) {
 
   const { data, error, loading } = useQuery(GET_PROJECT_ID, {
     variables: {
-      id: firstProjectData.dataID
+      id: dataID
     }
   });
   

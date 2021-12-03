@@ -32,8 +32,7 @@ const imgarray =[
 function Project() {
   
   const [stModal, setStModal] = React.useState({title: '', content:'', open: false});
-  const [stOpen, setStOpen] = React.useState(false);
-
+  
   const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
 
   // const hdlCreateProject = () => {
@@ -50,7 +49,8 @@ function Project() {
 
   const dataAllProjects = data.allProjects.map((project,index) => ({...project, urlimg: imgarray[index]})); 
   
-  console.log(dataAllProjects);
+  console.log('Fetchs projects and renders projects page',dataAllProjects);
+  console.log('stModal',stModal);
   
   return (
     <>
@@ -58,7 +58,7 @@ function Project() {
         {JSON.stringify(dataAllProjects, null, 2)}
       </pre>
       <ContextModal.Provider value={{stModal, setStModal}}>
-        <ModalWindow tileModal={stModal.title} contentModal={stModal.content} openModal={stModal.open}/>
+        <ModalWindow titleModal={stModal.title} contentModal={stModal.content} openModal={stModal.open}/>
         <Button
             size="small"
             type="button"
@@ -76,7 +76,7 @@ function Project() {
             <Grid key={project._id} item xs={4}>
               <Item >
                 <MediaCard
-                  payload={{dataID: project._id, component: <InfoProject/>}}
+                  dataID={project._id}
                   title={project.name}
                   description={project.generalObjective}
                   image={project.urlimg}
