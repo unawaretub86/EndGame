@@ -4,8 +4,10 @@ import { Icon } from '@iconify/react';
 import Button from '@mui/material/Button';
 import { useQuery } from '@apollo/client';
 // components
-import InfoProject from '../components/projects/InfoProject';
+import ModalWindow from '../components/generic-containers/ModalWindow';
 import MediaCard from '../components/generic-containers/MediaCard';
+import InfoProject from '../components/projects/InfoProject';
+import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
 import { GET_PROJECTS_ALL, GET_PROJECT_ID } from '../graphql/projects/prj-queries'
 
@@ -27,7 +29,17 @@ const imgarray =[
 ];
 
 function Project() {
+  
+  const [stModal, setStModal] = React.useState({});
+  const [stOpen, setStOpen] = React.useState(false);
+
   const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
+
+  // const hdlCreateProject = () => {
+  //   setStOpenModal(true);
+  //   setStModalTitle('Create Project');
+  //   setStModalContent(<FormCreateProject />);
+  // }
   
   if (loading) return <p>Loading...</p>;
   if (error) {
@@ -35,26 +47,28 @@ function Project() {
     return <p>Error :x</p>;
   }
   
-  const dataAllProjects = data.allProjects.map((project,index) => ({...project, urlimg: imgarray[index]}));
+  const dataAllProjects = data.allProjects.map((project,index) => ({...project, urlimg: imgarray[index]})); 
   
   console.log(dataAllProjects);
   
   return (
     <>
-    <pre>
-      {JSON.stringify(dataAllProjects, null, 2)}
-    </pre>
-        <Button
-            size="small"
-            type="button"
-            variant="contained"
-            sx={{ mb: 2 }}
-        >
-          <Icon icon="bi:plus-circle" width={24} height={24}/>
-          <Typography>
-            Add Project
-          </Typography>
-        </Button>
+      <pre>
+        {JSON.stringify(dataAllProjects, null, 2)}
+      </pre>
+      <ModalWindow nameModal='Create Project' contentModal={<FormCreateProject/>} openModal={stOpen}/>
+      <Button
+          size="small"
+          type="button"
+          variant="contained"
+          sx={{ mb: 2 }}
+          onClick={() => setStOpen(true)}
+      >
+        <Icon icon="bi:plus-circle" width={24} height={24}/>
+        <Typography>
+          Add Project
+        </Typography>
+      </Button>
       <Grid container spacing={2}>
         {dataAllProjects.map(project => (
           <Grid key={project._id} item xs={4}>

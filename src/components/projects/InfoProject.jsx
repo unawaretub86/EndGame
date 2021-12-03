@@ -28,7 +28,7 @@ export default function InfoProject({ firstProjectData }) {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
   
-  const projectInfo = data.project;
+  const projectInfo = data.projectById;
   
   return(
     <>

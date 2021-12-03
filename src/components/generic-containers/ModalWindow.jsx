@@ -53,20 +53,19 @@ ModalWindow.propTypes = {
   dataModal: PropTypes.object
 };
 
-export default function ModalWindow({  dataModal }) {
+export default function ModalWindow({  nameModal, contentModal, openModal }) {
   const [open, setOpen] = React.useState(false);
-  console.log(dataModal);
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  
   const handleClose = () => {
     setOpen(false);
   };
-  console.log('dataModal en ModalWindow ~~ ',dataModal);
 
+  React.useEffect(() => {
+    setOpen(openModal);
+  }, [openModal]);
+  
   return (
     <div>
-      <Button onClick={handleOpen}>{dataModal.name}</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -74,8 +73,8 @@ export default function ModalWindow({  dataModal }) {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 600 }}>
-          <h2 id="parent-modal-title">{dataModal.name}</h2>
-          {dataModal.content}
+          <h2 id="parent-modal-title">{nameModal}</h2>
+          {contentModal}
           <br />
           <ChildModal />
         </Box>
