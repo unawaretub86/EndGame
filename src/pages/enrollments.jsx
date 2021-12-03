@@ -13,6 +13,9 @@ import {
   TableCell,
   Container,
   Typography,
+  NativeSelect,
+  FormControl,
+  InputLabel,
   TableContainer,
   TablePagination
 } from '@mui/material';
@@ -195,6 +198,24 @@ export default function Enrollments() {
                           </TableCell>
                           <TableCell align="left">{studentId}</TableCell>
                           <TableCell align="left">{status}</TableCell>
+                          <TableCell align="left">
+                            <FormControl fullWidth>
+                              <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                select
+                              </InputLabel>
+                              <NativeSelect
+                                inputProps={{
+                                  name: 'select',
+                                  id: 'uncontrolled-native'
+                                }}
+                                onChange={(e) => console.log(e.target.value)}
+                              >
+                                <option>Pending</option>
+                                <option>Accepted</option>
+                                <option>Rejected</option>
+                              </NativeSelect>
+                            </FormControl>
+                          </TableCell>
                           <TableCell align="left">{startDate}</TableCell>
                           <TableCell align="left">{endDate}</TableCell>
                           <TableCell align="right">
