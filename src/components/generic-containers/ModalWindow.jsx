@@ -53,7 +53,7 @@ ModalWindow.propTypes = {
   dataModal: PropTypes.object
 };
 
-export default function ModalWindow({  nameModal, contentModal, openModal }) {
+export default function ModalWindow({  tileModal, contentModal, openModal }) {
   const [open, setOpen] = React.useState(false);
   
   const handleClose = () => {
@@ -73,7 +73,7 @@ export default function ModalWindow({  nameModal, contentModal, openModal }) {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 600 }}>
-          <h2 id="parent-modal-title">{nameModal}</h2>
+          <h2 id="parent-modal-title">{tileModal}</h2>
           {contentModal}
           <br />
           <ChildModal />

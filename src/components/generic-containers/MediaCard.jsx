@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Button } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -26,16 +27,20 @@ export default function MediaCard({ payload, title, description, image, alt }) {
         </Typography>
       </CardContent>
       <CardActions>
+        {/*
         <ModalWindow dataModal={{content: <InfoProject firstProjectData={payload} />, name: "Learn More"}} />
         <ModalWindow dataModal={{content: <Form />, name: "Enroll"}} />
         <ModalWindow dataModal={{content: <FormUpdateProject />, name: "Update"}} />
-        {/*
-        // :::::NOTA::::: >>> Podria que sea mejor sacar el botón del modal y ponerlo en el card
-        <Button size="small">
-        </Button>
-        <Button size="small">
-        </Button>
         */}
+        <Button size="small">
+          Learn More
+        </Button>
+        <Button size="small">
+          Enroll
+        </Button>
+        <Button size="small">
+          Update
+        </Button>
       </CardActions>
     </Card>
   );
