@@ -13,6 +13,7 @@ import FormUpdateProject from '../projects/FormUpdateProject';
 
 
 export default function MediaCard({ payload, title, description, image, alt }) {
+  console.log('payload en MediaCard ~~ ',payload);
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia component="img" height="140" image={image} alt={alt} />
@@ -25,7 +26,7 @@ export default function MediaCard({ payload, title, description, image, alt }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <ModalWindow dataModal={{content: <InfoProject />, name: "Learn More"}} />
+        <ModalWindow dataModal={{content: <InfoProject firstProjectData={payload} />, name: "Learn More"}} />
         <ModalWindow dataModal={{content: <Form />, name: "Enroll"}} />
         <ModalWindow dataModal={{content: <FormUpdateProject />, name: "Update"}} />
         {/*

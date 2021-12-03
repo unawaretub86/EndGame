@@ -18,8 +18,8 @@ const GET_PROJECTS_ALL = gql`
 `;
 
 const GET_PROJECT_ID = gql`
-  query ($_id: String!) {
-    Project(_id: $_id) {
+  query ($id: ID) {
+    project(_id: $id) {
       _id
       name
       generalObjective
@@ -27,9 +27,13 @@ const GET_PROJECT_ID = gql`
       budget
       startDate
       endDate
-      leader_id
       status
       phase
+      leader{
+        _id
+        name
+        lastName
+      }
     }
   }
 `;

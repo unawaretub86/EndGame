@@ -62,6 +62,7 @@ export default function ModalWindow({  dataModal }) {
   const handleClose = () => {
     setOpen(false);
   };
+  console.log('dataModal en ModalWindow ~~ ',dataModal);
 
   return (
     <div>
