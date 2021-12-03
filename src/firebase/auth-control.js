@@ -50,7 +50,7 @@ export const loginUsuario = async (email, password) => {
       email: credencialesUsuario.user.email
     }
     //  traer datos de la DDBB   -   user =  await consultarDatabaseWhere('userList', 'uid', user.uid);
-    return user[0];
+    return user;
   } catch (e) {
     return undefined;
   }

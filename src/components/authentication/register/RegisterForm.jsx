@@ -56,10 +56,10 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      // todo se trasa a través del objeto formik
+      // afrp- todo se trasa a través del objeto formik
       console.log(formik.values);
-      // puede que esta vaina se tenga que poner ASYNC
-      // Por ahora se basa en Firebase
+      // afrp- puede que esta vaina se tenga que poner ASYNC
+      // afrp- Por ahora se basa en Firebase
       crearUsuario(formik.values.email, formik.values.password, formik.values.firstName);
       navigate('/login');
     }
