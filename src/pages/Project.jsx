@@ -10,7 +10,7 @@ import MediaCard from '../components/generic-containers/MediaCard';
 import InfoProject from '../components/projects/InfoProject';
 import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
-import { GET_PROJECTS_ALL, GET_PROJECT_ID } from '../graphql/projects/prj-queries'
+import { GET_PROJECTS_ALL } from '../graphql/projects/prj-queries'
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,

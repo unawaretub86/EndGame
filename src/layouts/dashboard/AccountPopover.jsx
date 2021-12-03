@@ -10,6 +10,8 @@ import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '
 import MenuPopover from '../../components/MenuPopover';
 //
 import account from '../../_mocks_/account';
+// cosas de Auth
+import { logOutUsuario } from '../../firebase/auth-control';
 
 // ----------------------------------------------------------------------
 
@@ -105,7 +107,7 @@ export default function AccountPopover() {
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <RouterLink to="/login"  style={{ textDecoration: 'inherit' }}>
-            <Button fullWidth color="inherit" variant="outlined">
+            <Button onClick={()=>(logOutUsuario())} fullWidth color="inherit" variant="outlined">
               <Typography>
                 Logout
               </Typography>

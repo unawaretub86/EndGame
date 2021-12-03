@@ -39,12 +39,13 @@ export default function LoginForm() {
     onSubmit: async () => {
       console.log('formik de login ~~',formik.values);
       // afrp- este si toco que fuera async para garantizar el falsy de la respuesta
+      // loginUsuario está de src/firebase/auth-control
       const user = await loginUsuario(formik.values.email, formik.values.password);
       console.log('user en login ~~',user);
       if (user) {
         navigate('/dashboard', { replace: true });
       }else{
-        alert('Usuario o contraseña incorrecta');
+        alert('*Provisional* - Usuario o contraseña incorrecta');
       }
     }
   });

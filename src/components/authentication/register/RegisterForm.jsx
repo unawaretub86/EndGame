@@ -60,6 +60,7 @@ export default function RegisterForm() {
       console.log(formik.values);
       // afrp- puede que esta vaina se tenga que poner ASYNC
       // afrp- Por ahora se basa en Firebase
+      // crearUsuario está de src/firebase/auth-control
       crearUsuario(formik.values.email, formik.values.password, formik.values.firstName);
       navigate('/login');
     }
