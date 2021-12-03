@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Paper, styled, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
 import Button from '@mui/material/Button';
 import { useQuery } from '@apollo/client';
 // components
-import MediaCard from '../components/card/MediaCard';
+import InfoProject from '../components/projects/InfoProject';
+import MediaCard from '../components/generic-containers/MediaCard';
 // utilities
 import { GET_PROJECTS_ALL, GET_PROJECT_ID } from '../graphql/projects/prj-queries'
 
@@ -15,9 +16,17 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-function Project() {
-  const [projects, setProjects] = React.useState([]);
+const imgarray =[
+  'https://www.biospace.com/getasset/83298754-d463-4202-a940-9af7c0dca39e/',
+  'https://www.wallpapertip.com/wmimgs/51-517415_go-back-gallery-for-cool-science-backgrounds-cool.jpg',
+  'https://scienceoxford.com/wp-content/uploads/2016/08/potions2-e1470398708986-800x483.jpg',
+  'https://www.ucl.ac.uk/medical-sciences/sites/medical_sciences/files/microscope_blue_gloves.jpeg',
+  'https://blog.mmumullana.org/wp-content/uploads/2019/12/blog-image-for-Computer-Science.jpg',
+  'https://www.nsf.gov/news/mmg/media/images/oceans_nsf-v2_9e8b03d8-14ae-4c47-8f12-385e4357ed3f_f.jpg',
+  'https://sites.uw.edu/bevanseries/files/2018/03/154062807_science-communication_-iStockphoto_Thinkstock-1goqkz6-816x528.jpg'
+];
 
+function Project() {
   const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
   
   if (loading) return <p>Loading...</p>;
@@ -25,15 +34,15 @@ function Project() {
     console.log(error);
     return <p>Error :x</p>;
   }
-
-  const prjFirstData = data.allProjects;
-
-  console.log(prjFirstData);
-
+  
+  const dataAllProjects = data.allProjects.map((project,index) => ({...project, urlimg: imgarray[index]}));
+  
+  console.log(dataAllProjects);
+  
   return (
     <>
     <pre>
-      {JSON.stringify(prjFirstData, null, 2)}
+      {JSON.stringify(dataAllProjects, null, 2)}
     </pre>
         <Button
             size="small"
@@ -47,77 +56,19 @@ function Project() {
           </Typography>
         </Button>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <Item>
-            <MediaCard
-              titulo="water studies"
-              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-              alt="H2O"
-            />
-          </Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>
-            <MediaCard
-              titulo="water studies"
-              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-              alt="H2O"
-            />
-          </Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>
-            <MediaCard
-              titulo="water studies"
-              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-              alt="H2O"
-            />
-          </Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>
-            <MediaCard
-              titulo="water studies"
-              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-              alt="H2O"
-            />
-          </Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>
-            <MediaCard
-              titulo="water studies"
-              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-              alt="H2O"
-            />
-          </Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>
-            <MediaCard
-              titulo="water studies"
-              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-              alt="H2O"
-            />
-          </Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>
-            <MediaCard
-              titulo="water studies"
-              explicacion="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita laborum laudantium culpa, ea pariatur vero tempora iusto minus qui dolore, commodi illum consequuntur voluptate eveniet quibusdam quia assumenda odit?"
-              imagen="https://www.topdoctors.mx/files/Image/large/10cbfd60bb6b744fccbf6ebc21837b80.png"
-              alt="H2O"
-            />
-          </Item>
-        </Grid>
-      
+        {dataAllProjects.map(project => (
+          <Grid key={project._id} item xs={4}>
+            <Item >
+              <MediaCard
+                payload={{dataID: project._id, component: <InfoProject/>}}
+                title={project.name}
+                description={project.generalObjective}
+                image={project.urlimg}
+                alt={project.name}
+              />
+            </Item>
+          </Grid>
+        ))}
       </Grid>
     </>
   );
