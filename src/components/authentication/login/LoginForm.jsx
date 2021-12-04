@@ -16,6 +16,7 @@ import {
   FormControlLabel
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { loginUsuario } from '../../../firebase/auth-control';
 
 // ----------------------------------------------------------------------
 
@@ -35,8 +36,17 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: async () => {
+      console.log('formik de login ~~',formik.values);
+      // afrp- este si toco que fuera async para garantizar el falsy de la respuesta
+      // loginUsuario está de src/firebase/auth-control
+      const user = await loginUsuario(formik.values.email, formik.values.password);
+      console.log('user en login ~~',user);
+      if (user) {
+        navigate('/dashboard', { replace: true });
+      }else{
+        alert('*Provisional* - Usuario o contraseña incorrecta');
+      }
     }
   });
 

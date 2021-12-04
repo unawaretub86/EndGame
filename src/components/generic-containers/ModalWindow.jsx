@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import { ContextModal } from '../../contexts/ContextModal';
+
 
 const style = {
   position: 'absolute',
@@ -53,29 +55,30 @@ ModalWindow.propTypes = {
   dataModal: PropTypes.object
 };
 
-export default function ModalWindow({  dataModal }) {
-  const [open, setOpen] = React.useState(false);
-  console.log(dataModal);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  console.log('dataModal en ModalWindow ~~ ',dataModal);
+export default function ModalWindow({  titleModal, contentModal, openModal }) {
+  console.log('Renders ModalWindow');
+  // const [open, setOpen] = React.useState(false);
+  
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
+  // React.useEffect(() => {
+  //   setOpen(openModal);
+  // }, [openModal]);
+  const { stModal, setStModal } = React.useContext(ContextModal);
+  
   return (
     <div>
-      <Button onClick={handleOpen}>{dataModal.name}</Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={openModal}
+        onClose={()=>{setStModal({...stModal, open: false})}}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 600 }}>
-          <h2 id="parent-modal-title">{dataModal.name}</h2>
-          {dataModal.content}
+          <h2 id="parent-modal-title">{titleModal}</h2>
+          {contentModal}
           <br />
           <ChildModal />
         </Box>

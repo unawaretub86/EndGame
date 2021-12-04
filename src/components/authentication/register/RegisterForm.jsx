@@ -7,8 +7,9 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { useNavigate } from 'react-router-dom';
 // material
-import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { crearUsuario } from '../../../firebase/auth-control';
 // import { resolvePlugin } from '@babel/core';
 
 // ----------------------------------------------------------------------
@@ -50,11 +51,18 @@ export default function RegisterForm() {
       identification: '',
       role: '',
       email: '',
-      password: ''
+      password: '',
+      passwordConfirm: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+      // afrp- todo se trasa a través del objeto formik
+      console.log(formik.values);
+      // afrp- puede que esta vaina se tenga que poner ASYNC
+      // afrp- Por ahora se basa en Firebase
+      // crearUsuario está de src/firebase/auth-control
+      crearUsuario(formik.values.email, formik.values.password, formik.values.firstName);
+      navigate('/login');
     }
   });
 
@@ -144,6 +152,9 @@ export default function RegisterForm() {
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
+          <Typography variant="title" sx={{ mt:2 }}>
+          || ~ AQUÍ IRÍA CONFIRMACIÓN DE PASSWORD ~ ||
+          </Typography>
 
           <LoadingButton
             fullWidth

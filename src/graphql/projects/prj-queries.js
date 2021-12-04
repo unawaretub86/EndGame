@@ -19,7 +19,7 @@ const GET_PROJECTS_ALL = gql`
 
 const GET_PROJECT_ID = gql`
   query ($id: ID) {
-    project(_id: $id) {
+    projectById(_id: $id) {
       _id
       name
       generalObjective

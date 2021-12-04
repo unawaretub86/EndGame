@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Grid, Paper, styled, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
 import Button from '@mui/material/Button';
 import { useQuery } from '@apollo/client';
 // components
-import InfoProject from '../components/projects/InfoProject';
+import { ContextModal } from '../contexts/ContextModal';
+import ModalWindow from '../components/generic-containers/ModalWindow';
 import MediaCard from '../components/generic-containers/MediaCard';
+import InfoProject from '../components/projects/InfoProject';
+import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
-import { GET_PROJECTS_ALL, GET_PROJECT_ID } from '../graphql/projects/prj-queries'
+import { GET_PROJECTS_ALL } from '../graphql/projects/prj-queries'
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -27,49 +30,63 @@ const imgarray =[
 ];
 
 function Project() {
+  
+  const [stModal, setStModal] = React.useState({title: '', content:'', open: false});
+  
   const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
+
+  // const hdlCreateProject = () => {
+  //   setStOpenModal(true);
+  //   setStModalTitle('Create Project');
+  //   setStModalContent(<FormCreateProject />);
+  // }
   
   if (loading) return <p>Loading...</p>;
   if (error) {
     console.log(error);
     return <p>Error :x</p>;
   }
+
+  const dataAllProjects = data.allProjects.map((project,index) => ({...project, urlimg: imgarray[index]})); 
   
-  const dataAllProjects = data.allProjects.map((project,index) => ({...project, urlimg: imgarray[index]}));
-  
-  console.log(dataAllProjects);
+  console.log('Fetchs projects and renders projects page',dataAllProjects);
+  console.log('stModal',stModal);
   
   return (
     <>
-    <pre>
-      {JSON.stringify(dataAllProjects, null, 2)}
-    </pre>
+      <pre>
+        {JSON.stringify(dataAllProjects, null, 2)}
+      </pre>
+      <ContextModal.Provider value={{stModal, setStModal}}>
+        <ModalWindow titleModal={stModal.title} contentModal={stModal.content} openModal={stModal.open}/>
         <Button
             size="small"
             type="button"
             variant="contained"
             sx={{ mb: 2 }}
-        >
+            onClick={() => setStModal({title: 'Create Project', content: <FormCreateProject />, open: true})}
+            >
           <Icon icon="bi:plus-circle" width={24} height={24}/>
           <Typography>
             Add Project
           </Typography>
         </Button>
-      <Grid container spacing={2}>
-        {dataAllProjects.map(project => (
-          <Grid key={project._id} item xs={4}>
-            <Item >
-              <MediaCard
-                payload={{dataID: project._id, component: <InfoProject/>}}
-                title={project.name}
-                description={project.generalObjective}
-                image={project.urlimg}
-                alt={project.name}
-              />
-            </Item>
-          </Grid>
-        ))}
-      </Grid>
+        <Grid container spacing={2}>
+          {dataAllProjects.map(project => (
+            <Grid key={project._id} item xs={4}>
+              <Item >
+                <MediaCard
+                  dataID={project._id}
+                  title={project.name}
+                  description={project.generalObjective}
+                  image={project.urlimg}
+                  alt={project.name}
+                  />
+              </Item>
+            </Grid>
+          ))}
+        </Grid>
+      </ContextModal.Provider>
     </>
   );
 }

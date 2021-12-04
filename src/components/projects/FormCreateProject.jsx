@@ -1,40 +1,48 @@
+import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
+import { useFormik, Form, FormikProvider } from 'formik';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import { useNavigate } from 'react-router-dom';
 // material
-import {
-  Link,
-  Stack,
-  Checkbox,
-  TextField,
-  IconButton,
-  InputAdornment,
-  FormControlLabel,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid
-} from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+// import { resolvePlugin } from '@babel/core';
 
 // ----------------------------------------------------------------------
+const role = [
+  {
+    value: 'student',
+    label: 'Student'
+  },
+  {
+    value: 'leader',
+    label: 'Leader'
+  },
+  {
+    value: 'administrator',
+    label: 'Administrator'
+  }
+];
 
-export default function FormCreateProject() {
+export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [values, setValues] = React.useState('');
 
-  const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+  const RegisterSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required').min(5, 'Too Short!'),
+    generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
+    specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
+    specificObjective2: Yup.string().min(20, 'Too Short!'),
+    specificObjective3: Yup.string().min(20, 'Too Short!'),
+    budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(1000000, 'Must be less than 1000000'),
+    startDate: Yup.string().required('Start Date is required'),
+    endDate: Yup.string().required('End Date is required'),
   });
-  
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -46,148 +54,116 @@ export default function FormCreateProject() {
       startDate: '',
       endDate: ''
     },
-    validationSchema: LoginSchema,
+    validationSchema: RegisterSchema,
     onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+      // afrp- {jalar al user context y sacar el user_id del usuario}
+      // afrp- 
+      // afrp- {mutation de firebase para guardar el proyecto}
+      // afrp- {jalar el modal ctx para cerrarlo}
     }
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
-
-  const handleShowPassword = () => {
-    setShowPassword((show) => !show);
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
   };
+
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-      <Card>
-        <CardHeader subheader="The information can be edited" title="Profile" />
-        <Divider />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="firstName"
-                required
-                value={values.firstName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Last name"
-                name="lastName"
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Identification"
-                name="identification"
-                required
-                value={values.identification}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Email Address"
-                name="email"
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Password"
-                name="password"
-                required
-                value={values.password}
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            p: 2
-          }}
-        >
-          <Button color="primary" variant="contained">
-            Save details
-          </Button>
-        </Box>
-      </Card>
+        <Stack spacing={3}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <TextField
+              fullWidth
+              label="First name"
+              {...getFieldProps('firstName')}
+              error={Boolean(touched.firstName && errors.firstName)}
+              helperText={touched.firstName && errors.firstName}
+            />
+
+            <TextField
+              fullWidth
+              label="Last name"
+              {...getFieldProps('lastName')}
+              error={Boolean(touched.lastName && errors.lastName)}
+              helperText={touched.lastName && errors.lastName}
+            />
+          </Stack>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <TextField
+              fullWidth
+              label="Identification"
+              {...getFieldProps('identification')}
+              error={Boolean(touched.identification && errors.identification)}
+              helperText={touched.identification && errors.identification}
+            />
+
+            <TextField
+              fullWidth
+              label="Select Role"
+              name="role"
+              onChange={handleChange}
+              required
+              select
+              SelectProps={{ native: true }}
+              value={values.state}
+              variant="outlined"
+            >
+              {role.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+          </Stack>
+
+          <TextField
+            fullWidth
+            autoComplete="username"
+            type="email"
+            label="Email address"
+            {...getFieldProps('email')}
+            error={Boolean(touched.email && errors.email)}
+            helperText={touched.email && errors.email}
+          />
+
+          <TextField
+            fullWidth
+            autoComplete="current-password"
+            type={showPassword ? 'text' : 'password'}
+            label="Password"
+            {...getFieldProps('password')}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                    <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+            error={Boolean(touched.password && errors.password)}
+            helperText={touched.password && errors.password}
+          />
+          <Typography variant="title" sx={{ mt:2 }}>
+          || ~ AQUÍ IRÍA CONFIRMACIÓN DE PASSWORD ~ ||
+          </Typography>
+
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+          >
+            Register
+          </LoadingButton>
+        </Stack>
       </Form>
     </FormikProvider>
   );
 }
-
-
-    // <Box
-    //   component="form"
-    //   sx={{
-    //     '& .MuiTextField-root': { m: 1, width: '25ch' },
-    //   }}
-    //   noValidate
-    //   autoComplete="off"
-    // >
-    //   <h2>CREAR PROYECTO</h2>
-    //   <div>
-    //     <TextField
-          
-    //       id="outlined-error"
-    //       label="Nombres"
-    //       defaultValue="Hello World"
-    //     />
-    //     <TextField
-          
-    //       id="outlined-error-helper-text"
-    //       label="Apellidos"
-    //       defaultValue="Hello World"
-    //       helperText="Incorrect entry."
-    //     />
-    //   </div>
-    //   <div>
-    //     <TextField
-          
-    //       id="filled-error"
-    //       label="Email"
-    //       defaultValue="Hello World"
-    //       variant="filled"
-    //     />
-    //     <TextField
-          
-    //       id="filled-error-helper-text"
-    //       label="Role"
-    //       defaultValue="Hello World"
-    //       helperText="Incorrect entry."
-    //       variant="filled"
-    //     />
-    //   </div>
-    //   <div>
-    //     <TextField
-          
-    //       id="standard-error"
-    //       label="Status"
-    //       defaultValue="Hello World"
-    //       variant="standard"
-    //     />
-        
-    //   </div>
-    // </Box>
-  
