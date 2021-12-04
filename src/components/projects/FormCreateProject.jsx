@@ -1,15 +1,16 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { Icon } from '@iconify/react';
+// import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { useNavigate } from 'react-router-dom';
+
 // material
-import { Stack, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-// import { resolvePlugin } from '@babel/core';
+// our components
+// import { FormError } from '../../components/FormError';
+import { ContextModal } from '../../contexts/ContextModal';
+import AlertAndres from '../generic-containers/AlertAndres';
 
 // ----------------------------------------------------------------------
 const role = [
@@ -28,17 +29,20 @@ const role = [
 ];
 
 export default function RegisterForm() {
-  const [showPassword, setShowPassword] = useState(false);
+  
+  const [stAlert, setStAlert] = useState({open:'', isGood:'', txt:''})
+  const { setStModal } = React.useContext(ContextModal);
 
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required').min(5, 'Too Short!'),
-    generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
-    specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
-    specificObjective2: Yup.string().min(20, 'Too Short!'),
-    specificObjective3: Yup.string().min(20, 'Too Short!'),
-    budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(1000000, 'Must be less than 1000000'),
-    startDate: Yup.string().required('Start Date is required'),
-    endDate: Yup.string().required('End Date is required'),
+    // <<< afrp- OJO volver a activar >>>
+    // name: Yup.string().required('Name is required').min(5, 'Too Short!'),
+    // generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
+    // specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
+    // specificObjective2: Yup.string().min(20, 'Too Short!'),
+    // specificObjective3: Yup.string().min(20, 'Too Short!'),
+    // budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
+    // startDate: Yup.string().required('Start Date is required'),
+    // endDate: Yup.string().required('End Date is required'),
   });
 
   const formik = useFormik({
@@ -59,6 +63,7 @@ export default function RegisterForm() {
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
+      setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
   });
 
@@ -67,6 +72,7 @@ export default function RegisterForm() {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+        <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
@@ -118,6 +124,11 @@ export default function RegisterForm() {
               error={Boolean(touched.budget && errors.budget)}
               helperText={touched.budget && errors.budget}
             />
+            {/* afrp- Pasar a date picker
+            https://mui.com/components/pickers/
+            https://stackoverflow.com/questions/56312372/react-datepicker-with-a-formik-form
+            https://stackoverflow.com/questions/57109680/how-to-use-mutations-in-react-apollo-hooks-and-formik
+            */}
             <TextField
               fullWidth
               label="Start Date"
@@ -156,3 +167,11 @@ export default function RegisterForm() {
     </FormikProvider>
   );
 }
+
+/* rellenos
+Project 4.12.10.34
+GenObj Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
+SpObj11 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
+SpObj22 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
+SpObj22 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
+*/
