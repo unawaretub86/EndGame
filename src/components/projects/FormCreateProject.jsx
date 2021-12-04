@@ -79,46 +79,36 @@ export default function RegisterForm() {
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
-              label="First name"
-              {...getFieldProps('firstName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
+              label="Project Name"
+              {...getFieldProps('name')}
+              error={Boolean(touched.name && errors.name)}
+              helperText={touched.name && errors.name}
             />
 
             <TextField
               fullWidth
-              label="Last name"
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
+              label="General Objective"
+              {...getFieldProps('generalObjective')}
+              error={Boolean(touched.generalObjective && errors.generalObjective)}
+              helperText={touched.generalObjective && errors.generalObjective}
             />
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
-              label="Identification"
-              {...getFieldProps('identification')}
-              error={Boolean(touched.identification && errors.identification)}
-              helperText={touched.identification && errors.identification}
+              label="First Specific Objective"
+              {...getFieldProps('specificObjective1')}
+              error={Boolean(touched.specificObjective1 && errors.specificObjective1)}
+              helperText={touched.specificObjective1 && errors.specificObjective1}
             />
 
             <TextField
               fullWidth
-              label="Select Role"
-              name="role"
-              onChange={handleChange}
-              required
-              select
-              SelectProps={{ native: true }}
-              value={values.state}
-              variant="outlined"
-            >
-              {role.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
+              label="First Specific Objective"
+              {...getFieldProps('specificObjective1')}
+              error={Boolean(touched.specificObjective1 && errors.specificObjective1)}
+              helperText={touched.specificObjective1 && errors.specificObjective1}
+            />
           </Stack>
 
           <TextField

@@ -52,22 +52,17 @@ function ChildModal() {
 }
 
 ModalWindow.propTypes = {
-  dataModal: PropTypes.object
+  titleModal: PropTypes.string,
+  contentModal: PropTypes.element,
+  openModal: PropTypes.bool
 };
 
 export default function ModalWindow({  titleModal, contentModal, openModal }) {
   console.log('Renders ModalWindow');
-  // const [open, setOpen] = React.useState(false);
   
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-
-  // React.useEffect(() => {
-  //   setOpen(openModal);
-  // }, [openModal]);
   const { stModal, setStModal } = React.useContext(ContextModal);
   
+  // afrp- OJO: está grave de resposiveness
   return (
     <div>
       <Modal
