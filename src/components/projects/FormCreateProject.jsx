@@ -28,9 +28,7 @@ const role = [
 ];
 
 export default function RegisterForm() {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [values, setValues] = React.useState('');
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string().required('Name is required').min(5, 'Too Short!'),
@@ -52,7 +50,8 @@ export default function RegisterForm() {
       specificObjective3: '',
       budget: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      imgurl: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
@@ -62,13 +61,6 @@ export default function RegisterForm() {
       // afrp- {jalar el modal ctx para cerrarlo}
     }
   });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
@@ -104,44 +96,51 @@ export default function RegisterForm() {
 
             <TextField
               fullWidth
-              label="First Specific Objective"
-              {...getFieldProps('specificObjective1')}
-              error={Boolean(touched.specificObjective1 && errors.specificObjective1)}
-              helperText={touched.specificObjective1 && errors.specificObjective1}
+              label="*Mejor TextArea* Second Specific Objective"
+              {...getFieldProps('specificObjective2')}
+              error={Boolean(touched.specificObjective2 && errors.specificObjective2)}
+              helperText={touched.specificObjective2 && errors.specificObjective2}
+            />
+
+            <TextField
+              fullWidth
+              label="Third Specific Objective"
+              {...getFieldProps('specificObjective3')}
+              error={Boolean(touched.specificObjective3 && errors.specificObjective3)}
+              helperText={touched.specificObjective3 && errors.specificObjective3}
             />
           </Stack>
-
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <TextField
+              fullWidth
+              label="Budget"
+              {...getFieldProps('budget')}
+              error={Boolean(touched.budget && errors.budget)}
+              helperText={touched.budget && errors.budget}
+            />
+            <TextField
+              fullWidth
+              label="Start Date"
+              {...getFieldProps('startDate')}
+              error={Boolean(touched.startDate && errors.startDate)}
+              helperText={touched.startDate && errors.startDate}
+            />
+            <TextField
+              fullWidth
+              label="*{Date Picker}*"
+              {...getFieldProps('endDate')}
+              error={Boolean(touched.endDate && errors.endDate)}
+              helperText={touched.endDate && errors.endDate}
+            />            
+          </Stack>
           <TextField
             fullWidth
-            autoComplete="username"
-            type="email"
-            label="Email address"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
+            label="Paste Image URL"
+            {...getFieldProps('imgurl')}
+            error={Boolean(touched.imgurl && errors.imgurl)}
+            helperText={touched.imgurl && errors.imgurl}
           />
 
-          <TextField
-            fullWidth
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            label="Password"
-            {...getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                    <Icon icon={showPassword ? eyeFill : eyeOffFill} />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-            error={Boolean(touched.password && errors.password)}
-            helperText={touched.password && errors.password}
-          />
-          <Typography variant="title" sx={{ mt:2 }}>
-          || ~ AQUÍ IRÍA CONFIRMACIÓN DE PASSWORD ~ ||
-          </Typography>
 
           <LoadingButton
             fullWidth
@@ -150,7 +149,7 @@ export default function RegisterForm() {
             variant="contained"
             loading={isSubmitting}
           >
-            Register
+            Create Project
           </LoadingButton>
         </Stack>
       </Form>

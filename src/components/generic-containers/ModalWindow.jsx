@@ -63,6 +63,8 @@ export default function ModalWindow({  titleModal, contentModal, openModal }) {
   const { stModal, setStModal } = React.useContext(ContextModal);
   
   // afrp- OJO: está grave de resposiveness
+            //  Hacerlo scrollable
+            //  Que se encoja
   return (
     <div>
       <Modal
