@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
 // import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 
@@ -9,29 +10,18 @@ import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // our components
 // import { FormError } from '../../components/FormError';
-import { ContextModal } from '../../contexts/ContextModal';
+// import { ContextModal } from '../../contexts/ContextModal';
 import AlertAndres from '../generic-containers/AlertAndres';
+import { CREATE_PROJECT } from '../../graphql/projects/prj-mutations';
 
 // ----------------------------------------------------------------------
-const role = [
-  {
-    value: 'student',
-    label: 'Student'
-  },
-  {
-    value: 'leader',
-    label: 'Leader'
-  },
-  {
-    value: 'administrator',
-    label: 'Administrator'
-  }
-];
 
-export default function RegisterForm() {
+
+export default function FormCreateProject() {
   
-  const [stAlert, setStAlert] = useState({open:'', isGood:'', txt:''})
-  const { setStModal } = React.useContext(ContextModal);
+  const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
+  // const { setStModal } = React.useContext(ContextModal);
+  const [mtCreateProject, { loading }] = useMutation (CREATE_PROJECT);
 
   const RegisterSchema = Yup.object().shape({
     // <<< afrp- OJO volver a activar >>>
@@ -55,14 +45,37 @@ export default function RegisterForm() {
       budget: '',
       startDate: '',
       endDate: '',
-      imgurl: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
+    onSubmit: async () => {
       // afrp- {jalar al user context y sacar el user_id del usuario}
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
+      console.log(
+        {
+          variables: {
+            ...formik.values,
+            specificObjectives: [formik.values.specificObjective1,
+                                formik.values.specificObjective2,
+                                formik.values.specificObjective3],
+            leader: {
+              _id: "61a6f41c1e04d028a4dd7cff",
+              name: "John",
+              lastName: "Snow"
+            }
+            // <<< afrp- en caso que se requiera hacer uno por uno >>>
+            // 
+            //     name: formik.values.name,
+            //     generalObjective: formik.values.generalObjective,
+            //     specificObjective1: formik.values.specificObjective1,
+            //     specificObjective2: formik.values.specificObjective2,
+            //     specificObjective3: formik.values.specificObjective3,
+            //     budget: formik.values.budget,
+            //     startDate: formik.values.startDate,
+            //     endDate: formik.values.endDate,
+          }
+      });
       setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
   });

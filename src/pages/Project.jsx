@@ -31,7 +31,7 @@ const imgarray =[
 
 function Project() {
   
-  const [stModal, setStModal] = React.useState({title: '', content:'', open: false});
+  const [stModal, setStModal] = React.useState({title: '', content: Function, open: false});
   
   const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
 

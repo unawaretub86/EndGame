@@ -13,6 +13,11 @@ const GET_PROJECTS_ALL = gql`
       leader_id
       status
       phase
+      leader{
+        _id
+        name
+        lastName
+      }
     }
   }
 `;
