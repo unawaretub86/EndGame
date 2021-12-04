@@ -7,7 +7,6 @@ import { Typography } from '@mui/material';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import { datosUsuario } from '../../firebase/auth-control';
-
 // ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 64;
@@ -37,23 +36,24 @@ const MainStyle = styled('div')(({ theme }) => ({
 export default function DashboardLayout() {
   
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState(null);
-
   
+  
+  // afrp-gestión de existencia de usuario - OJO se daña al refrescar la página
+  const [user, setUser] = useState(null);
   useEffect(() => {
     async function capsulita() {
       const resp = await datosUsuario();
       setUser(resp);
     }
     capsulita();
-  }, []);
+  },[]);
 
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
       <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle>
-        {user ? <Outlet /> : <Typography>xx Usuario no registrado xx   - - - Funcionó esta vaina nojoda</Typography>}
+        {user ? <Outlet /> : <Outlet /> /* <Typography>xx Usuario no registrado xx</Typography> */ }
       </MainStyle>
     </RootStyle>
   );

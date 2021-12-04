@@ -65,7 +65,7 @@ function Project() {
             variant="contained"
             sx={{ mb: 2 }}
             onClick={() => setStModal({title: 'Create Project', content: <FormCreateProject />, open: true})}
-        >
+            >
           <Icon icon="bi:plus-circle" width={24} height={24}/>
           <Typography>
             Add Project
@@ -81,7 +81,7 @@ function Project() {
                   description={project.generalObjective}
                   image={project.urlimg}
                   alt={project.name}
-                />
+                  />
               </Item>
             </Grid>
           ))}
