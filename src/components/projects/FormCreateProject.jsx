@@ -1,15 +1,16 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { Icon } from '@iconify/react';
+// import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { useNavigate } from 'react-router-dom';
+
 // material
-import { Stack, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-// import { resolvePlugin } from '@babel/core';
+// our components
+// import { FormError } from '../../components/FormError';
+import { ContextModal } from '../../contexts/ContextModal';
+import AlertAndres from '../generic-containers/AlertAndres';
 
 // ----------------------------------------------------------------------
 const role = [
@@ -28,19 +29,20 @@ const role = [
 ];
 
 export default function RegisterForm() {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [values, setValues] = React.useState('');
+  
+  const [stAlert, setStAlert] = useState({open:'', isGood:'', txt:''})
+  const { setStModal } = React.useContext(ContextModal);
 
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required').min(5, 'Too Short!'),
-    generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
-    specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
-    specificObjective2: Yup.string().min(20, 'Too Short!'),
-    specificObjective3: Yup.string().min(20, 'Too Short!'),
-    budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(1000000, 'Must be less than 1000000'),
-    startDate: Yup.string().required('Start Date is required'),
-    endDate: Yup.string().required('End Date is required'),
+    // <<< afrp- OJO volver a activar >>>
+    // name: Yup.string().required('Name is required').min(5, 'Too Short!'),
+    // generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
+    // specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
+    // specificObjective2: Yup.string().min(20, 'Too Short!'),
+    // specificObjective3: Yup.string().min(20, 'Too Short!'),
+    // budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
+    // startDate: Yup.string().required('Start Date is required'),
+    // endDate: Yup.string().required('End Date is required'),
   });
 
   const formik = useFormik({
@@ -52,7 +54,8 @@ export default function RegisterForm() {
       specificObjective3: '',
       budget: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      imgurl: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
@@ -60,98 +63,95 @@ export default function RegisterForm() {
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
+      setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
   });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+        <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
-              label="First name"
-              {...getFieldProps('firstName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
+              label="Project Name"
+              {...getFieldProps('name')}
+              error={Boolean(touched.name && errors.name)}
+              helperText={touched.name && errors.name}
             />
 
             <TextField
               fullWidth
-              label="Last name"
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
+              label="General Objective"
+              {...getFieldProps('generalObjective')}
+              error={Boolean(touched.generalObjective && errors.generalObjective)}
+              helperText={touched.generalObjective && errors.generalObjective}
             />
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
-              label="Identification"
-              {...getFieldProps('identification')}
-              error={Boolean(touched.identification && errors.identification)}
-              helperText={touched.identification && errors.identification}
+              label="First Specific Objective"
+              {...getFieldProps('specificObjective1')}
+              error={Boolean(touched.specificObjective1 && errors.specificObjective1)}
+              helperText={touched.specificObjective1 && errors.specificObjective1}
             />
 
             <TextField
               fullWidth
-              label="Select Role"
-              name="role"
-              onChange={handleChange}
-              required
-              select
-              SelectProps={{ native: true }}
-              value={values.state}
-              variant="outlined"
-            >
-              {role.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
+              label="*Mejor TextArea* Second Specific Objective"
+              {...getFieldProps('specificObjective2')}
+              error={Boolean(touched.specificObjective2 && errors.specificObjective2)}
+              helperText={touched.specificObjective2 && errors.specificObjective2}
+            />
+
+            <TextField
+              fullWidth
+              label="Third Specific Objective"
+              {...getFieldProps('specificObjective3')}
+              error={Boolean(touched.specificObjective3 && errors.specificObjective3)}
+              helperText={touched.specificObjective3 && errors.specificObjective3}
+            />
           </Stack>
-
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <TextField
+              fullWidth
+              label="Budget"
+              {...getFieldProps('budget')}
+              error={Boolean(touched.budget && errors.budget)}
+              helperText={touched.budget && errors.budget}
+            />
+            {/* afrp- Pasar a date picker
+            https://mui.com/components/pickers/
+            https://stackoverflow.com/questions/56312372/react-datepicker-with-a-formik-form
+            https://stackoverflow.com/questions/57109680/how-to-use-mutations-in-react-apollo-hooks-and-formik
+            */}
+            <TextField
+              fullWidth
+              label="Start Date"
+              {...getFieldProps('startDate')}
+              error={Boolean(touched.startDate && errors.startDate)}
+              helperText={touched.startDate && errors.startDate}
+            />
+            <TextField
+              fullWidth
+              label="*{Date Picker}*"
+              {...getFieldProps('endDate')}
+              error={Boolean(touched.endDate && errors.endDate)}
+              helperText={touched.endDate && errors.endDate}
+            />            
+          </Stack>
           <TextField
             fullWidth
-            autoComplete="username"
-            type="email"
-            label="Email address"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
+            label="Paste Image URL"
+            {...getFieldProps('imgurl')}
+            error={Boolean(touched.imgurl && errors.imgurl)}
+            helperText={touched.imgurl && errors.imgurl}
           />
 
-          <TextField
-            fullWidth
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            label="Password"
-            {...getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                    <Icon icon={showPassword ? eyeFill : eyeOffFill} />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-            error={Boolean(touched.password && errors.password)}
-            helperText={touched.password && errors.password}
-          />
-          <Typography variant="title" sx={{ mt:2 }}>
-          || ~ AQUÍ IRÍA CONFIRMACIÓN DE PASSWORD ~ ||
-          </Typography>
 
           <LoadingButton
             fullWidth
@@ -160,10 +160,18 @@ export default function RegisterForm() {
             variant="contained"
             loading={isSubmitting}
           >
-            Register
+            Create Project
           </LoadingButton>
         </Stack>
       </Form>
     </FormikProvider>
   );
 }
+
+/* rellenos
+Project 4.12.10.34
+GenObj Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
+SpObj11 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
+SpObj22 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
+SpObj22 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
+*/
