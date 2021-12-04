@@ -58,7 +58,7 @@ ModalWindow.propTypes = {
 };
 
 export default function ModalWindow({  titleModal, contentModal, openModal }) {
-  console.log('Renders ModalWindow');
+  console.log('Renders ModalWindow ~~ props ~~', titleModal, contentModal, openModal);
   
   const { stModal, setStModal } = React.useContext(ContextModal);
   
@@ -75,6 +75,7 @@ export default function ModalWindow({  titleModal, contentModal, openModal }) {
       >
         <Box sx={{ ...style, width: 600 }}>
           <h2 id="parent-modal-title">{titleModal}</h2>
+          <hr />
           {contentModal}
           <br />
           <ChildModal />

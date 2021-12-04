@@ -12,6 +12,7 @@ import ModalWindow from './ModalWindow';
 import Form from '../Form/Form';
 import InfoProject from '../projects/InfoProject';
 import FormUpdateProject from '../projects/FormUpdateProject';
+import ActivateProject from '../projects/ActivateProject';
 
 
 export default function MediaCard({ dataID, title, description, image, alt }) {
@@ -31,14 +32,16 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
       </CardContent>
       <CardActions>
         {/*
+        // afrp- forma segunda de trabajar modales
         <ModalWindow dataModal={{content: <InfoProject firstProjectData={payload} />, name: "Learn More"}} />
         <ModalWindow dataModal={{content: <Form />, name: "Enroll"}} />
         <ModalWindow dataModal={{content: <FormUpdateProject />, name: "Update"}} />
         */}
-        <Button 
+        <Button
+          // afrp- con este setStModal se define el modal que seva a mostrar desde cualquier parte
           onClick={()=>setStModal({
             content: <InfoProject dataID={dataID} />,
-            name: "Learn More",
+            title: "Learn More",
             open: true
           })}
           size="small">
@@ -47,13 +50,28 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
         <Button 
           onClick={()=>setStModal({
             content: <FormUpdateProject dataID={dataID} />,
-            name: "Update",
+            title: "Update",
             open: true
           })}
           size="small">
           Update
         </Button>
-        <Button size="small">
+        <Button 
+          onClick={()=>setStModal({
+            content: <ActivateProject dataID={dataID} />,
+            title: "Update",
+            open: true
+          })}
+          size="small">
+          Activate
+        </Button>
+        <Button
+          onClick={()=>setStModal({
+            content: <ActivateProject dataID={dataID} />,
+            title: "Update",
+            open: true
+          })}
+          size="small">
           Enroll
         </Button>
       </CardActions>
