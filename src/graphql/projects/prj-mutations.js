@@ -11,11 +11,6 @@ const CREATE_PROJECT = gql`
             startDate
             endDate
             leader_id
-            leader{
-                _id
-                name
-                lastName
-            }
         }
     }
 `;

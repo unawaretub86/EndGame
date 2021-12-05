@@ -16,6 +16,21 @@ import { CREATE_PROJECT } from '../../graphql/projects/prj-mutations';
 
 // ----------------------------------------------------------------------
 
+// <<< afrp- para organizar la info como pide gql
+          // ampliar a 5 spec obj
+          // extraer leader de un UserContext
+function packData(formikOriginal) {
+      const toSend = {...formikOriginal};
+      delete toSend.specificObjective1;
+      delete toSend.specificObjective2;
+      delete toSend.specificObjective3;
+      toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
+      toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
+      toSend.status = "active";
+      toSend.phase = "started";
+      toSend.budget = parseInt(formikOriginal.budget, 10);
+      return toSend;
+}
 
 export default function FormCreateProject() {
   
@@ -52,30 +67,11 @@ export default function FormCreateProject() {
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
-      console.log(
-        {
-          variables: {
-            ...formik.values,
-            specificObjectives: [formik.values.specificObjective1,
-                                formik.values.specificObjective2,
-                                formik.values.specificObjective3],
-            leader: {
-              _id: "61a6f41c1e04d028a4dd7cff",
-              name: "John",
-              lastName: "Snow"
-            }
-            // <<< afrp- en caso que se requiera hacer uno por uno >>>
-            // 
-            //     name: formik.values.name,
-            //     generalObjective: formik.values.generalObjective,
-            //     specificObjective1: formik.values.specificObjective1,
-            //     specificObjective2: formik.values.specificObjective2,
-            //     specificObjective3: formik.values.specificObjective3,
-            //     budget: formik.values.budget,
-            //     startDate: formik.values.startDate,
-            //     endDate: formik.values.endDate,
-          }
-      });
+      const toSend = packData(formik.values);
+      
+      console.log("FormCreateProject: onSubmit -> gql toSend 7pm", toSend);
+      const resp = await mtCreateProject({ variables: {input: toSend} },)
+      console.log("FormCreateProject: onSubmit -> gql resp", resp);
       setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
   });

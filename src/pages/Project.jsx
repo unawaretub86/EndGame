@@ -26,6 +26,13 @@ const imgarray =[
   'https://www.ucl.ac.uk/medical-sciences/sites/medical_sciences/files/microscope_blue_gloves.jpeg',
   'https://blog.mmumullana.org/wp-content/uploads/2019/12/blog-image-for-Computer-Science.jpg',
   'https://www.nsf.gov/news/mmg/media/images/oceans_nsf-v2_9e8b03d8-14ae-4c47-8f12-385e4357ed3f_f.jpg',
+  'https://sites.uw.edu/bevanseries/files/2018/03/154062807_science-communication_-iStockphoto_Thinkstock-1goqkz6-816x528.jpg',
+  'https://www.biospace.com/getasset/83298754-d463-4202-a940-9af7c0dca39e/',
+  'https://www.wallpapertip.com/wmimgs/51-517415_go-back-gallery-for-cool-science-backgrounds-cool.jpg',
+  'https://scienceoxford.com/wp-content/uploads/2016/08/potions2-e1470398708986-800x483.jpg',
+  'https://www.ucl.ac.uk/medical-sciences/sites/medical_sciences/files/microscope_blue_gloves.jpeg',
+  'https://blog.mmumullana.org/wp-content/uploads/2019/12/blog-image-for-Computer-Science.jpg',
+  'https://www.nsf.gov/news/mmg/media/images/oceans_nsf-v2_9e8b03d8-14ae-4c47-8f12-385e4357ed3f_f.jpg',
   'https://sites.uw.edu/bevanseries/files/2018/03/154062807_science-communication_-iStockphoto_Thinkstock-1goqkz6-816x528.jpg'
 ];
 
