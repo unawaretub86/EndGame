@@ -1,6 +1,15 @@
 import { useState } from 'react';
 
-
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  TextField
+} from '@mui/material';
 // import { GET_USER } from 'graphql/user/queries'; //useEffect debe ir arriba,//
 
 // import { useParams, Link } from 'react-router-dom';
@@ -13,17 +22,6 @@ import { useState } from 'react';
 // import { toast } from 'react-toastify';
 // import ButtonLoading from 'components/ButtonLoading';
 // import { Enum_Rol } from 'utils/enums';
-
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  TextField
-} from '@mui/material';
 
 // const EditUser = () => {
 //   const [userData, setUserData] = useState({});

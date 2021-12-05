@@ -1,5 +1,7 @@
+import { useQuery } from '@apollo/client';
 import { filter } from 'lodash';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
 // import { Link as RouterLink } from 'react-router-dom';
 import * as React from 'react';
 // material
@@ -27,8 +29,8 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 //
-import USERLIST from '../_mocks_/user';
 
+import { GET_USERS } from '../graphql/users/queries';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -70,6 +72,8 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+// vivi- aquí inicia el componente -----------------------------------
+
 export default function User() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -77,6 +81,18 @@ export default function User() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const { data, error, loading } = useQuery(GET_USERS);
+  console.log(data);
+  useEffect(() => {
+    if (error) {
+      console.log('Error consultando los usuarios', error);
+    }
+  }, [error]);
+
+  if (loading) return <div>Cargando....</div>;
+
+  const dataUsers = data.allUsers;
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -86,7 +102,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = dataUsers.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -124,11 +140,13 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataUsers.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(dataUsers, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
+
+  // vivi- aqui inicia el RETURN del componente --------------------\\\\
 
   return (
     <Page title="User | Minimal-UI">
@@ -153,7 +171,7 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={dataUsers.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -162,13 +180,12 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, project, avatarUrl } = row;
+                      const { _id, name, project, role } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-
                       return (
                         <TableRow
                           hover
-                          key={id}
+                          key={_id}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -182,7 +199,10 @@ export default function User() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
+                              <Avatar
+                                alt={name}
+                                src="/static/mock-images/avatars/avatar_default.jpg"
+                              />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
@@ -237,7 +257,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={dataUsers.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
