@@ -53,7 +53,7 @@ function ChildModal() {
 
 ModalWindow.propTypes = {
   titleModal: PropTypes.string,
-  contentModal: PropTypes.element,
+  contentModal: PropTypes.any,
   openModal: PropTypes.bool
 };
 
@@ -76,7 +76,7 @@ export default function ModalWindow({  titleModal, contentModal, openModal }) {
         <Box sx={{ ...style, width: 600 }}>
           <h2 id="parent-modal-title">{titleModal}</h2>
           <hr />
-          {contentModal}
+          <>{contentModal}</>
           <br />
           <ChildModal />
         </Box>

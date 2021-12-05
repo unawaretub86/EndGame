@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
 // import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 
@@ -9,29 +10,33 @@ import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // our components
 // import { FormError } from '../../components/FormError';
-import { ContextModal } from '../../contexts/ContextModal';
+// import { ContextModal } from '../../contexts/ContextModal';
 import AlertAndres from '../generic-containers/AlertAndres';
+import { CREATE_PROJECT } from '../../graphql/projects/prj-mutations';
 
 // ----------------------------------------------------------------------
-const role = [
-  {
-    value: 'student',
-    label: 'Student'
-  },
-  {
-    value: 'leader',
-    label: 'Leader'
-  },
-  {
-    value: 'administrator',
-    label: 'Administrator'
-  }
-];
 
-export default function RegisterForm() {
+// <<< afrp- para organizar la info como pide gql
+          // ampliar a 5 spec obj
+          // extraer leader de un UserContext
+function packData(formikOriginal) {
+      const toSend = {...formikOriginal};
+      delete toSend.specificObjective1;
+      delete toSend.specificObjective2;
+      delete toSend.specificObjective3;
+      toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
+      toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
+      toSend.status = "active";
+      toSend.phase = "started";
+      toSend.budget = parseInt(formikOriginal.budget, 10);
+      return toSend;
+}
+
+export default function FormCreateProject() {
   
-  const [stAlert, setStAlert] = useState({open:'', isGood:'', txt:''})
-  const { setStModal } = React.useContext(ContextModal);
+  const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
+  // const { setStModal } = React.useContext(ContextModal);
+  const [mtCreateProject, { loading }] = useMutation (CREATE_PROJECT);
 
   const RegisterSchema = Yup.object().shape({
     // <<< afrp- OJO volver a activar >>>
@@ -55,14 +60,18 @@ export default function RegisterForm() {
       budget: '',
       startDate: '',
       endDate: '',
-      imgurl: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
+    onSubmit: async () => {
       // afrp- {jalar al user context y sacar el user_id del usuario}
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
+      const toSend = packData(formik.values);
+      
+      console.log("FormCreateProject: onSubmit -> gql toSend 7pm", toSend);
+      const resp = await mtCreateProject({ variables: {input: toSend} },)
+      console.log("FormCreateProject: onSubmit -> gql resp", resp);
       setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
   });
