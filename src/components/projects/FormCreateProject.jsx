@@ -26,8 +26,8 @@ function packData(formikOriginal) {
       delete toSend.specificObjective3;
       toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
       toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
-      toSend.status = "active";
-      toSend.phase = "started";
+      // <<< afrp- mover esta asignación de status al backend >>>
+      toSend.status = "inactive";
       toSend.budget = parseInt(formikOriginal.budget, 10);
       return toSend;
 }

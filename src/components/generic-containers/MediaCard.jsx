@@ -13,6 +13,7 @@ import Form from '../Form/Form';
 import InfoProject from '../projects/InfoProject';
 import FormUpdateProject from '../projects/FormUpdateProject';
 import ActivateProject from '../projects/ActivateProject';
+import EnrollProject from '../projects/EnrollProject';
 
 
 export default function MediaCard({ dataID, title, description, image, alt }) {
@@ -58,7 +59,7 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
         </Button>
         <Button 
           onClick={()=>setStModal({
-            content: <ActivateProject dataID={dataID} />,
+            content: <EnrollProject dataID={dataID} />,
             title: "Update",
             open: true
           })}
