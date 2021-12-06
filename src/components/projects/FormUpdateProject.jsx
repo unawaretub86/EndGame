@@ -1,19 +1,19 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { defaultDataIdFromObject, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 // import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
-import { Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // our components
 // import { FormError } from '../../components/FormError';
 // import { ContextModal } from '../../contexts/ContextModal';
 import AlertAndres from '../generic-containers/AlertAndres';
-// import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
+import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
 import { GET_PROJECT_ID } from '../../graphql/projects/prj-queries';
 
 // ----------------------------------------------------------------------
@@ -32,7 +32,8 @@ FormUpdateProject.propTypes = {
 
 export default function FormUpdateProject({ dataID }) {
   const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
-  
+  const [mtUpdateProject, { loading: loadMutation }] = useMutation (UPDATE_PROJECT);
+
   console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_ID);
   console.log('Update Project ~ dataID ~ ', dataID);
   const resp = useQuery(GET_PROJECT_ID, {
@@ -78,7 +79,7 @@ export default function FormUpdateProject({ dataID }) {
     // <<< afrp- no hacen parte >>>
     // toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
     // toSend.status = "inactive";
-    // toSend.budget = parseInt(formikOriginal.budget, 10);
+    toSend.budget = parseInt(formikOriginal.budget, 10);
     return toSend;
   }
   
@@ -97,8 +98,8 @@ export default function FormUpdateProject({ dataID }) {
       
       const toSend = packData(formik.values, dataID);
       console.log("UpdateProject: onSubmit -> gql toSend", toSend);
-      // const resp = await mtUpdateProject({ variables: {input: toSend} },)
-      // console.log("FormUpdateProject: onSubmit -> gql resp", resp);
+      const resp = mtUpdateProject({ variables: {input: toSend} },)
+      console.log("FormUpdateProject: onSubmit -> gql resp", resp);
       setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
     
@@ -115,6 +116,8 @@ export default function FormUpdateProject({ dataID }) {
     formik.setFieldValue('endDate', data.projectById.endDate);
     formik.setFieldValue('budget', data.projectById.budget);
     }
+    // afrp- buscar la forma que no pida esta mondá de formik
+    // posible solución es usar Formik con props en el jsx
   }, [data]);
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
@@ -184,6 +187,7 @@ export default function FormUpdateProject({ dataID }) {
             */}
             <TextField
               fullWidth
+              disabled
               label="Start Date"
               {...getFieldProps('startDate')}
               error={Boolean(touched.startDate && errors.startDate)}
@@ -191,6 +195,7 @@ export default function FormUpdateProject({ dataID }) {
             />
             <TextField
               fullWidth
+              disabled
               label="*{Date Picker}*"
               {...getFieldProps('endDate')}
               error={Boolean(touched.endDate && errors.endDate)}
