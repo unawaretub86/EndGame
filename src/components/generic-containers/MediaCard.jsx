@@ -12,7 +12,7 @@ import ModalWindow from './ModalWindow';
 import Form from '../Form/Form';
 import InfoProject from '../projects/InfoProject';
 import FormUpdateProject from '../projects/FormUpdateProject';
-import ActivateProject from '../projects/ActivateProject';
+import AdminProject from '../projects/AdminProject';
 import EnrollProject from '../projects/EnrollProject';
 
 
@@ -59,17 +59,17 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
         </Button>
         <Button 
           onClick={()=>setStModal({
-            content: <EnrollProject dataID={dataID} />,
-            title: "Update",
+            content: <AdminProject dataID={dataID} />,
+            title: "Administrate",
             open: true
           })}
           size="small">
-          Activate
+          Admin
         </Button>
         <Button
           onClick={()=>setStModal({
-            content: <ActivateProject dataID={dataID} />,
-            title: "Update",
+            content: <EnrollProject dataID={dataID} />,
+            title: "Enroll",
             open: true
           })}
           size="small">

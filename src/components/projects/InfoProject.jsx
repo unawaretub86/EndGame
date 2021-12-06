@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 import { Typography, Box } from '@mui/material';
-import { GET_PROJECT_ID } from '../../graphql/projects/prj-queries';
+import { GET_PROJECT_BYID } from '../../graphql/projects/prj-queries';
 
 
 function typoCouple(first, second) {
@@ -20,9 +20,9 @@ InfoProject.propTypes = {
 
 export default function InfoProject({ dataID }) {
 
-  console.log('Info Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_ID);
+  console.log('Info Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_BYID);
   console.log('Info Project ~ dataID ~ ', dataID);
-  const resp = useQuery(GET_PROJECT_ID, {
+  const resp = useQuery(GET_PROJECT_BYID, {
     variables: {
       id: dataID
     }

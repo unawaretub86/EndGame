@@ -14,7 +14,7 @@ import { LoadingButton } from '@mui/lab';
 // import { ContextModal } from '../../contexts/ContextModal';
 import AlertAndres from '../generic-containers/AlertAndres';
 import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
-import { GET_PROJECT_ID } from '../../graphql/projects/prj-queries';
+import { GET_PROJECT_BYID } from '../../graphql/projects/prj-queries';
 
 // ----------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ export default function FormUpdateProject({ dataID }) {
   const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
   const [mtUpdateProject, { loading: loadMutation }] = useMutation (UPDATE_PROJECT);
 
-  console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_ID);
+  console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_BYID);
   console.log('Update Project ~ dataID ~ ', dataID);
-  const resp = useQuery(GET_PROJECT_ID, {
+  const resp = useQuery(GET_PROJECT_BYID, {
     variables: {
       id: dataID
     },
