@@ -24,7 +24,7 @@ const GET_PROJECTS_ALL = gql`
 //   lastName
 // }
 
-const GET_PROJECT_ID = gql`
+const GET_PROJECT_BYID = gql`
   query ($id: ID) {
     projectById(_id: $id) {
       _id
@@ -45,5 +45,20 @@ const GET_PROJECT_ID = gql`
   }
 `;
 
+const GET_PROJECT_ADMIN_BYID = gql`
+  query ($id: ID) {
+    projectById(_id: $id) {
+      _id
+      name
+      status
+      phase
+      leader{
+        _id
+        name
+      }
+    }
+  }
+`;
+
 // afrp- ojo con el leader{...}
-export { GET_PROJECTS_ALL, GET_PROJECT_ID};
+export { GET_PROJECTS_ALL, GET_PROJECT_BYID, GET_PROJECT_ADMIN_BYID};
