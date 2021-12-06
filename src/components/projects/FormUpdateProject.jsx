@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-
+import { defaultDataIdFromObject, useMutation, useQuery } from '@apollo/client';
+import PropTypes from 'prop-types';
 // import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 
@@ -13,43 +13,46 @@ import { LoadingButton } from '@mui/lab';
 // import { FormError } from '../../components/FormError';
 // import { ContextModal } from '../../contexts/ContextModal';
 import AlertAndres from '../generic-containers/AlertAndres';
-import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
+// import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
 import { GET_PROJECT_ID } from '../../graphql/projects/prj-queries';
 
 // ----------------------------------------------------------------------
 
 // <<< afrp- para organizar la info como pide gql
-          // ampliar a 5 spec obj
-          // extraer leader de un UserContext
-function packData(formikOriginal) {
-      const toSend = {...formikOriginal};
-      delete toSend.specificObjective1;
-      delete toSend.specificObjective2;
-      delete toSend.specificObjective3;
-      toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
-      toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
-      // <<< afrp- mover esta asignación de status al backend >>>
-      toSend.status = "inactive";
-      toSend.budget = parseInt(formikOriginal.budget, 10);
-      return toSend;
-}
+// ampliar a 5 spec obj
+// extraer leader de un UserContext          
+
+FormUpdateProject.propTypes = {
+  dataID: PropTypes.string
+};
+
+
+
+// <<< afrp- inicio del componente ------------------------------------->>
 
 export default function FormUpdateProject({ dataID }) {
-  
   const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
-
-  const [mtUpdateProject, { loading: loadingMutation }] = useMutation (UPDATE_PROJECT);
   
-  
-  const { data, loading: loadingQuery, error } = useQuery(GET_PROJECT_ID, {
+  console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_ID);
+  console.log('Update Project ~ dataID ~ ', dataID);
+  const resp = useQuery(GET_PROJECT_ID, {
     variables: {
       id: dataID
-    }
+    },
+    fetchPolicy: 'network-only'
   });
   
   
-  const projectInfo = data.projectById;
+  console.log('Update Project ~ resp ~ ', resp);
+  const { data, error, loading } = resp
+  console.log('Update Project ~ data ~ ', data,
+  'Update Project ~ error ~ ', error,
+  'Update Project ~ loadingQuery ~ ', loading);  
   
+  // const [mtUpdateProject, { loading: loadingMutation }] = useMutation (UPDATE_PROJECT);
+  
+  
+
   const RegisterSchema = Yup.object().shape({
     // <<< afrp- OJO volver a activar >>>
     // name: Yup.string().required('Name is required').min(5, 'Too Short!'),
@@ -59,38 +62,64 @@ export default function FormUpdateProject({ dataID }) {
     // specificObjective3: Yup.string().min(20, 'Too Short!'),
     // budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
     // startDate: Yup.string().required('Start Date is required'),
-    // endDate: Yup.string().required('End Date is required'),
+    // endDate: Yup.string().required('End Date is required')
   });
+  
+  function packData(formikOriginal, prjID) {
+    const toSend = {...formikOriginal};
+    delete toSend.specificObjective1;
+    delete toSend.specificObjective2;
+    delete toSend.specificObjective3;
+    delete toSend.startDate;
+    delete toSend.endDate;
+    
+    toSend.projectById = prjID;
+    toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
+    // <<< afrp- no hacen parte >>>
+    // toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
+    // toSend.status = "inactive";
+    // toSend.budget = parseInt(formikOriginal.budget, 10);
+    return toSend;
+  }
   
   const formik = useFormik({
     initialValues: {
-      name: projectInfo.name,
-      generalObjective: projectInfo.generalObjective,
-      specificObjective1: projectInfo.specificObjectives[0],
-      specificObjective2: projectInfo.specificObjectives[1],
-      specificObjective3: projectInfo.specificObjectives[2],
-      budget: projectInfo.budget,
-      startDate: projectInfo.startDate,
-      endDate: projectInfo.endDate
+      name: "projectInfo.name",
+      generalObjective: "projectInfo.generalObjective"
     },
     validationSchema: RegisterSchema,
+    enableReinitialize: true,
     onSubmit: async () => {
       // afrp- {jalar al user context y sacar el user_id del usuario}
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
-
-      // const toSend = packData(formik.values);
-      // console.log("FormCreateProject: onSubmit -> gql toSend 7pm", toSend);
+      
+      const toSend = packData(formik.values, dataID);
+      console.log("UpdateProject: onSubmit -> gql toSend", toSend);
       // const resp = await mtUpdateProject({ variables: {input: toSend} },)
-      // console.log("FormCreateProject: onSubmit -> gql resp", resp);
-      // setStAlert({open:true, isGood:true, txt:'Project created successfully'})
+      // console.log("FormUpdateProject: onSubmit -> gql resp", resp);
+      setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
+    
   });
   
+  React.useEffect(() => {
+    if (data) {
+    formik.setFieldValue('name', data.projectById.name);
+    formik.setFieldValue('generalObjective', data.projectById.generalObjective);
+    formik.setFieldValue('specificObjective1', data.projectById.specificObjectives[0]);
+    formik.setFieldValue('specificObjective2', data.projectById.specificObjectives[1]);
+    formik.setFieldValue('specificObjective3', data.projectById.specificObjectives[2]);
+    formik.setFieldValue('startDate', data.projectById.startDate);
+    formik.setFieldValue('endDate', data.projectById.endDate);
+    formik.setFieldValue('budget', data.projectById.budget);
+    }
+  }, [data]);
+
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
   
-  if (loadingQuery) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
   
   return (

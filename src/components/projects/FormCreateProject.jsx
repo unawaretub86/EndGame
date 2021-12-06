@@ -33,6 +33,8 @@ function packData(formikOriginal) {
 }
 
 export default function FormCreateProject() {
+
+  console.log("renderiza FormCreateProject");
   
   const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
   // const { setStModal } = React.useContext(ContextModal);
