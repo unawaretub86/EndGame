@@ -35,7 +35,7 @@ import { GET_USERS } from '../graphql/users/queries';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'project', label: 'Project', alignRight: false },
+  { id: 'lastName', label: 'lastName', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
@@ -180,7 +180,7 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { _id, name, project, role } = row;
+                      const { _id, name, lastName, role, status } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -208,7 +208,7 @@ export default function User() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{project}</TableCell>
+                          <TableCell align="left">{lastName}</TableCell>
                           <TableCell align="left">{role}</TableCell>
                           <TableCell align="left">
                             <FormControl fullWidth>

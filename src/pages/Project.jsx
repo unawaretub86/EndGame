@@ -10,7 +10,7 @@ import MediaCard from '../components/generic-containers/MediaCard';
 import InfoProject from '../components/projects/InfoProject';
 import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
-import { GET_PROJECTS_ALL } from '../graphql/projects/prj-queries'
+import { GET_PROJECTS_ALL } from '../graphql/projects/prj-queries';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-const imgarray =[
+const imgarray = [
   'https://www.biospace.com/getasset/83298754-d463-4202-a940-9af7c0dca39e/',
   'https://www.wallpapertip.com/wmimgs/51-517415_go-back-gallery-for-cool-science-backgrounds-cool.jpg',
   'https://scienceoxford.com/wp-content/uploads/2016/08/potions2-e1470398708986-800x483.jpg',
@@ -37,9 +37,8 @@ const imgarray =[
 ];
 
 function Project() {
-  
-  const [stModal, setStModal] = React.useState({title: '', content: Function, open: false});
-  
+  const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
+
   const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
 
   // const hdlCreateProject = () => {
@@ -47,48 +46,55 @@ function Project() {
   //   setStModalTitle('Create Project');
   //   setStModalContent(<FormCreateProject />);
   // }
-  
+
   if (loading) return <p>Loading...</p>;
   if (error) {
     console.log(error);
     return <p>Error :x</p>;
   }
 
-  const dataAllProjects = data.allProjects.map((project,index) => ({...project, urlimg: imgarray[index]})); 
-  
-  console.log('Fetchs projects and renders projects page',dataAllProjects);
-  console.log('stModal',stModal);
-  
+  const dataAllProjects = data.allProjects.map((project, index) => ({
+    ...project,
+    urlimg: imgarray[index]
+  }));
+
+  console.log('Fetchs projects and renders projects page', dataAllProjects);
+  console.log('stModal', stModal);
+
   return (
     <>
-      <pre>
+      {/* <pre>
         {JSON.stringify(dataAllProjects, null, 2)}
-      </pre>
-      <ContextModal.Provider value={{stModal, setStModal}}>
-        <ModalWindow titleModal={stModal.title} contentModal={stModal.content} openModal={stModal.open}/>
+      </pre> */}
+      <ContextModal.Provider value={{ stModal, setStModal }}>
+        <ModalWindow
+          titleModal={stModal.title}
+          contentModal={stModal.content}
+          openModal={stModal.open}
+        />
         <Button
-            size="small"
-            type="button"
-            variant="contained"
-            sx={{ mb: 2 }}
-            onClick={() => setStModal({title: 'Create Project', content: <FormCreateProject />, open: true})}
-            >
-          <Icon icon="bi:plus-circle" width={24} height={24}/>
-          <Typography>
-            Add Project
-          </Typography>
+          size="small"
+          type="button"
+          variant="contained"
+          sx={{ mb: 2 }}
+          onClick={() =>
+            setStModal({ title: 'Create Project', content: <FormCreateProject />, open: true })
+          }
+        >
+          <Icon icon="bi:plus-circle" width={24} height={24} />
+          <Typography>Add Project</Typography>
         </Button>
         <Grid container spacing={2}>
-          {dataAllProjects.map(project => (
+          {dataAllProjects.map((project) => (
             <Grid key={project._id} item xs={4}>
-              <Item >
+              <Item>
                 <MediaCard
                   dataID={project._id}
                   title={project.name}
                   description={project.generalObjective}
                   image={project.urlimg}
                   alt={project.name}
-                  />
+                />
               </Item>
             </Grid>
           ))}
