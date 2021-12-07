@@ -16,6 +16,7 @@ import reportWebVitals from './reportWebVitals';
 const httpLink = createHttpLink({
   uri: 'https://end-game-release.herokuapp.com/graphql'
 });
+// para postman  > >   content-type: application/json
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists

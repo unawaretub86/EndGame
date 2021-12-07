@@ -15,6 +15,16 @@ const CREATE_PROJECT = gql`
     }
 `;
 
+const UPDATE_PROJECT = gql`
+    mutation UpdateProject($input: UpdateProjectInput!) {
+        updateProject(input: $input) {
+            _id
+            name
+            leader_id
+        }
+    }
+`;
+
 export {
-    CREATE_PROJECT,
+    CREATE_PROJECT, UPDATE_PROJECT
 };
