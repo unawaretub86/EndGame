@@ -23,7 +23,6 @@ import {
   TablePagination
 } from '@mui/material';
 // components
-import _default from 'atob';
 import Page from '../components/Page';
 // import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
@@ -88,7 +87,7 @@ export default function User() {
   console.log(data);
   useEffect(() => {
     if (error) {
-      console.log('Error consulting users', error);
+      console.log('Error consultando los usuarios', error);
     }
   }, [error]);
 
@@ -150,7 +149,6 @@ export default function User() {
       }
     };
     UpdateStateAdmin({ variables: paqueteEnvioBd });
-    // useQuery(GET_USERS);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataUsers.length) : 0;
@@ -159,7 +157,7 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
 
-  // aqui inicia el RETURN del componente --------------------\\\\
+  // vivi- aqui inicia el RETURN del componente --------------------\\\\
 
   return (
     <Page title="User | Minimal-UI">
@@ -223,27 +221,30 @@ export default function User() {
                           </TableCell>
                           <TableCell align="left">{lastName}</TableCell>
                           <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left" value={status}>
+                          <TableCell align="left">
                             <FormControl fullWidth>
-                              <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                select
+                              <InputLabel
+                                variant="standard"
+                                htmlFor="uncontrolled-native"
+                                color="success"
+                              >
+                                {status}
                               </InputLabel>
                               <NativeSelect
                                 inputProps={{
                                   name: 'select',
                                   id: 'uncontrolled-native'
                                 }}
-                                // onChange={(e) => handleChangeStatus(_id, e.target.value), dataUsers }
-                                onChange={(e) => {
-                                  handleChangeStatus(_id, e.target.value);
-                                  // useQuery(GET_USERS);
-                                }}
+                                onChange={(e) => handleChangeStatus(_id, e.target.value)}
                               >
-                                <option value={_default} />
-                                {/* <option>authorized</option>
-                            </FormControl>
-                                <option>unauthorized</option> */}
+                                <option disabled hidden>
+                                  {' '}
+                                </option>
+                                <option>pending</option>
+                                <option>authorized</option>
+                                <option>unauthorized</option>
                               </NativeSelect>
+                            </FormControl>
                           </TableCell>
 
                           <TableCell align="right">
