@@ -87,7 +87,7 @@ export default function User() {
   console.log(data);
   useEffect(() => {
     if (error) {
-      console.log('Error consultando los usuarios', error);
+      console.log('Error consulting users', error);
     }
   }, [error]);
 
@@ -157,7 +157,7 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
 
-  // vivi- aqui inicia el RETURN del componente --------------------\\\\
+  // aqui inicia el RETURN del componente --------------------\\\\
 
   return (
     <Page title="User | Minimal-UI">
@@ -221,7 +221,7 @@ export default function User() {
                           </TableCell>
                           <TableCell align="left">{lastName}</TableCell>
                           <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">
+                          <TableCell align="left" value={status}>
                             <FormControl fullWidth>
                               <InputLabel variant="standard" htmlFor="uncontrolled-native">
                                 select
