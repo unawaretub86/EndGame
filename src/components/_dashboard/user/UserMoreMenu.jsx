@@ -38,7 +38,12 @@ export default function UserMoreMenu() {
 
         <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
-            <Icon icon={editFill} width={24} height={24} />
+            <Icon
+              icon={editFill}
+              width={24}
+              height={24}
+              onChange={(e) => console.log(e.target.value)}
+            />
           </ListItemIcon>
           <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>

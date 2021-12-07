@@ -1,7 +1,11 @@
-// const Enum_Role = {
-//   ADMINISTRATOR: 'Administrator',
-//   STUDENT: 'Student',
-//   LEADER: 'Leader'
-// };
+const enumRole = {
+  ADMIN: 'admin',
+  STUDENT: 'Student',
+  LEADER: 'leader'
+};
 
-// export { Enum_Role };
+const enumUserStatusByLeader = {
+  PENDING: 'pending',
+  AUTHORIZED: 'authorized'
+};
+export { enumRole, enumUserStatusByLeader };
