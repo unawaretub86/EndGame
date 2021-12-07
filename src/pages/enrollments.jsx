@@ -192,7 +192,7 @@ export default function Enrollments() {
                       return (
                         <TableRow
                           hover
-                          key={student}
+                          key={_id}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
