@@ -13,4 +13,8 @@ const enumUserStatusByLeader = {
   PENDING: 'pending',
   AUTHORIZED: 'authorized'
 };
-export { enumRole, enumUserStatus, enumUserStatusByLeader };
+const EnrollmentStatus = {
+  ACCEPTED: 'accepted',
+  REJECTED: 'rejected'
+};
+export { enumRole, enumUserStatus, enumUserStatusByLeader, EnrollmentStatus };

@@ -214,8 +214,12 @@ export default function Enrollments() {
                           <TableCell align="left">{student}</TableCell>
                           <TableCell align="left" value={status}>
                             <FormControl fullWidth>
-                              <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                select
+                              <InputLabel
+                                variant="standard"
+                                htmlFor="uncontrolled-native"
+                                color="success"
+                              >
+                                {status}
                               </InputLabel>
                               <NativeSelect
                                 inputProps={{
@@ -224,7 +228,9 @@ export default function Enrollments() {
                                 }}
                                 onChange={(e) => console.log(e.target.value)}
                               >
-                                <option>Pending</option>
+                                <option disabled hidden>
+                                  {' '}
+                                </option>
                                 <option>Accepted</option>
                                 <option>Rejected</option>
                               </NativeSelect>

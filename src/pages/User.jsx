@@ -157,7 +157,7 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
 
-  // vivi- aqui inicia el RETURN del componente --------------------\\\\
+  //  aqui inicia el RETURN del componente --------------------\\\\
 
   return (
     <Page title="User | Minimal-UI">
