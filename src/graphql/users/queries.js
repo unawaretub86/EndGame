@@ -6,9 +6,8 @@ const GET_USERS = gql`
       _id
       name
       lastName
-      documentId
-      email
       role
+      status
     }
   }
 `;

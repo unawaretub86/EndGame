@@ -1,58 +1,36 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import PropTypes from 'prop-types';
 // import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
-import { Stack, TextField } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // our components
 // import { FormError } from '../../components/FormError';
-// import { ContextModal } from '../../contexts/ContextModal';
+import { ContextModal } from '../../contexts/ContextModal';
 import AlertAndres from '../generic-containers/AlertAndres';
-import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
-import { GET_PROJECT_BYID } from '../../graphql/projects/prj-queries';
 
 // ----------------------------------------------------------------------
+const role = [
+  {
+    value: 'student',
+    label: 'Student'
+  },
+  {
+    value: 'leader',
+    label: 'Leader'
+  },
+  {
+    value: 'administrator',
+    label: 'Administrator'
+  }
+];
 
-// <<< afrp- para organizar la info como pide gql
-// ampliar a 5 spec obj
-// extraer leader de un UserContext          
-
-FormUpdateProject.propTypes = {
-  dataID: PropTypes.string
-};
-
-
-
-// <<< afrp- inicio del componente ------------------------------------->>
-
-export default function FormUpdateProject({ dataID }) {
-  const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
-  const [mtUpdateProject, { loading: loadMutation }] = useMutation (UPDATE_PROJECT);
-
-  console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_BYID);
-  console.log('Update Project ~ dataID ~ ', dataID);
-  const resp = useQuery(GET_PROJECT_BYID, {
-    variables: {
-      id: dataID
-    },
-    fetchPolicy: 'network-only'
-  });
-  
-  
-  console.log('Update Project ~ resp ~ ', resp);
-  const { data, error, loading } = resp
-  console.log('Update Project ~ data ~ ', data,
-  'Update Project ~ error ~ ', error,
-  'Update Project ~ loadingQuery ~ ', loading);  
-  
-  // const [mtUpdateProject, { loading: loadingMutation }] = useMutation (UPDATE_PROJECT);
-  
-  
+export default function RegisterForm() {
+  const [stAlert, setStAlert] = useState({ open: '', isGood: '', txt: '' });
+  const { setStModal } = React.useContext(ContextModal);
 
   const RegisterSchema = Yup.object().shape({
     // <<< afrp- OJO volver a activar >>>
@@ -63,72 +41,37 @@ export default function FormUpdateProject({ dataID }) {
     // specificObjective3: Yup.string().min(20, 'Too Short!'),
     // budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
     // startDate: Yup.string().required('Start Date is required'),
-    // endDate: Yup.string().required('End Date is required')
+    // endDate: Yup.string().required('End Date is required'),
   });
-  
-  function packData(formikOriginal, prjID) {
-    const toSend = {...formikOriginal};
-    delete toSend.specificObjective1;
-    delete toSend.specificObjective2;
-    delete toSend.specificObjective3;
-    delete toSend.startDate;
-    delete toSend.endDate;
-    
-    toSend.projectById = prjID;
-    toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
-    // <<< afrp- no hacen parte >>>
-    // toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
-    // toSend.status = "inactive";
-    toSend.budget = parseInt(formikOriginal.budget, 10);
-    return toSend;
-  }
-  
+
   const formik = useFormik({
     initialValues: {
-      name: "projectInfo.name",
-      generalObjective: "projectInfo.generalObjective"
+      name: '',
+      generalObjective: '',
+      specificObjective1: '',
+      specificObjective2: '',
+      specificObjective3: '',
+      budget: '',
+      startDate: '',
+      endDate: '',
+      imgurl: ''
     },
     validationSchema: RegisterSchema,
-    enableReinitialize: true,
-    onSubmit: async () => {
+    onSubmit: () => {
       // afrp- {jalar al user context y sacar el user_id del usuario}
-      // afrp- 
+      // afrp-
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
-      
-      const toSend = packData(formik.values, dataID);
-      console.log("UpdateProject: onSubmit -> gql toSend", toSend);
-      const resp = mtUpdateProject({ variables: {input: toSend} },)
-      console.log("FormUpdateProject: onSubmit -> gql resp", resp);
-      setStAlert({open:true, isGood:true, txt:'Project created successfully'})
+      setStAlert({ open: true, isGood: true, txt: 'Project created successfully' });
     }
-    
   });
-  
-  React.useEffect(() => {
-    if (data) {
-    formik.setFieldValue('name', data.projectById.name);
-    formik.setFieldValue('generalObjective', data.projectById.generalObjective);
-    formik.setFieldValue('specificObjective1', data.projectById.specificObjectives[0]);
-    formik.setFieldValue('specificObjective2', data.projectById.specificObjectives[1]);
-    formik.setFieldValue('specificObjective3', data.projectById.specificObjectives[2]);
-    formik.setFieldValue('startDate', data.projectById.startDate);
-    formik.setFieldValue('endDate', data.projectById.endDate);
-    formik.setFieldValue('budget', data.projectById.budget);
-    }
-    // afrp- buscar la forma que no pida esta mondá de formik
-    // posible solución es usar Formik con props en el jsx
-  }, [data]);
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-  
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
-  
+
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
+        <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
@@ -187,7 +130,6 @@ export default function FormUpdateProject({ dataID }) {
             */}
             <TextField
               fullWidth
-              disabled
               label="Start Date"
               {...getFieldProps('startDate')}
               error={Boolean(touched.startDate && errors.startDate)}
@@ -195,12 +137,11 @@ export default function FormUpdateProject({ dataID }) {
             />
             <TextField
               fullWidth
-              disabled
               label="*{Date Picker}*"
               {...getFieldProps('endDate')}
               error={Boolean(touched.endDate && errors.endDate)}
               helperText={touched.endDate && errors.endDate}
-            />            
+            />
           </Stack>
           <TextField
             fullWidth
@@ -209,7 +150,6 @@ export default function FormUpdateProject({ dataID }) {
             error={Boolean(touched.imgurl && errors.imgurl)}
             helperText={touched.imgurl && errors.imgurl}
           />
-
 
           <LoadingButton
             fullWidth

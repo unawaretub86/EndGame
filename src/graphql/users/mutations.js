@@ -12,4 +12,12 @@ const EDIT_USER = gql`
   }
 `;
 
-export { EDIT_USER };
+const UPDATE_STATE_ADMIN = gql`
+  mutation UpdateUser($input: UpdateStateAdminInput!) {
+    updateStateAdmin(input: $input) {
+      _id
+      status
+    }
+  }
+`;
+export { EDIT_USER, UPDATE_STATE_ADMIN };

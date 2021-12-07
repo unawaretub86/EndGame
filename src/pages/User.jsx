@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 
@@ -29,13 +29,13 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 //
-
+import { UPDATE_STATE_ADMIN } from '../graphql/users/mutations';
 import { GET_USERS } from '../graphql/users/queries';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'project', label: 'Project', alignRight: false },
+  { id: 'lastName', label: 'lastName', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
@@ -72,7 +72,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// vivi- aquí inicia el componente -----------------------------------
+// aquí inicia el componente -----------------------------------
 
 export default function User() {
   const [page, setPage] = useState(0);
@@ -81,6 +81,7 @@ export default function User() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [UpdateStateAdmin, { loading: loadMutation }] = useMutation(UPDATE_STATE_ADMIN);
 
   const { data, error, loading } = useQuery(GET_USERS);
   console.log(data);
@@ -90,7 +91,7 @@ export default function User() {
     }
   }, [error]);
 
-  if (loading) return <div>Cargando....</div>;
+  if (loading) return <div>Loading....</div>;
 
   const dataUsers = data.allUsers;
 
@@ -140,6 +141,16 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
+  const handleChangeStatus = (_id, nextOption) => {
+    const paqueteEnvioBd = {
+      input: {
+        userById: _id,
+        status: nextOption
+      }
+    };
+    UpdateStateAdmin({ variables: paqueteEnvioBd });
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataUsers.length) : 0;
 
   const filteredUsers = applySortFilter(dataUsers, getComparator(order, orderBy), filterName);
@@ -180,7 +191,7 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { _id, name, project, role } = row;
+                      const { _id, name, lastName, role, status } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -208,7 +219,7 @@ export default function User() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{project}</TableCell>
+                          <TableCell align="left">{lastName}</TableCell>
                           <TableCell align="left">{role}</TableCell>
                           <TableCell align="left">
                             <FormControl fullWidth>
@@ -220,11 +231,11 @@ export default function User() {
                                   name: 'select',
                                   id: 'uncontrolled-native'
                                 }}
-                                onChange={(e) => console.log(e.target.value)}
+                                onChange={(e) => handleChangeStatus(_id, e.target.value)}
                               >
-                                <option>Pending</option>
-                                <option>Authorized</option>
-                                <option>No-authorized</option>
+                                <option>pending</option>
+                                <option>authorized</option>
+                                <option>unauthorized</option>
                               </NativeSelect>
                             </FormControl>
                           </TableCell>
