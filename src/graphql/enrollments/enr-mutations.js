@@ -1,9 +1,11 @@
 import { gql } from '@apollo/client';
 
-const enums = gql`
-  # Enum for status values
-  enum EnrollmentStatus {
-    acepted
-    rejected
+const ENROLLMENT_STATUS = gql`
+  mutation EnrollmentStatus($input: UpdateStateAdminInput!) {
+    UEnrollmentStatus(input: $input) {
+      accepted
+      rejected
+    }
   }
 `;
+export { ENROLLMENT_STATUS };

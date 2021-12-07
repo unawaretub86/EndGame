@@ -31,6 +31,7 @@ import {
   ProjectMoreMenu
 } from '../components/_dashboard/enrollments';
 //
+import { UPDATE_ENROLLMENT_STATE } from '../graphql/enrollments/enr-mutations';
 import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
 
 // ----------------------------------------------------------------------
