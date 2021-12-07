@@ -1,5 +1,6 @@
+import { useQuery } from '@apollo/client';
 import { filter } from 'lodash';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
 import * as React from 'react';
 // material
@@ -30,18 +31,17 @@ import {
   ProjectMoreMenu
 } from '../components/_dashboard/enrollments';
 //
-import PROJECTLIST from '../_mocks_/user';
+import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'Id', alignRight: false },
+  // { id: 'id', label: 'Id', alignRight: false },
   { id: 'project', label: 'Project', alignRight: false },
-  { id: 'projectId', label: 'ProjectId', alignRight: false },
-  { id: 'studentId', label: 'StudentId', alignRight: false },
+  { id: 'student', label: 'student', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
-  { id: 'startDate', label: 'StartDate', alignRight: false },
-  { id: 'endDate', label: 'EndDate', alignRight: false }
+  { id: 'enrollmentDate', label: 'enrollmentDate', alignRight: false },
+  { id: 'egressDate', label: 'egressDate', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -86,6 +86,18 @@ export default function Enrollments() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const { data, error, loading } = useQuery(GET_ENROLLMENTS);
+  console.log(data);
+  useEffect(() => {
+    if (error) {
+      console.log('Error consulting users', error);
+    }
+  }, [error]);
+
+  if (loading) return <div>Loading....</div>;
+
+  const dataEnrollments = data.allEnrollments;
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -94,7 +106,7 @@ export default function Enrollments() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = PROJECTLIST.map((n) => n.name);
+      const newSelecteds = dataEnrollments.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -132,9 +144,13 @@ export default function Enrollments() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PROJECTLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataEnrollments.length) : 0;
 
-  const filteredProjects = applySortFilter(PROJECTLIST, getComparator(order, orderBy), filterName);
+  const filteredProjects = applySortFilter(
+    dataEnrollments,
+    getComparator(order, orderBy),
+    filterName
+  );
 
   const isProjectNotFound = filteredProjects.length === 0;
 
@@ -161,7 +177,7 @@ export default function Enrollments() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={PROJECTLIST.length}
+                  rowCount={dataEnrollments.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -170,13 +186,13 @@ export default function Enrollments() {
                   {filteredProjects
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, project, projectId, studentId, status, startDate, endDate } = row;
+                      const { _id, project, student, status, enrollmentDate, egressDate } = row;
                       const isItemSelected = selected.indexOf(project) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={id}
+                          key={student}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -188,7 +204,6 @@ export default function Enrollments() {
                               onChange={(event) => handleClick(event, project)}
                             />
                           </TableCell>
-                          <TableCell align="left">{projectId}</TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" noWrap>
@@ -196,9 +211,8 @@ export default function Enrollments() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{studentId}</TableCell>
-                          <TableCell align="left">{status}</TableCell>
-                          <TableCell align="left">
+                          <TableCell align="left">{student}</TableCell>
+                          <TableCell align="left" value={status}>
                             <FormControl fullWidth>
                               <InputLabel variant="standard" htmlFor="uncontrolled-native">
                                 select
@@ -216,8 +230,8 @@ export default function Enrollments() {
                               </NativeSelect>
                             </FormControl>
                           </TableCell>
-                          <TableCell align="left">{startDate}</TableCell>
-                          <TableCell align="left">{endDate}</TableCell>
+                          <TableCell align="left">{enrollmentDate}</TableCell>
+                          <TableCell align="left">{egressDate}</TableCell>
                           <TableCell align="right">
                             <ProjectMoreMenu />
                           </TableCell>
@@ -246,7 +260,7 @@ export default function Enrollments() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={PROJECTLIST.length}
+            count={dataEnrollments.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
