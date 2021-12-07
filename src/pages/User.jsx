@@ -85,6 +85,7 @@ export default function User() {
 
   const { data, error, loading } = useQuery(GET_USERS);
   console.log(data);
+
   useEffect(() => {
     if (error) {
       console.log('Error consulting users', error);
@@ -223,8 +224,12 @@ export default function User() {
                           <TableCell align="left">{role}</TableCell>
                           <TableCell align="left" value={status}>
                             <FormControl fullWidth>
-                              <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                select
+                              <InputLabel
+                                variant="standard"
+                                htmlFor="uncontrolled-native"
+                                color="success"
+                              >
+                                {status}
                               </InputLabel>
                               <NativeSelect
                                 inputProps={{
@@ -233,6 +238,9 @@ export default function User() {
                                 }}
                                 onChange={(e) => handleChangeStatus(_id, e.target.value)}
                               >
+                                <option disabled hidden>
+                                  {' '}
+                                </option>
                                 <option>pending</option>
                                 <option>authorized</option>
                                 <option>unauthorized</option>
