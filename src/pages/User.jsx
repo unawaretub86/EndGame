@@ -85,6 +85,7 @@ export default function User() {
 
   const { data, error, loading } = useQuery(GET_USERS);
   console.log(data);
+
   useEffect(() => {
     if (error) {
       console.log('Error consulting users', error);
@@ -233,7 +234,7 @@ export default function User() {
                                 }}
                                 onChange={(e) => handleChangeStatus(_id, e.target.value)}
                               >
-                                <option>pending</option>
+                                <option>{status}</option>
                                 <option>authorized</option>
                                 <option>unauthorized</option>
                               </NativeSelect>
