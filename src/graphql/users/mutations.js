@@ -12,11 +12,12 @@ const EDIT_USER = gql`
   }
 `;
 
-const UPDATE_STATE_LEADER = gql`
-  mutation ($input: UpdateStateLeader!) {
-    UpdateStateLeader(input: $input) {
-      Enum_updateStateLeader
+const UPDATE_STATE_ADMIN = gql`
+  mutation UpdateUser($input: UpdateStateAdminInput!) {
+    updateStateAdmin(input: $input) {
+      _id
+      status
     }
   }
 `;
-export { EDIT_USER, UPDATE_STATE_LEADER };
+export { EDIT_USER, UPDATE_STATE_ADMIN };
