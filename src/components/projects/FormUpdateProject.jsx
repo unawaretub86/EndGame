@@ -14,6 +14,7 @@ import { LoadingButton } from '@mui/lab';
 // import { ContextModal } from '../../contexts/ContextModal';
 import AlertAndres from '../generic-containers/AlertAndres';
 import { GET_PROJECT_BYID } from '../../graphql/projects/prj-queries';
+import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +32,7 @@ FormUpdateProject.propTypes = {
 
 export default function FormUpdateProject({ dataID }) {
   const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
+  const [mtUpdateProject, { loading: loadMutation }] = useMutation (UPDATE_PROJECT);
   
   console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_BYID);
   console.log('Update Project ~ dataID ~ ', dataID);
@@ -93,6 +95,11 @@ export default function FormUpdateProject({ dataID }) {
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
+      
+      const toSend = packData(formik.values, dataID);
+      console.log("UpdateProject: onSubmit -> gql toSend", toSend);
+      const resp = mtUpdateProject({ variables: {input: toSend} },)
+      console.log("FormUpdateProject: onSubmit -> gql resp", resp);
       setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
     
