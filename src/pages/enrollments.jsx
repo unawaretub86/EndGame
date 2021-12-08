@@ -192,7 +192,7 @@ export default function Enrollments() {
                       return (
                         <TableRow
                           hover
-                          key={student}
+                          key={project._id}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -201,17 +201,17 @@ export default function Enrollments() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleClick(event, project)}
+                              onChange={(event) => handleClick(event, project.name)}
                             />
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" noWrap>
-                                {project}
+                                {project.name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{student}</TableCell>
+                          <TableCell align="left">{student._id}</TableCell>
                           <TableCell align="left" value={status}>
                             <FormControl fullWidth>
                               <InputLabel variant="standard" htmlFor="uncontrolled-native">
