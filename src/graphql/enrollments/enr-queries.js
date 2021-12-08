@@ -5,6 +5,7 @@ const GET_ENROLLMENTS = gql`
     allEnrollments {
       project {
         _id
+        name
       }
       student {
         _id
