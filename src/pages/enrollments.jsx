@@ -31,6 +31,7 @@ import {
   ProjectMoreMenu
 } from '../components/_dashboard/enrollments';
 //
+// import { ENROLLMENT_STATUS } from '../graphql/enrollments/enr-mutations';
 import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
 
 // ----------------------------------------------------------------------
@@ -85,6 +86,7 @@ export default function Enrollments() {
   const [orderBy, setOrderBy] = useState('project');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  // const [EnrollmentStatus, { loading: loadMutation }] = useMutation(ENROLLMENT_STATUS);
 
   const { data, error, loading } = useQuery(GET_ENROLLMENTS);
   console.log(data);
@@ -144,6 +146,16 @@ export default function Enrollments() {
     setFilterName(event.target.value);
   };
 
+  //  const handleChangeStatus = (_id, nextOption) => {
+  //    const paqueteEnvioBd = {
+  //      input: {
+  //        userById: _id,
+  //        status: nextOption
+  //      }
+  //    };
+  //    UpdateStateAdmin({ variables: paqueteEnvioBd });
+  //  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataEnrollments.length) : 0;
 
   const filteredProjects = applySortFilter(
@@ -192,7 +204,7 @@ export default function Enrollments() {
                       return (
                         <TableRow
                           hover
-                          key={student}
+                          key={_id}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -214,8 +226,12 @@ export default function Enrollments() {
                           <TableCell align="left">{student}</TableCell>
                           <TableCell align="left" value={status}>
                             <FormControl fullWidth>
-                              <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                select
+                              <InputLabel
+                                variant="standard"
+                                htmlFor="uncontrolled-native"
+                                color="success"
+                              >
+                                {status}
                               </InputLabel>
                               <NativeSelect
                                 inputProps={{
@@ -224,7 +240,9 @@ export default function Enrollments() {
                                 }}
                                 onChange={(e) => console.log(e.target.value)}
                               >
-                                <option>Pending</option>
+                                <option disabled hidden>
+                                  {' '}
+                                </option>
                                 <option>Accepted</option>
                                 <option>Rejected</option>
                               </NativeSelect>
