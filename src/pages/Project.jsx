@@ -41,12 +41,6 @@ function Project() {
 
   const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
 
-  // const hdlCreateProject = () => {
-  //   setStOpenModal(true);
-  //   setStModalTitle('Create Project');
-  //   setStModalContent(<FormCreateProject />);
-  // }
-
   if (loading) return <p>Loading...</p>;
   if (error) {
     console.log(error);
@@ -57,9 +51,6 @@ function Project() {
     ...project,
     urlimg: imgarray[index]
   }));
-
-  console.log('Fetchs projects and renders projects page', dataAllProjects);
-  console.log('stModal', stModal);
 
   return (
     <>

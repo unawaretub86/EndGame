@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
@@ -17,12 +17,40 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { loginUsuario } from '../../../firebase/auth-control';
+import { ContextUser } from '../../../contexts/ContextUser';
 
 // ----------------------------------------------------------------------
+
+const anAdmin = {
+  email: "admin@admin.admin",
+  documentId: "1111111111",
+  name: "Adminerto",
+  lastName: "Adminandez",
+  status: "authorized",
+  role: "admin"
+}
+const aLeader = {
+  email: "leader@leader.leader",
+  documentId: "22222222222",
+  name: "Leadererto",
+  lastName: "Leaderandez",
+  status: "authorized",
+  role: "leader"
+}
+const aStudent = {
+  email: "student@student.student",
+  documentId: "33333333333",
+  name: "Studenerto",
+  lastName: "Studenandez",
+  status: "authorized",
+  role: "student"
+}
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+
+  const { setUserData } = useContext(ContextUser);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -118,8 +146,9 @@ export default function LoginForm() {
           variant="contained"
           loading={isSubmitting}
           sx={{ mb: 2 }}
+          onClick={() => { setUserData(anAdmin); navigate('/dashboard', { replace: true }); }}
         >
-          As Student
+          As Admin
         </LoadingButton>
         <LoadingButton
           fullWidth
@@ -128,8 +157,20 @@ export default function LoginForm() {
           variant="contained"
           loading={isSubmitting}
           sx={{ mb: 2 }}
+          onClick={() => { setUserData(aLeader); navigate('/dashboard', { replace: true }); }}
         >
           As Leader
+        </LoadingButton>
+        <LoadingButton
+          fullWidth
+          size="small"
+          type="button"
+          variant="contained"
+          loading={isSubmitting}
+          sx={{ mb: 2 }}
+          onClick={() => { setUserData(aStudent); navigate('/dashboard', { replace: true }); }}
+        >
+          As Student
         </LoadingButton>
       </Form>
     </FormikProvider>
