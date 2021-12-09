@@ -87,7 +87,7 @@ export default function User() {
   console.log(data);
   useEffect(() => {
     if (error) {
-      console.log('Error consultando los usuarios', error);
+      console.log('Error consulting users', error);
     }
   }, [error]);
 

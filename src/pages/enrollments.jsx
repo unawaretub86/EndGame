@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
@@ -31,12 +31,13 @@ import {
   ProjectMoreMenu
 } from '../components/_dashboard/enrollments';
 //
+import { CHANGE_STATUS_ENROLLMENT } from '../graphql/enrollments/enr-mutations';
 import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  // { id: 'id', label: 'Id', alignRight: false },
+  { id: 'id', label: 'Id', alignRight: false },
   { id: 'project', label: 'Project', alignRight: false },
   { id: 'student', label: 'student', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
@@ -85,12 +86,13 @@ export default function Enrollments() {
   const [orderBy, setOrderBy] = useState('project');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [changeStatusEnrollment, { loading: loadMutation }] = useMutation(CHANGE_STATUS_ENROLLMENT);
 
   const { data, error, loading } = useQuery(GET_ENROLLMENTS);
   console.log(data);
   useEffect(() => {
     if (error) {
-      console.log('Error consulting users', error);
+      console.log('Error consulting enrollments', error);
     }
   }, [error]);
 
@@ -142,6 +144,16 @@ export default function Enrollments() {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
+  };
+
+  const handleChangeStatus = (_id, nextOption) => {
+    const paqueteEnvioBd = {
+      input: {
+        _Id: _id,
+        status: nextOption
+      }
+    };
+    changeStatusEnrollment({ variables: paqueteEnvioBd });
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataEnrollments.length) : 0;
@@ -215,17 +227,20 @@ export default function Enrollments() {
                           <TableCell align="left" value={status}>
                             <FormControl fullWidth>
                               <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                select
+                                {status}
                               </InputLabel>
                               <NativeSelect
                                 inputProps={{
                                   name: 'select',
                                   id: 'uncontrolled-native'
                                 }}
-                                onChange={(e) => console.log(e.target.value)}
+                                onChange={(e) => handleChangeStatus(_id, e.target.value)}
                               >
+                                <option disabled hidden>
+                                  {' '}
+                                </option>
                                 <option>Pending</option>
-                                <option>Accepted</option>
+                                <option>Acepted</option>
                                 <option>Rejected</option>
                               </NativeSelect>
                             </FormControl>

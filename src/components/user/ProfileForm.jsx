@@ -16,7 +16,7 @@ export default function ProfileForm() {
   }, [error]);
 
   if (loading) return <div>Loading....</div>;
-  const dataUserById = data.userById;
+  const dataUser = data.userById;
   // const [values, setValues] = useState({
   //   initialValues: {
   //     name: '',
@@ -62,7 +62,7 @@ export default function ProfileForm() {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={dataUserById.name}
+                value={dataUser.name}
                 variant="outlined"
               />
             </Grid>
@@ -73,7 +73,7 @@ export default function ProfileForm() {
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={dataUserById.lastName}
+                value={dataUser.lastName}
                 variant="outlined"
               />
             </Grid>
@@ -84,7 +84,7 @@ export default function ProfileForm() {
                 name="documentId"
                 onChange={handleChange}
                 required
-                value={dataUserById.documentId}
+                value={dataUser.documentId}
                 variant="outlined"
               />
             </Grid>
@@ -95,7 +95,7 @@ export default function ProfileForm() {
                 name="email"
                 onChange={handleChange}
                 required
-                value={dataUserById.email}
+                value={dataUser.email}
                 variant="outlined"
               />
             </Grid>
@@ -106,7 +106,7 @@ export default function ProfileForm() {
                 name="password"
                 onChange={handleChange}
                 required
-                value={dataUserById.password}
+                value={dataUser.password}
                 variant="outlined"
               />
             </Grid>

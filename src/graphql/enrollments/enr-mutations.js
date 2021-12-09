@@ -1,11 +1,11 @@
 import { gql } from '@apollo/client';
 
-const ENROLLMENT_STATUS = gql`
-  mutation EnrollmentStatus($input: UpdateStateAdminInput!) {
-    UEnrollmentStatus(input: $input) {
-      accepted
-      rejected
+const CHANGE_STATUS_ENROLLMENT = gql`
+  mutation changeStatusEnrollment($input: UpdateStateAdminInput!) {
+    changeStatusEnrollments(input: $input) {
+      _id
+      status
     }
   }
 `;
-export { ENROLLMENT_STATUS };
+export { CHANGE_STATUS_ENROLLMENT };

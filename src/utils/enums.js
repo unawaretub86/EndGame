@@ -14,7 +14,7 @@ const enumUserStatusByLeader = {
   AUTHORIZED: 'authorized'
 };
 const EnrollmentStatus = {
-  ACCEPTED: 'accepted',
+  ACEPTED: 'acepted',
   REJECTED: 'rejected'
 };
 export { enumRole, enumUserStatus, enumUserStatusByLeader, EnrollmentStatus };
