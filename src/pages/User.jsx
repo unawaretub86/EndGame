@@ -231,6 +231,7 @@ export default function User() {
                                 {status}
                               </InputLabel>
                               <NativeSelect
+                                defaultValue={status}
                                 inputProps={{
                                   name: 'select',
                                   id: 'uncontrolled-native'
@@ -240,9 +241,9 @@ export default function User() {
                                 <option disabled hidden>
                                   {' '}
                                 </option>
-                                <option>pending</option>
-                                <option>authorized</option>
-                                <option>unauthorized</option>
+                                <option value="pending">Pending</option>
+                                <option value="authorized">Authorized</option>
+                                <option value="unauthorized">Unauthorized</option>
                               </NativeSelect>
                             </FormControl>
                           </TableCell>

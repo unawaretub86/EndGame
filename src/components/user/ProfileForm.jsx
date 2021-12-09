@@ -2,8 +2,8 @@ import { useQuery, useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 import { Card, CardContent, CardHeader, Divider, Grid, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { UPDATE_USER } from '../graphql/users/mutations';
-import { GET_USER_BY_ID } from '../graphql/users/queries';
+import { UPDATE_USER } from '../../graphql/users/mutations';
+import { GET_USER_BY_ID } from '../../graphql/users/queries';
 
 export default function ProfileForm() {
   const [UpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
@@ -54,6 +54,18 @@ export default function ProfileForm() {
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                helperText="Please specify the first name"
+                label="First name"
+                name="firstName"
+                onChange={handleChange}
+                required
+                value={dataUser._id}
+                variant="outlined"
+              />
+            </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth

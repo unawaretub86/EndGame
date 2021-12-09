@@ -37,7 +37,7 @@ import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'Id', alignRight: false },
+  // { id: 'id', label: 'Id', alignRight: false },
   { id: 'project', label: 'Project', alignRight: false },
   { id: 'student', label: 'student', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
@@ -146,13 +146,15 @@ export default function Enrollments() {
     setFilterName(event.target.value);
   };
 
-  const handleChangeStatus = (_id, nextOption) => {
+  const handleChangeStatus = (currentId, nextOption) => {
+    console.log('enrollments_handleChange', currentId, nextOption);
     const paqueteEnvioBd = {
       input: {
-        _Id: _id,
+        _id: currentId,
         status: nextOption
       }
     };
+    console.log('paqueteChangeStatus', paqueteEnvioBd);
     changeStatusEnrollment({ variables: paqueteEnvioBd });
   };
 
@@ -204,7 +206,7 @@ export default function Enrollments() {
                       return (
                         <TableRow
                           hover
-                          key={project._id}
+                          key={_id}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -223,13 +225,18 @@ export default function Enrollments() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{student._id}</TableCell>
-                          <TableCell align="left" value={status}>
+                          <TableCell align="left">{student.name}</TableCell>
+                          <TableCell align="left">
                             <FormControl fullWidth>
-                              <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                              <InputLabel
+                                variant="standard"
+                                htmlFor="uncontrolled-native"
+                                color="success"
+                              >
                                 {status}
                               </InputLabel>
                               <NativeSelect
+                                defaultValue={status}
                                 inputProps={{
                                   name: 'select',
                                   id: 'uncontrolled-native'
@@ -239,9 +246,9 @@ export default function Enrollments() {
                                 <option disabled hidden>
                                   {' '}
                                 </option>
-                                <option>Pending</option>
-                                <option>Acepted</option>
-                                <option>Rejected</option>
+                                <option value="">Pending</option>
+                                <option value="acepted">Accepted</option>
+                                <option value="rejected">Rejected</option>
                               </NativeSelect>
                             </FormControl>
                           </TableCell>

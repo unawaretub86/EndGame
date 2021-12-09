@@ -13,8 +13,8 @@ const GET_USERS = gql`
 `;
 
 const GET_USER_BY_ID = gql`
-  query ($_id: String!) {
-    userById(_id: $_id) {
+  query ($_id: ID) {
+    userById(_id: $id) {
       _id
       name
       lastName
