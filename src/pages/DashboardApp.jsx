@@ -75,18 +75,24 @@ export default function DashboardApp() {
             <Typography variant="h4">Hi, {userData.name} {userData.lastName} . Welcome back</Typography>
           </Box>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={3}>
-              <AppUsers />
-            </Grid>
+            {userData.role === 'admin' || userData.role === 'leader'? 
+              <Grid item xs={12} sm={6} md={3}>
+                <AppUsers />
+              </Grid>
+              :null}
             <Grid item xs={12} sm={6} md={3}>
               <AppNewProjects />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <AppEnrollments />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <AppAdvances />
-            </Grid>
+            {userData.role === 'student' || userData.role === 'leader'? 
+              <>
+                <Grid item xs={12} sm={6} md={3}>
+                  <AppEnrollments />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <AppAdvances />
+                </Grid>
+              </>
+              :null}
           </Grid>
         </Container>
       </Page>
