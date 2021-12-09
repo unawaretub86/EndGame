@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
@@ -31,6 +31,7 @@ import {
   ProjectMoreMenu
 } from '../components/_dashboard/enrollments';
 //
+import { CHANGE_STATUS_ENROLLMENT } from '../graphql/enrollments/enr-mutations';
 import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
 
 // ----------------------------------------------------------------------
@@ -85,12 +86,13 @@ export default function Enrollments() {
   const [orderBy, setOrderBy] = useState('project');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [changeStatusEnrollment, { loading: loadMutation }] = useMutation(CHANGE_STATUS_ENROLLMENT);
 
   const { data, error, loading } = useQuery(GET_ENROLLMENTS);
   console.log(data);
   useEffect(() => {
     if (error) {
-      console.log('Error consulting users', error);
+      console.log('Error consulting enrollments', error);
     }
   }, [error]);
 
@@ -144,6 +146,18 @@ export default function Enrollments() {
     setFilterName(event.target.value);
   };
 
+  const handleChangeStatus = (currentId, nextOption) => {
+    console.log('enrollments_handleChange', currentId, nextOption);
+    const paqueteEnvioBd = {
+      input: {
+        _id: currentId,
+        status: nextOption
+      }
+    };
+    console.log('paqueteChangeStatus', paqueteEnvioBd);
+    changeStatusEnrollment({ variables: paqueteEnvioBd });
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataEnrollments.length) : 0;
 
   const filteredProjects = applySortFilter(
@@ -192,7 +206,7 @@ export default function Enrollments() {
                       return (
                         <TableRow
                           hover
-                          key={project._id}
+                          key={_id}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -211,22 +225,30 @@ export default function Enrollments() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{student._id}</TableCell>
-                          <TableCell align="left" value={status}>
+                          <TableCell align="left">{student.name}</TableCell>
+                          <TableCell align="left">
                             <FormControl fullWidth>
-                              <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                select
+                              <InputLabel
+                                variant="standard"
+                                htmlFor="uncontrolled-native"
+                                color="success"
+                              >
+                                {status}
                               </InputLabel>
                               <NativeSelect
+                                defaultValue={status}
                                 inputProps={{
                                   name: 'select',
                                   id: 'uncontrolled-native'
                                 }}
-                                onChange={(e) => console.log(e.target.value)}
+                                onChange={(e) => handleChangeStatus(_id, e.target.value)}
                               >
-                                <option>Pending</option>
-                                <option>Accepted</option>
-                                <option>Rejected</option>
+                                <option disabled hidden>
+                                  {' '}
+                                </option>
+                                <option value="">Pending</option>
+                                <option value="acepted">Accepted</option>
+                                <option value="rejected">Rejected</option>
                               </NativeSelect>
                             </FormControl>
                           </TableCell>

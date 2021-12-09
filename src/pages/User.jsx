@@ -85,7 +85,6 @@ export default function User() {
 
   const { data, error, loading } = useQuery(GET_USERS);
   console.log(data);
-
   useEffect(() => {
     if (error) {
       console.log('Error consulting users', error);
@@ -158,7 +157,7 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
 
-  // aqui inicia el RETURN del componente --------------------\\\\
+  //  aqui inicia el RETURN del componente --------------------\\\\
 
   return (
     <Page title="User | Minimal-UI">
@@ -222,7 +221,7 @@ export default function User() {
                           </TableCell>
                           <TableCell align="left">{lastName}</TableCell>
                           <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left" value={status}>
+                          <TableCell align="left">
                             <FormControl fullWidth>
                               <InputLabel
                                 variant="standard"
@@ -232,6 +231,7 @@ export default function User() {
                                 {status}
                               </InputLabel>
                               <NativeSelect
+                                defaultValue={status}
                                 inputProps={{
                                   name: 'select',
                                   id: 'uncontrolled-native'
@@ -241,9 +241,9 @@ export default function User() {
                                 <option disabled hidden>
                                   {' '}
                                 </option>
-                                <option>pending</option>
-                                <option>authorized</option>
-                                <option>unauthorized</option>
+                                <option value="pending">Pending</option>
+                                <option value="authorized">Authorized</option>
+                                <option value="unauthorized">Unauthorized</option>
                               </NativeSelect>
                             </FormControl>
                           </TableCell>

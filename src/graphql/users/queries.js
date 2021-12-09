@@ -12,17 +12,17 @@ const GET_USERS = gql`
   }
 `;
 
-const GET_USER = gql`
-  query ($_id: String!) {
-    User(_id: $_id) {
+const GET_USER_BY_ID = gql`
+  query ($_id: ID) {
+    userById(_id: $id) {
       _id
-      firstName
+      name
       lastName
-      identification
+      documentId
       email
-      role
+      password
     }
   }
 `;
 
-export { GET_USERS, GET_USER };
+export { GET_USERS, GET_USER_BY_ID };
