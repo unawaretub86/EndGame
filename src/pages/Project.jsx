@@ -11,6 +11,7 @@ import InfoProject from '../components/projects/InfoProject';
 import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
 import { GET_PROJECTS_ALL } from '../graphql/projects/prj-queries';
+import { ContextUser } from '../contexts/ContextUser';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -37,6 +38,9 @@ const imgarray = [
 ];
 
 function Project() {
+
+  const { userData } = React.useContext(ContextUser);
+
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
 
   const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
@@ -63,18 +67,20 @@ function Project() {
           contentModal={stModal.content}
           openModal={stModal.open}
         />
-        <Button
-          size="small"
-          type="button"
-          variant="contained"
-          sx={{ mb: 2 }}
-          onClick={() =>
-            setStModal({ title: 'Create Project', content: <FormCreateProject />, open: true })
-          }
-        >
-          <Icon icon="bi:plus-circle" width={24} height={24} />
-          <Typography>Add Project</Typography>
-        </Button>
+        {userData.role === 'leader' ?
+          <Button
+            size="small"
+            type="button"
+            variant="contained"
+            sx={{ mb: 2 }}
+            onClick={() =>
+              setStModal({ title: 'Create Project', content: <FormCreateProject />, open: true })
+            }
+          >
+            <Icon icon="bi:plus-circle" width={24} height={24} />
+            <Typography>Add Project</Typography>
+          </Button>
+          : null}
         <Grid container spacing={2}>
           {dataAllProjects.map((project) => (
             <Grid key={project._id} item xs={4}>
