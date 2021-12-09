@@ -7,8 +7,11 @@ import { GET_USER_BY_ID } from '../../graphql/users/queries';
 
 export default function ProfileForm() {
   const [UpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
-  const { data, error, loading } = useQuery(GET_USER_BY_ID);
-  console.log(data);
+  const { data, error, loading } = useQuery(GET_USER_BY_ID, {
+    variables: {
+      id: '61ac499b6a529329c646eef3'
+    }
+  });
   useEffect(() => {
     if (error) {
       console.log('Error consulting userdata', error);
@@ -16,6 +19,7 @@ export default function ProfileForm() {
   }, [error]);
 
   if (loading) return <div>Loading....</div>;
+  console.log('trae la data, profile form', data);
   const dataUser = data.userById;
   // const [values, setValues] = useState({
   //   initialValues: {

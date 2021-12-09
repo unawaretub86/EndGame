@@ -13,14 +13,13 @@ const GET_USERS = gql`
 `;
 
 const GET_USER_BY_ID = gql`
-  query ($_id: ID) {
+  query ($id: ID) {
     userById(_id: $id) {
       _id
       name
       lastName
       documentId
       email
-      password
     }
   }
 `;
