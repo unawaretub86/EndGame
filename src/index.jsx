@@ -12,6 +12,8 @@ import React from 'react';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+//
+
 
 const httpLink = createHttpLink({
   uri: 'https://end-game-release.herokuapp.com/graphql'
@@ -35,12 +37,14 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
+
+
 ReactDOM.render(
   <Auth0Provider
     domain="endgame1.us.auth0.com"
     clientId="rvSEehaYlTfkqADuQ1HpdqFwi9khW7Vi"
     redirectUri={window.location.origin}
-  >
+  >    
     <HelmetProvider>
       <BrowserRouter>
         <ApolloProvider client={client}>
@@ -48,7 +52,7 @@ ReactDOM.render(
         </ApolloProvider>
       </BrowserRouter>
     </HelmetProvider>
-    ,
+   ,
   </Auth0Provider>,
   document.getElementById('root')
 );
