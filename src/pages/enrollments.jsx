@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
@@ -31,7 +31,7 @@ import {
   ProjectMoreMenu
 } from '../components/_dashboard/enrollments';
 //
-// import { ENROLLMENT_STATUS } from '../graphql/enrollments/enr-mutations';
+import { CHANGE_STATUS_ENROLLMENT } from '../graphql/enrollments/enr-mutations';
 import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
 
 // ----------------------------------------------------------------------
@@ -86,13 +86,13 @@ export default function Enrollments() {
   const [orderBy, setOrderBy] = useState('project');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  // const [EnrollmentStatus, { loading: loadMutation }] = useMutation(ENROLLMENT_STATUS);
+  const [changeStatusEnrollment, { loading: loadMutation }] = useMutation(CHANGE_STATUS_ENROLLMENT);
 
   const { data, error, loading } = useQuery(GET_ENROLLMENTS);
   console.log(data);
   useEffect(() => {
     if (error) {
-      console.log('Error consulting users', error);
+      console.log('Error consulting enrollments', error);
     }
   }, [error]);
 
@@ -146,15 +146,17 @@ export default function Enrollments() {
     setFilterName(event.target.value);
   };
 
-  //  const handleChangeStatus = (_id, nextOption) => {
-  //    const paqueteEnvioBd = {
-  //      input: {
-  //        userById: _id,
-  //        status: nextOption
-  //      }
-  //    };
-  //    UpdateStateAdmin({ variables: paqueteEnvioBd });
-  //  };
+  const handleChangeStatus = (currentId, nextOption) => {
+    console.log('enrollments_handleChange', currentId, nextOption);
+    const paqueteEnvioBd = {
+      input: {
+        _id: currentId,
+        status: nextOption
+      }
+    };
+    console.log('paqueteChangeStatus', paqueteEnvioBd);
+    changeStatusEnrollment({ variables: paqueteEnvioBd });
+  };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataEnrollments.length) : 0;
 
@@ -198,13 +200,13 @@ export default function Enrollments() {
                   {filteredProjects
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { project, student, status, enrollmentDate, egressDate } = row;
+                      const { _id, project, student, status, enrollmentDate, egressDate } = row;
                       const isItemSelected = selected.indexOf(project) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={project._id}
+                          key={_id}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -223,8 +225,8 @@ export default function Enrollments() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{student._id}</TableCell>
-                          <TableCell align="left" value={status}>
+                          <TableCell align="left">{student.name}</TableCell>
+                          <TableCell align="left">
                             <FormControl fullWidth>
                               <InputLabel
                                 variant="standard"
@@ -234,18 +236,19 @@ export default function Enrollments() {
                                 {status}
                               </InputLabel>
                               <NativeSelect
+                                defaultValue={status}
                                 inputProps={{
                                   name: 'select',
                                   id: 'uncontrolled-native'
                                 }}
-                                onChange={(e) => console.log(e.target.value)}
+                                onChange={(e) => handleChangeStatus(_id, e.target.value)}
                               >
                                 <option disabled hidden>
                                   {' '}
                                 </option>
-                                <option>Pending</option>
-                                <option>Accepted</option>
-                                <option>Rejected</option>
+                                <option value="">Pending</option>
+                                <option value="acepted">Accepted</option>
+                                <option value="rejected">Rejected</option>
                               </NativeSelect>
                             </FormControl>
                           </TableCell>
