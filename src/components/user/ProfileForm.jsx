@@ -1,106 +1,54 @@
-import { useState } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { useEffect } from 'react';
+import { Card, CardContent, CardHeader, Divider, Grid, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { UPDATE_USER } from '../graphql/users/mutations';
+import { GET_USER_BY_ID } from '../graphql/users/queries';
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  TextField
-} from '@mui/material';
-// import { GET_USER } from 'graphql/user/queries'; //useEffect debe ir arriba,//
-
-// import { useParams, Link } from 'react-router-dom';
-// import { useQuery } from '@apollo/client';
-// import { useMutation } from '@apollo/client';
-// import useFormData from 'hooks/useFormData';
-// import Input from 'components/Input';
-// import DropDown from 'components/DropDown';
-// import { EDIT_USER } from 'graphql/user/mutations';
-// import { toast } from 'react-toastify';
-// import ButtonLoading from 'components/ButtonLoading';
-// import { Enum_Rol } from 'utils/enums';
-
-// const EditUser = () => {
-//   const [userData, setUserData] = useState({});
-//   const { form, formData, updateFormData } = useFormData(null);
-//   const { _id } = useParams();
-//   const {
-//     loading: loadingQuery,
-//     error: errorQuery,
-//     data: dataQuery,
-//   } = useQuery(GET_USER, {
-//     variables: { _id },
-//   });
-
-// const [editUser, { data: dataMutation, loading: loadingMutation, error: errorMutation }] =
-//   useMutation(EDIT_USER);
-
-// const submitForm = async (e) => {
-//   e.preventDefault();
-//   console.log(formData);
-//   await editUser({
-//     variables: { _id, ...formData },
-//   });
-// };
-
-// useEffect(() => {
-//   if (dataMutation) {
-//     toast.success('User successfully modified');
-//     setUserData(dataMutation.editUser);
-//   }
-//   if (dataQuery) {
-//     console.log('dq', dataQuery);
-//     setUserData(dataQuery.User);
-//   }
-// }, [dataMutation, dataQuery]);
-
-// useEffect(() => {
-//   if (errorMutation) {
-//     toast.error('Error: User modification failed');
-//   }
-// }, [errorMutation]);
-
-// if (loadingQuery) return <div>Loading</div>;
-
-// const role = [
-//   {
-//     value: 'student',
-//     label: 'Student'
-//   },
-//   {
-//     value: 'leader',
-//     label: 'Leader'
-//   },
-//   {
-//     value: 'administrator',
-//     label: 'Administrator'
-//   }
-// ];
-
-export default function ProfileForm(props) {
-  const [values, setValues] = useState({
-    initialValues: {
-      firstName: '',
-      lastName: '',
-      identification: '',
-      email: '',
-      // role: '',
-      password: ''
+export default function ProfileForm() {
+  const [UpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
+  const { data, error, loading } = useQuery(GET_USER_BY_ID);
+  console.log(data);
+  useEffect(() => {
+    if (error) {
+      console.log('Error consulting userdata', error);
     }
-  });
+  }, [error]);
 
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
+  if (loading) return <div>Loading....</div>;
+  const dataUserById = data.userById;
+  // const [values, setValues] = useState({
+  //   initialValues: {
+  //     name: '',
+  //     lastName: '',
+  //     identification: '',
+  //     email: '',
+  //     password: ''
+  //   }
+  // });
+
+  // const handleChange = (event) => {
+  //   setValues({
+  //     ...values,
+  //     [event.target.name]: event.target.values
+  //   });
+  // };
+  const handleChange = (_id, name, lastName, documentId, email, password) => {
+    const paqueteEnvioBd = {
+      input: {
+        userById: _id,
+        name,
+        lastName,
+        documentId,
+        email,
+        password
+      }
+    };
+    UpdateUser({ variables: paqueteEnvioBd });
   };
 
   return (
-    <form autoComplete="off" noValidate {...props}>
+    <form autoComplete="off" noValidate>
       <Card>
         <CardHeader subheader="The information can be edited" title="Profile" />
         <Divider />
@@ -114,7 +62,7 @@ export default function ProfileForm(props) {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={dataUserById.name}
                 variant="outlined"
               />
             </Grid>
@@ -125,18 +73,18 @@ export default function ProfileForm(props) {
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={dataUserById.lastName}
                 variant="outlined"
               />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Identification"
-                name="identification"
+                label="DocumentIdn"
+                name="documentId"
                 onChange={handleChange}
                 required
-                value={values.identification}
+                value={dataUserById.documentId}
                 variant="outlined"
               />
             </Grid>
@@ -147,29 +95,10 @@ export default function ProfileForm(props) {
                 name="email"
                 onChange={handleChange}
                 required
-                value={values.email}
+                value={dataUserById.email}
                 variant="outlined"
               />
             </Grid>
-            {/* <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Select Role"
-                name="role"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.role}
-                variant="outlined"
-              >
-                {role.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid> */}
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
@@ -177,24 +106,23 @@ export default function ProfileForm(props) {
                 name="password"
                 onChange={handleChange}
                 required
-                value={values.password}
+                value={dataUserById.password}
                 variant="outlined"
               />
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            p: 2
-          }}
+
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={loadMutation}
         >
-          <Button color="primary" variant="contained">
-            Save details
-          </Button>
-        </Box>
+          Edit Profile
+        </LoadingButton>
       </Card>
     </form>
   );

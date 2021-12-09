@@ -1,13 +1,15 @@
 import { gql } from '@apollo/client';
 
-const EDIT_USER = gql`
-  mutation ($input: EditUser!) {
-    editUser(input: $input) {
+const UPDATE_USER = gql`
+  mutation updateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      _id
+      email
+      documentId
       name
       lastName
-      documentId
-      email
-      password
+      status
+      role
     }
   }
 `;
@@ -20,4 +22,4 @@ const UPDATE_STATE_ADMIN = gql`
     }
   }
 `;
-export { EDIT_USER, UPDATE_STATE_ADMIN };
+export { UPDATE_USER, UPDATE_STATE_ADMIN };
