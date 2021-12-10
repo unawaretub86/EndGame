@@ -31,7 +31,6 @@ const role = [
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [values, setValues] = React.useState('');
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -39,9 +38,11 @@ export default function RegisterForm() {
       .max(50, 'Too Long!')
       .required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    identification: Yup.string().required('Identification is required'),
+    identification: Yup.number('Must be a number').required('Identification is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+    password: Yup.string().required('Password is required'),
+    passwordConfirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+    role: Yup.string().required('Role is required'),
   });
 
   const formik = useFormik({
@@ -56,22 +57,11 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      // afrp- todo se trasa a través del objeto formik
-      console.log(formik.values);
-      // afrp- puede que esta vaina se tenga que poner ASYNC
-      // afrp- Por ahora se basa en Firebase
-      // crearUsuario está de src/firebase/auth-control
-      crearUsuario(formik.values.email, formik.values.password, formik.values.firstName);
-      navigate('/login');
+      console.log("Register ~ formik.values ~ ", formik.values);
+      alert("Register ~ formik.values ~ ", formik.values);
+      
     }
   });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
@@ -109,18 +99,18 @@ export default function RegisterForm() {
               fullWidth
               label="Select Role"
               name="role"
-              onChange={handleChange}
               required
               select
               SelectProps={{ native: true }}
-              value={values.state}
+              {...getFieldProps('email')}
+              error={Boolean(touched.email && errors.email)}
+              helperText={touched.email && errors.email}
               variant="outlined"
             >
-              {role.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+              <option value ={null} >Choose a role</option>
+              <option value="admin">Administrator</option>
+              <option value="leader">Leader</option>
+              <option value="student">Student</option>
             </TextField>
           </Stack>
 
@@ -152,9 +142,15 @@ export default function RegisterForm() {
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
-          <Typography variant="title" sx={{ mt:2 }}>
-          || ~ AQUÍ IRÍA CONFIRMACIÓN DE PASSWORD ~ ||
-          </Typography>
+          
+          <TextField
+              fullWidth
+              label="re-enter Password"
+              type={showPassword ? 'text' : 'password'}
+              {...getFieldProps('passwordConfirm')}
+              error={Boolean(touched.passwordConfirm && errors.passwordConfirm)}
+              helperText={touched.passwordConfirm && errors.passwordConfirm}
+            />
 
           <LoadingButton
             fullWidth
