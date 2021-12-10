@@ -7,7 +7,7 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { useNavigate } from 'react-router-dom';
 // material
-import { Stack, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, Typography, Select, MenuItem, InputLabel, NativeSelect } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { crearUsuario } from '../../../firebase/auth-control';
 // import { resolvePlugin } from '@babel/core';
@@ -31,7 +31,6 @@ const role = [
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [values, setValues] = React.useState('');
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -39,9 +38,11 @@ export default function RegisterForm() {
       .max(50, 'Too Long!')
       .required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    identification: Yup.string().required('Identification is required'),
+    identification: Yup.number('Must be a number').required('Identification is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+    password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters').matches(/[a-zA-Z0-9]/, 'Password must contain letters and numbers'),
+    passwordConfirm: Yup.string().required('Password Confirm is required').oneOf([Yup.ref('password')], 'Passwords must match'),
+    role: Yup.string().oneOf(['student', 'leader', 'admin'])
   });
 
   const formik = useFormik({
@@ -56,22 +57,11 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      // afrp- todo se trasa a través del objeto formik
-      console.log(formik.values);
-      // afrp- puede que esta vaina se tenga que poner ASYNC
-      // afrp- Por ahora se basa en Firebase
-      // crearUsuario está de src/firebase/auth-control
-      crearUsuario(formik.values.email, formik.values.password, formik.values.firstName);
-      navigate('/login');
+      console.log("Register ~ formik.values ~ ", formik.values);
+      alert("Register ~ formik.values ~ ", formik.values);
+      
     }
   });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
@@ -105,23 +95,24 @@ export default function RegisterForm() {
               helperText={touched.identification && errors.identification}
             />
 
+            
             <TextField
+              select
               fullWidth
               label="Select Role"
               name="role"
-              onChange={handleChange}
-              required
-              select
-              SelectProps={{ native: true }}
-              value={values.state}
+              {...getFieldProps('role')}
+              error={Boolean(touched.role && errors.role)}
+              helperText={touched.role && errors.role}
               variant="outlined"
+              SelectProps={{ native: true }}
             >
-              {role.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+              <option value="none">Choose a role</option>
+              <option value="admin">Administrator</option>
+              <option value="leader">Leader</option>
+              <option value="student">Student</option>
             </TextField>
+
           </Stack>
 
           <TextField
@@ -152,9 +143,15 @@ export default function RegisterForm() {
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
-          <Typography variant="title" sx={{ mt:2 }}>
-          || ~ AQUÍ IRÍA CONFIRMACIÓN DE PASSWORD ~ ||
-          </Typography>
+          
+          <TextField
+              fullWidth
+              label="re-enter Password"
+              type={showPassword ? 'text' : 'password'}
+              {...getFieldProps('passwordConfirm')}
+              error={Boolean(touched.passwordConfirm && errors.passwordConfirm)}
+              helperText={touched.passwordConfirm && errors.passwordConfirm}
+            />
 
           <LoadingButton
             fullWidth
@@ -162,6 +159,7 @@ export default function RegisterForm() {
             type="submit"
             variant="contained"
             loading={isSubmitting}
+            onClick={() => { console.log("Register ~ formik.values ~ ", formik.values); }}
           >
             Register
           </LoadingButton>
