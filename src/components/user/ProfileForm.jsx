@@ -1,11 +1,12 @@
 import { useQuery, useMutation } from '@apollo/client';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardContent, CardHeader, Divider, Grid, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { UPDATE_USER } from '../../graphql/users/mutations';
 import { GET_USER_BY_ID } from '../../graphql/users/queries';
 
 export default function ProfileForm() {
+  const [stProfileForm, setProfileForm] = React.useState({});
   const [UpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
 
   const resp = useQuery(GET_USER_BY_ID, {
@@ -15,21 +16,29 @@ export default function ProfileForm() {
     fetchPolicy: 'network-only'
   });
 
-  const { dataUser, error, loading } = resp;
-  // const { data, error, loading } = useQuery(GET_USER_BY_ID, {
-  //   variables: {
-  //     id: '61ac499b6a529329c646eef3'
-  //   }
-  // });
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log('Error consulting userdata', error);
-  //   }
-  // }, [error]);
+  const { data, error, loading } = resp;
 
-  // if (loading) return <div>Loading....</div>;
-  // console.log('trae la data, profile form', data);
-  // const dataUser = data._id;
+  useEffect(() => {
+    if (data) {
+      setProfileForm(data.userById);
+    }
+  }, [data]);
+
+  if (loading) return <div>Loading....</div>;
+  console.log('trae la data, profile form', data);
+  const dataUser = data.userById;
+  // const hdlActivation = () => {
+
+  //     UpdateUser({ variables: toSend });
+  //     setProfileForm({ ...stProfileForm });
+  //     return;
+  //   }
+  //   UpdateUser({ variables: toSend });
+  //   setProfileForm({ ...stProfileForm, status: nextStatus });
+  // };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>xx Error xx</p>;
 
   const handleChange = (userById, name, lastName, documentId, email, password) => {
     const paqueteEnvioBd = {
@@ -60,19 +69,7 @@ export default function ProfileForm() {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={dataUser.userById}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="firstName"
-                onChange={handleChange}
-                required
-                value={dataUser.name}
+                value={stProfileForm.name}
                 variant="outlined"
               />
             </Grid>
@@ -83,18 +80,18 @@ export default function ProfileForm() {
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={dataUser.lastName}
+                value={stProfileForm.lastName}
                 variant="outlined"
               />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="DocumentIdn"
+                label="DocumentId"
                 name="documentId"
                 onChange={handleChange}
                 required
-                value={dataUser.documentId}
+                value={stProfileForm.documentId}
                 variant="outlined"
               />
             </Grid>
@@ -105,7 +102,7 @@ export default function ProfileForm() {
                 name="email"
                 onChange={handleChange}
                 required
-                value={dataUser.email}
+                value={stProfileForm.email}
                 variant="outlined"
               />
             </Grid>
@@ -116,7 +113,7 @@ export default function ProfileForm() {
                 name="password"
                 onChange={handleChange}
                 required
-                value={dataUser.password}
+                value={stProfileForm.password}
                 variant="outlined"
               />
             </Grid>
