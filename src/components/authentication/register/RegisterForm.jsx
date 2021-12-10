@@ -7,7 +7,7 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { useNavigate } from 'react-router-dom';
 // material
-import { Stack, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, Typography, Select, MenuItem, InputLabel, NativeSelect } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { crearUsuario } from '../../../firebase/auth-control';
 // import { resolvePlugin } from '@babel/core';
@@ -40,9 +40,9 @@ export default function RegisterForm() {
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
     identification: Yup.number('Must be a number').required('Identification is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required'),
-    passwordConfirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
-    role: Yup.string().required('Role is required'),
+    password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters').matches(/[a-zA-Z0-9]/, 'Password must contain letters and numbers'),
+    passwordConfirm: Yup.string().required('Password Confirm is required').oneOf([Yup.ref('password')], 'Passwords must match'),
+    role: Yup.string().oneOf(['student', 'leader', 'admin'])
   });
 
   const formik = useFormik({
@@ -95,23 +95,24 @@ export default function RegisterForm() {
               helperText={touched.identification && errors.identification}
             />
 
+            
             <TextField
+              select
               fullWidth
               label="Select Role"
               name="role"
-              required
-              select
-              SelectProps={{ native: true }}
-              {...getFieldProps('email')}
-              error={Boolean(touched.email && errors.email)}
-              helperText={touched.email && errors.email}
+              {...getFieldProps('role')}
+              error={Boolean(touched.role && errors.role)}
+              helperText={touched.role && errors.role}
               variant="outlined"
+              SelectProps={{ native: true }}
             >
-              <option value ={null} >Choose a role</option>
+              <option value="none">Choose a role</option>
               <option value="admin">Administrator</option>
               <option value="leader">Leader</option>
               <option value="student">Student</option>
             </TextField>
+
           </Stack>
 
           <TextField
@@ -158,6 +159,7 @@ export default function RegisterForm() {
             type="submit"
             variant="contained"
             loading={isSubmitting}
+            onClick={() => { console.log("Register ~ formik.values ~ ", formik.values); }}
           >
             Register
           </LoadingButton>
