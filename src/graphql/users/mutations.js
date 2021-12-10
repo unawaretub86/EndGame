@@ -1,25 +1,14 @@
 import { gql } from '@apollo/client';
 
 const UPDATE_USER = gql`
-  mutation updateUser(
-    $_id: String!
-    $name: String!
-    $lastName: String!
-    $documentId: String!
-    $email: String!
-  ) {
-    upateUser(
-      _id: $_id
-      name: $name
-      lastName: $lastName
-      documentId: $documentId
-      email: $_email
-    ) {
+  mutation updateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
       _id
+      email
+      documentId
       name
       lastName
-      documentId
-      email
+      status
     }
   }
 `;
