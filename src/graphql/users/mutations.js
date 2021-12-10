@@ -32,4 +32,11 @@ const UPDATE_STATE_ADMIN = gql`
     }
   }
 `;
-export { UPDATE_USER, UPDATE_STATE_ADMIN };
+
+const CREATE_USER = gql`
+  mutation registerUser($input: RegisterInput!) {
+    registerUser(input: $input)
+  }
+`;
+
+export { UPDATE_USER, UPDATE_STATE_ADMIN, CREATE_USER }

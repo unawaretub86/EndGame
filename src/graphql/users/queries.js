@@ -24,4 +24,18 @@ const GET_USER_BY_ID = gql`
   }
 `;
 
-export { GET_USERS, GET_USER_BY_ID };
+const LOGIN_USER = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      _id
+      name
+      lastName
+      documentId
+      email
+      role
+      status
+    }
+  }
+`;
+
+export { GET_USERS, GET_USER_BY_ID, LOGIN_USER };

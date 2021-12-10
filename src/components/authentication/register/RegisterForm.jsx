@@ -1,44 +1,33 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+// UI
 import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { useNavigate } from 'react-router-dom';
 // material
-import { Stack, TextField, IconButton, InputAdornment, Typography, Select, MenuItem, InputLabel, NativeSelect } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { crearUsuario } from '../../../firebase/auth-control';
+import { CREATE_USER } from '../../../graphql/users/mutations';
 // import { resolvePlugin } from '@babel/core';
 
 // ----------------------------------------------------------------------
-const role = [
-  {
-    value: 'student',
-    label: 'Student'
-  },
-  {
-    value: 'leader',
-    label: 'Leader'
-  },
-  {
-    value: 'administrator',
-    label: 'Administrator'
-  }
-];
 
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [ mtCreateUser ] = useMutation(CREATE_USER);
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string()
+    name: Yup.string()
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
       .required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    identification: Yup.number('Must be a number').required('Identification is required'),
+    documentId: Yup.number('Must be a number').required('Identification is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters').matches(/[a-zA-Z0-9]/, 'Password must contain letters and numbers'),
     passwordConfirm: Yup.string().required('Password Confirm is required').oneOf([Yup.ref('password')], 'Passwords must match'),
@@ -47,10 +36,10 @@ export default function RegisterForm() {
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
+      name: '',
       lastName: '',
-      identification: '',
-      role: '',
+      documentId: '',
+      role: 'none',
       email: '',
       password: '',
       passwordConfirm: ''
@@ -58,8 +47,13 @@ export default function RegisterForm() {
     validationSchema: RegisterSchema,
     onSubmit: () => {
       console.log("Register ~ formik.values ~ ", formik.values);
-      alert("Register ~ formik.values ~ ", formik.values);
-      
+      const toSend = { input : {...formik.values}};
+      console.log("Register ~ toSend11 ~ ", toSend);
+      delete toSend.input.passwordConfirm;
+      console.log("Register ~ toSend22 ~ ", toSend);
+      const resp = mtCreateUser({ variables: toSend })
+      console.log("Register ~ resp ~ ", resp);
+      navigate('/login');
     }
   });
 
@@ -73,9 +67,9 @@ export default function RegisterForm() {
             <TextField
               fullWidth
               label="First name"
-              {...getFieldProps('firstName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
+              {...getFieldProps('name')}
+              error={Boolean(touched.name && errors.name)}
+              helperText={touched.name && errors.name}
             />
 
             <TextField
@@ -89,10 +83,10 @@ export default function RegisterForm() {
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
-              label="Identification"
-              {...getFieldProps('identification')}
-              error={Boolean(touched.identification && errors.identification)}
-              helperText={touched.identification && errors.identification}
+              label="personal ID"
+              {...getFieldProps('documentId')}
+              error={Boolean(touched.documentId && errors.documentId)}
+              helperText={touched.documentId && errors.documentId}
             />
 
             
@@ -159,7 +153,6 @@ export default function RegisterForm() {
             type="submit"
             variant="contained"
             loading={isSubmitting}
-            onClick={() => { console.log("Register ~ formik.values ~ ", formik.values); }}
           >
             Register
           </LoadingButton>

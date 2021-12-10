@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 import { useContext, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useQuery } from '@apollo/client';
+// UI
 import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
@@ -16,8 +18,8 @@ import {
   FormControlLabel
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { loginUsuario } from '../../../firebase/auth-control';
 import { ContextUser } from '../../../contexts/ContextUser';
+// import { LOGIN_USER } from '../../../graphql/users/queries';
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +51,7 @@ const aStudent = {
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
+  
   const { setUserData } = useContext(ContextUser);
 
   const LoginSchema = Yup.object().shape({
@@ -57,6 +59,7 @@ export default function LoginForm() {
     password: Yup.string().required('Password is required')
   });
 
+  
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -64,17 +67,10 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: async () => {
+    onSubmit: () => {
       console.log('formik de login ~~',formik.values);
       // afrp- este si toco que fuera async para garantizar el falsy de la respuesta
       // loginUsuario está de src/firebase/auth-control
-      const user = await loginUsuario(formik.values.email, formik.values.password);
-      console.log('user en login ~~',user);
-      if (user) {
-        navigate('/dashboard', { replace: true });
-      }else{
-        alert('*Provisional* - Usuario o contraseña incorrecta');
-      }
     }
   });
 
@@ -139,6 +135,8 @@ export default function LoginForm() {
         >
           Login
         </LoadingButton>
+
+        {/* ---------------- */}
         <LoadingButton
           fullWidth
           size="small"
