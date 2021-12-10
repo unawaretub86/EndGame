@@ -13,7 +13,7 @@ const GET_USERS = gql`
 `;
 
 const GET_USER_BY_ID = gql`
-  query ($id: ID) {
+  query userById($id: ID!) {
     userById(_id: $id) {
       _id
       name
