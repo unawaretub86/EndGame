@@ -7,40 +7,34 @@ import { GET_USER_BY_ID } from '../../graphql/users/queries';
 
 export default function ProfileForm() {
   const [UpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
-  const { data, error, loading } = useQuery(GET_USER_BY_ID, {
+
+  const resp = useQuery(GET_USER_BY_ID, {
     variables: {
       id: '61ac499b6a529329c646eef3'
-    }
+    },
+    fetchPolicy: 'network-only'
   });
-  useEffect(() => {
-    if (error) {
-      console.log('Error consulting userdata', error);
-    }
-  }, [error]);
 
-  if (loading) return <div>Loading....</div>;
-  console.log('trae la data, profile form', data);
-  const dataUser = data.userById;
-  // const [values, setValues] = useState({
-  //   initialValues: {
-  //     name: '',
-  //     lastName: '',
-  //     identification: '',
-  //     email: '',
-  //     password: ''
+  const { dataUser, error, loading } = resp;
+  // const { data, error, loading } = useQuery(GET_USER_BY_ID, {
+  //   variables: {
+  //     id: '61ac499b6a529329c646eef3'
   //   }
   // });
+  // useEffect(() => {
+  //   if (error) {
+  //     console.log('Error consulting userdata', error);
+  //   }
+  // }, [error]);
 
-  // const handleChange = (event) => {
-  //   setValues({
-  //     ...values,
-  //     [event.target.name]: event.target.values
-  //   });
-  // };
-  const handleChange = (_id, name, lastName, documentId, email, password) => {
+  // if (loading) return <div>Loading....</div>;
+  // console.log('trae la data, profile form', data);
+  // const dataUser = data._id;
+
+  const handleChange = (userById, name, lastName, documentId, email, password) => {
     const paqueteEnvioBd = {
       input: {
-        userById: _id,
+        userById,
         name,
         lastName,
         documentId,
@@ -66,7 +60,7 @@ export default function ProfileForm() {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={dataUser._id}
+                value={dataUser.userById}
                 variant="outlined"
               />
             </Grid>
