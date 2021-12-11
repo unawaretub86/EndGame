@@ -2,7 +2,8 @@ import * as Yup from 'yup';
 import { useContext, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import jwtDecode from 'jwt-decode';
 // UI
 import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
@@ -19,7 +20,7 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { ContextUser } from '../../../contexts/ContextUser';
-// import { LOGIN_USER } from '../../../graphql/users/queries';
+import { LOGIN_USER } from '../../../graphql/users/mutations';
 
 // ----------------------------------------------------------------------
 
@@ -51,8 +52,8 @@ const aStudent = {
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  
   const { setUserData } = useContext(ContextUser);
+  const [ mtLoginUser ] = useMutation(LOGIN_USER);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -67,10 +68,22 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      console.log('formik de login ~~',formik.values);
-      // afrp- este si toco que fuera async para garantizar el falsy de la respuesta
-      // loginUsuario está de src/firebase/auth-control
+    onSubmit: async () => {
+      console.log('LoginForm ~ formik de login ~~',formik.values);
+      const toSend = { input: { email: formik.values.email, password: formik.values.password } };
+      console.log('LoginForm ~ toSend ~~',toSend);
+      // const token = await mtLoginUser( { variables: toSend } );
+      // const decode = jwtecode(token);
+      // if(userData) {
+      //   const { data } = userData;
+      //   console.log('LoginForm data de login ~~',data.login);
+      //   if(data.login.status === 'authorized') {
+      //     setUserData(data.login);
+      //     navigate('/dashboard');
+      //   }
+
+        
+      // }
     }
   });
 

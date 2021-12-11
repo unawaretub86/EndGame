@@ -24,18 +24,18 @@ const GET_USER_BY_ID = gql`
   }
 `;
 
-const LOGIN_USER = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+const GET_STUDENTS = gql`
+  query Query {
+    allStudents {
       _id
+      email
+      documentId
       name
       lastName
-      documentId
-      email
-      role
       status
+      role
     }
   }
 `;
 
-export { GET_USERS, GET_USER_BY_ID, LOGIN_USER };
+export { GET_USERS, GET_USER_BY_ID, GET_STUDENTS };

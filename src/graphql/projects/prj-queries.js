@@ -25,7 +25,7 @@ const GET_PROJECTS_ALL = gql`
 // }
 
 const GET_PROJECT_BYID = gql`
-  query ($id: ID) {
+  query ($id: ID!) {
     projectById(_id: $id) {
       _id
       name
@@ -46,7 +46,7 @@ const GET_PROJECT_BYID = gql`
 `;
 
 const GET_PROJECT_ADMIN_BYID = gql`
-  query ($id: ID) {
+  query ($id: ID!) {
     projectById(_id: $id) {
       _id
       name

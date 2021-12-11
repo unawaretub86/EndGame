@@ -28,4 +28,12 @@ const CREATE_USER = gql`
   }
 `;
 
-export { UPDATE_USER, UPDATE_STATE_ADMIN, CREATE_USER }
+const LOGIN_USER = gql`
+mutation Login($input: LoginInput!) {
+  login(input: $input) {
+    token
+  }
+}
+`;
+
+export { UPDATE_USER, UPDATE_STATE_ADMIN, CREATE_USER, LOGIN_USER }
