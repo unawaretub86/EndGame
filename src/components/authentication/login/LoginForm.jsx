@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useMutation } from '@apollo/client';
@@ -56,6 +56,10 @@ export default function LoginForm() {
   const { setUserData } = useContext(ContextUser);
   const [ mtLoginUser ] = useMutation(LOGIN_USER);
   const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
+  
+  useEffect(() => {
+    localStorage.removeItem('token');
+  }, [])
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -82,12 +86,13 @@ export default function LoginForm() {
         localStorage.setItem('token', resp.data.login);
         console.log('LoginForm ~ token ~~', resp.data.login);
         const decode = jwtDecode(resp.data.login);
-        setUserData(decode); navigate('/dashboard', { replace: true });
+        setUserData(decode);
+        navigate('/dashboard', { replace: true });
         console.log('LoginForm ~ token ~~',decode);
       } catch (error) {
         console.log('LoginForm ~ error ~~',error);
         if(error.graphQLErrors){
-          setStAlert({open:true, isGood:false, txt:error.graphQLErrors[0].message})
+          setStAlert({open:true, isGood:false, txt:'xERRORx : User not authorized yet'})
         }
       }
       
