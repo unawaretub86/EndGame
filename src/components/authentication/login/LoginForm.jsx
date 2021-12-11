@@ -21,6 +21,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import { ContextUser } from '../../../contexts/ContextUser';
 import { LOGIN_USER } from '../../../graphql/users/mutations';
+import AlertAndres from '../../generic-containers/AlertAndres';
 
 // ----------------------------------------------------------------------
 
@@ -54,6 +55,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { setUserData } = useContext(ContextUser);
   const [ mtLoginUser ] = useMutation(LOGIN_USER);
+  const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -85,7 +87,7 @@ export default function LoginForm() {
       } catch (error) {
         console.log('LoginForm ~ error ~~',error);
         if(error.graphQLErrors){
-          alert('Error al iniciar sesión');
+          setStAlert({open:true, isGood:false, txt:error.graphQLErrors[0].message})
         }
       }
       
@@ -100,9 +102,11 @@ export default function LoginForm() {
 
   return (
     <FormikProvider value={formik}>
+      <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField
+            onFocus={() => setStAlert({open:false, isGood:true, txt:''})}
             fullWidth
             autoComplete="username"
             type="email"
@@ -113,6 +117,7 @@ export default function LoginForm() {
           />
 
           <TextField
+            onFocus={() => setStAlert({open:false, isGood:true, txt:''})}
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
