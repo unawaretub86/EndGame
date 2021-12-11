@@ -70,20 +70,25 @@ export default function LoginForm() {
     validationSchema: LoginSchema,
     onSubmit: async () => {
       console.log('LoginForm ~ formik de login ~~',formik.values);
+      
       const toSend = { input: { email: formik.values.email, password: formik.values.password } };
       console.log('LoginForm ~ toSend ~~',toSend);
-      // const token = await mtLoginUser( { variables: toSend } );
-      // const decode = jwtecode(token);
-      // if(userData) {
-      //   const { data } = userData;
-      //   console.log('LoginForm data de login ~~',data.login);
-      //   if(data.login.status === 'authorized') {
-      //     setUserData(data.login);
-      //     navigate('/dashboard');
-      //   }
-
-        
-      // }
+      
+      try {
+        const resp = await mtLoginUser( { variables: toSend } );
+        console.log('LoginForm ~ resp ~~',resp);
+        localStorage.setItem('token', resp.data.login);
+        console.log('LoginForm ~ token ~~', resp.data.login);
+        const decode = jwtDecode(resp.data.login);
+        setUserData(decode); navigate('/dashboard', { replace: true });
+        console.log('LoginForm ~ token ~~',decode);
+      } catch (error) {
+        console.log('LoginForm ~ error ~~',error);
+        if(error.graphQLErrors){
+          alert('Error al iniciar sesión');
+        }
+      }
+      
     }
   });
 

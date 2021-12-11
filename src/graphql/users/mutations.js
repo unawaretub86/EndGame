@@ -30,9 +30,7 @@ const CREATE_USER = gql`
 
 const LOGIN_USER = gql`
 mutation Login($input: LoginInput!) {
-  login(input: $input) {
-    token
-  }
+  login(input: $input)
 }
 `;
 
