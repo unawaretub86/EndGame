@@ -58,9 +58,6 @@ function Project() {
 
   return (
     <>
-      {/* <pre>
-        {JSON.stringify(dataAllProjects, null, 2)}
-      </pre> */}
       <ContextModal.Provider value={{ stModal, setStModal }}>
         <ModalWindow
           titleModal={stModal.title}
@@ -76,7 +73,7 @@ function Project() {
             onClick={() =>
               setStModal({ title: 'Create Project', content: <FormCreateProject />, open: true })
             }
-          >
+            >
             <Icon icon="bi:plus-circle" width={24} height={24} />
             <Typography>Add Project</Typography>
           </Button>
@@ -96,6 +93,9 @@ function Project() {
             </Grid>
           ))}
         </Grid>
+        <pre>
+          {JSON.stringify(dataAllProjects, null, 2)}
+        </pre>
       </ContextModal.Provider>
     </>
   );

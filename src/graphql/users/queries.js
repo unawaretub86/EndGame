@@ -24,4 +24,18 @@ const GET_USER_BY_ID = gql`
   }
 `;
 
-export { GET_USERS, GET_USER_BY_ID };
+const GET_STUDENTS = gql`
+  query Query {
+    allStudents {
+      _id
+      email
+      documentId
+      name
+      lastName
+      status
+      role
+    }
+  }
+`;
+
+export { GET_USERS, GET_USER_BY_ID, GET_STUDENTS };

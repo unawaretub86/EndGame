@@ -50,6 +50,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  const userSideBar = sidebarConfig(userData.role);
+
+  console.log(userSideBar);
+
   const renderContent = (
     <Scrollbar
       sx={{
@@ -79,7 +83,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Link>
       </Box>
 
-      <NavSection navConfig={sidebarConfig} />
+      <NavSection navConfig={userSideBar} />
 
       <Box sx={{ flexGrow: 1 }} />
 

@@ -1,6 +1,6 @@
 const enumRole = {
   ADMIN: 'admin',
-  STUDENT: 'Student',
+  STUDENT: 'student',
   LEADER: 'leader'
 };
 

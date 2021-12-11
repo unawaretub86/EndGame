@@ -1,7 +1,10 @@
 import * as Yup from 'yup';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useMutation } from '@apollo/client';
+import jwtDecode from 'jwt-decode';
+// UI
 import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
@@ -16,8 +19,9 @@ import {
   FormControlLabel
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { loginUsuario } from '../../../firebase/auth-control';
 import { ContextUser } from '../../../contexts/ContextUser';
+import { LOGIN_USER } from '../../../graphql/users/mutations';
+import AlertAndres from '../../generic-containers/AlertAndres';
 
 // ----------------------------------------------------------------------
 
@@ -49,14 +53,20 @@ const aStudent = {
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
   const { setUserData } = useContext(ContextUser);
+  const [ mtLoginUser ] = useMutation(LOGIN_USER);
+  const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
+  
+  useEffect(() => {
+    localStorage.removeItem('token');
+  }, [])
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required')
   });
 
+  
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -65,16 +75,27 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: async () => {
-      console.log('formik de login ~~',formik.values);
-      // afrp- este si toco que fuera async para garantizar el falsy de la respuesta
-      // loginUsuario está de src/firebase/auth-control
-      const user = await loginUsuario(formik.values.email, formik.values.password);
-      console.log('user en login ~~',user);
-      if (user) {
+      console.log('LoginForm ~ formik de login ~~',formik.values);
+      
+      const toSend = { input: { email: formik.values.email, password: formik.values.password } };
+      console.log('LoginForm ~ toSend ~~',toSend);
+      
+      try {
+        const resp = await mtLoginUser( { variables: toSend } );
+        console.log('LoginForm ~ resp ~~',resp);
+        localStorage.setItem('token', resp.data.login);
+        console.log('LoginForm ~ token ~~', resp.data.login);
+        const decode = jwtDecode(resp.data.login);
+        setUserData(decode);
         navigate('/dashboard', { replace: true });
-      }else{
-        alert('*Provisional* - Usuario o contraseña incorrecta');
+        console.log('LoginForm ~ token ~~',decode);
+      } catch (error) {
+        console.log('LoginForm ~ error ~~',error);
+        if(error.graphQLErrors){
+          setStAlert({open:true, isGood:false, txt:'xERRORx : User not authorized yet'})
+        }
       }
+      
     }
   });
 
@@ -86,9 +107,11 @@ export default function LoginForm() {
 
   return (
     <FormikProvider value={formik}>
+      <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField
+            onFocus={() => setStAlert({open:false, isGood:true, txt:''})}
             fullWidth
             autoComplete="username"
             type="email"
@@ -99,6 +122,7 @@ export default function LoginForm() {
           />
 
           <TextField
+            onFocus={() => setStAlert({open:false, isGood:true, txt:''})}
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
@@ -139,6 +163,8 @@ export default function LoginForm() {
         >
           Login
         </LoadingButton>
+
+        {/* ---------------- */}
         <LoadingButton
           fullWidth
           size="small"
