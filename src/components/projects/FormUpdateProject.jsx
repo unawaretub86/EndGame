@@ -55,7 +55,6 @@ export default function FormUpdateProject({ dataID }) {
   
 
   const RegisterSchema = Yup.object().shape({
-    // <<< afrp- OJO volver a activar >>>
     // name: Yup.string().required('Name is required').min(5, 'Too Short!'),
     // generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
     // specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
@@ -73,28 +72,18 @@ export default function FormUpdateProject({ dataID }) {
     delete toSend.specificObjective3;
     delete toSend.startDate;
     delete toSend.endDate;
-    
     toSend.projectById = prjID;
     toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
-    // <<< afrp- no hacen parte >>>
-    // toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
-    // toSend.status = "inactive";
     toSend.budget = parseInt(formikOriginal.budget, 10);
     return toSend;
   }
   
   const formik = useFormik({
     initialValues: {
-      name: "projectInfo.name",
-      generalObjective: "projectInfo.generalObjective"
     },
     validationSchema: RegisterSchema,
     enableReinitialize: true,
     onSubmit: async () => {
-      // afrp- {jalar al user context y sacar el user_id del usuario}
-      // afrp- 
-      // afrp- {mutation de firebase para guardar el proyecto}
-      // afrp- {jalar el modal ctx para cerrarlo}
       
       const toSend = packData(formik.values, dataID);
       console.log("UpdateProject: onSubmit -> gql toSend", toSend);
@@ -112,12 +101,8 @@ export default function FormUpdateProject({ dataID }) {
     formik.setFieldValue('specificObjective1', data.projectById.specificObjectives[0]);
     formik.setFieldValue('specificObjective2', data.projectById.specificObjectives[1]);
     formik.setFieldValue('specificObjective3', data.projectById.specificObjectives[2]);
-    formik.setFieldValue('startDate', data.projectById.startDate);
-    formik.setFieldValue('endDate', data.projectById.endDate);
     formik.setFieldValue('budget', data.projectById.budget);
     }
-    // afrp- buscar la forma que no pida esta mondá de formik
-    // posible solución es usar Formik con props en el jsx
   }, [data]);
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
@@ -185,22 +170,7 @@ export default function FormUpdateProject({ dataID }) {
             https://stackoverflow.com/questions/56312372/react-datepicker-with-a-formik-form
             https://stackoverflow.com/questions/57109680/how-to-use-mutations-in-react-apollo-hooks-and-formik
             */}
-            <TextField
-              fullWidth
-              disabled
-              label="Start Date"
-              {...getFieldProps('startDate')}
-              error={Boolean(touched.startDate && errors.startDate)}
-              helperText={touched.startDate && errors.startDate}
-            />
-            <TextField
-              fullWidth
-              disabled
-              label="*{Date Picker}*"
-              {...getFieldProps('endDate')}
-              error={Boolean(touched.endDate && errors.endDate)}
-              helperText={touched.endDate && errors.endDate}
-            />            
+                       
           </Stack>
           <TextField
             fullWidth

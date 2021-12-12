@@ -20,7 +20,6 @@ const UPDATE_PROJECT = gql`
         updateProject(input: $input) {
             _id
             name
-            leader_id
         }
     }
 `;
