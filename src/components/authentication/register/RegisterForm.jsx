@@ -45,13 +45,13 @@ export default function RegisterForm() {
       passwordConfirm: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
+    onSubmit: async () => {
       console.log("Register ~ formik.values ~ ", formik.values);
       const toSend = { input : {...formik.values}};
       console.log("Register ~ toSend11 ~ ", toSend);
       delete toSend.input.passwordConfirm;
       console.log("Register ~ toSend22 ~ ", toSend);
-      const resp = mtCreateUser({ variables: toSend })
+      const resp = await mtCreateUser({ variables: toSend })
       console.log("Register ~ resp ~ ", resp);
       navigate('/login');
     }

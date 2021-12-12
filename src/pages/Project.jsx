@@ -10,7 +10,7 @@ import MediaCard from '../components/generic-containers/MediaCard';
 import InfoProject from '../components/projects/InfoProject';
 import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
-import { GET_PROJECTS_ALL } from '../graphql/projects/prj-queries';
+import { GET_PROJECTS_ALL, GET_PROJECTS_OF_LEADER } from '../graphql/projects/prj-queries';
 import { ContextUser } from '../contexts/ContextUser';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -43,7 +43,17 @@ function Project() {
 
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
 
-  const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
+  // const projectQueryUponUser = ()=>{
+  //   let query = []
+  //   if(userData.user.role === 'admin'){
+  //     query = GET_PROJECTS_ALL;
+  //   }
+  //   if(userData.user.role === 'leader'){
+  //     query = [GET_PROJECTS_OF_LEADER, { variables: { id: userData._id } }];
+  //   }
+  //   return query;
+  // }
+  const { data, error, loading } = useQuery(GET_PROJECTS_ALL, { variables: { id: null } });
 
   if (loading) return <p>Loading...</p>;
   if (error) {

@@ -13,21 +13,22 @@ import { LoadingButton } from '@mui/lab';
 // import { ContextModal } from '../../contexts/ContextModal';
 import AlertAndres from '../generic-containers/AlertAndres';
 import { CREATE_PROJECT } from '../../graphql/projects/prj-mutations';
+import { ContextUser } from '../../contexts/ContextUser';
 
 // ----------------------------------------------------------------------
 
 // <<< afrp- para organizar la info como pide gql
           // ampliar a 5 spec obj
           // extraer leader de un UserContext
-function packData(formikOriginal) {
+function packData(formikOriginal, leaderID) {
       const toSend = {...formikOriginal};
       delete toSend.specificObjective1;
       delete toSend.specificObjective2;
       delete toSend.specificObjective3;
       toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
-      toSend.leader_id = "61a6f41c1e04d028a4dd7cfd"
+      toSend.leader_id = leaderID
       // <<< afrp- mover esta asignación de status al backend >>>
-      toSend.status = "inactive";
+      
       toSend.budget = parseInt(formikOriginal.budget, 10);
       return toSend;
 }
@@ -40,6 +41,8 @@ export default function FormCreateProject() {
   // const { setStModal } = React.useContext(ContextModal);
   const [mtCreateProject, { loading }] = useMutation (CREATE_PROJECT);
 
+  const { userData } = React.useContext(ContextUser);
+
   const RegisterSchema = Yup.object().shape({
     // <<< afrp- OJO volver a activar >>>
     // name: Yup.string().required('Name is required').min(5, 'Too Short!'),
@@ -48,8 +51,6 @@ export default function FormCreateProject() {
     // specificObjective2: Yup.string().min(20, 'Too Short!'),
     // specificObjective3: Yup.string().min(20, 'Too Short!'),
     // budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
-    // startDate: Yup.string().required('Start Date is required'),
-    // endDate: Yup.string().required('End Date is required'),
   });
 
   const formik = useFormik({
@@ -59,9 +60,7 @@ export default function FormCreateProject() {
       specificObjective1: '',
       specificObjective2: '',
       specificObjective3: '',
-      budget: '',
-      startDate: '',
-      endDate: '',
+      budget: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: async () => {
@@ -69,10 +68,10 @@ export default function FormCreateProject() {
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
-      const toSend = packData(formik.values);
+      const toSend = {input : packData(formik.values, userData._id)};
       
       console.log("FormCreateProject: onSubmit -> gql toSend 7pm", toSend);
-      const resp = await mtCreateProject({ variables: {input: toSend} },)
+      const resp = await mtCreateProject({ variables: toSend },)
       console.log("FormCreateProject: onSubmit -> gql resp", resp);
       setStAlert({open:true, isGood:true, txt:'Project created successfully'})
     }
@@ -135,25 +134,7 @@ export default function FormCreateProject() {
               error={Boolean(touched.budget && errors.budget)}
               helperText={touched.budget && errors.budget}
             />
-            {/* afrp- Pasar a date picker
-            https://mui.com/components/pickers/
-            https://stackoverflow.com/questions/56312372/react-datepicker-with-a-formik-form
-            https://stackoverflow.com/questions/57109680/how-to-use-mutations-in-react-apollo-hooks-and-formik
-            */}
-            <TextField
-              fullWidth
-              label="Start Date"
-              {...getFieldProps('startDate')}
-              error={Boolean(touched.startDate && errors.startDate)}
-              helperText={touched.startDate && errors.startDate}
-            />
-            <TextField
-              fullWidth
-              label="*{Date Picker}*"
-              {...getFieldProps('endDate')}
-              error={Boolean(touched.endDate && errors.endDate)}
-              helperText={touched.endDate && errors.endDate}
-            />            
+                
           </Stack>
           <TextField
             fullWidth
@@ -162,6 +143,10 @@ export default function FormCreateProject() {
             error={Boolean(touched.imgurl && errors.imgurl)}
             helperText={touched.imgurl && errors.imgurl}
           />
+
+          <Typography variant="h12" sx={{ mb: 2 }}>
+            Creado por : {userData.name} {userData.lastName} , id: {userData._id}
+          </Typography>
 
 
           <LoadingButton

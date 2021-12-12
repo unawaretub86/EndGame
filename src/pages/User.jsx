@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 
@@ -30,7 +30,8 @@ import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 //
 import { UPDATE_STATE_ADMIN } from '../graphql/users/mutations';
-import { GET_USERS } from '../graphql/users/queries';
+import { GET_USERS, GET_STUDENTS} from '../graphql/users/queries';
+import { ContextUser } from '../contexts/ContextUser';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -81,19 +82,43 @@ export default function User() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  
   const [UpdateStateAdmin, { loading: loadMutation }] = useMutation(UPDATE_STATE_ADMIN);
+  const { userData } = React.useContext(ContextUser);
+  const [ stUserList, setStUserList ] = useState([]);
 
-  const { data, error, loading } = useQuery(GET_USERS);
-  console.log(data);
+  let QUERY_BY_ROLE;
+  
+  if (userData.role === 'admin') {
+    QUERY_BY_ROLE = GET_USERS;
+    console.log('user page ~ query by role USERS: ', QUERY_BY_ROLE);
+  }
+  if (userData.role === 'leader') {
+    QUERY_BY_ROLE = GET_STUDENTS;
+    console.log('user page ~ query by role STUDENTS: ', QUERY_BY_ROLE);
+  }
+  
+  const { data, error, loading } = useQuery(QUERY_BY_ROLE);
+
+  // const [ getAllUsers, {loading: loadingUsers, data: dataUsers}] = useLazyQuery(GET_USERS);
+  // const [ getStudents, {loading: loadingStudents, data: dataStudents}] = useLazyQuery(GET_STUDENTS);
+  
+
   useEffect(() => {
-    if (error) {
-      console.log('Error consulting users', error);
+    if (data) {
+      if (userData.role === 'admin') {
+        // getAllUsers();
+        setStUserList(data.allUsers);
+      }
+      if (userData.role === 'leader') {
+        // getStudents();
+        setStUserList(data.allStudents);
     }
-  }, [error]);
+  }
+  }, [data]);
 
   if (loading) return <div>Loading....</div>;
 
-  const dataUsers = data.allUsers;
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -103,7 +128,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = dataUsers.map((n) => n.name);
+      const newSelecteds = stUserList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -151,15 +176,16 @@ export default function User() {
     UpdateStateAdmin({ variables: paqueteEnvioBd });
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataUsers.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stUserList.length) : 0;
 
-  const filteredUsers = applySortFilter(dataUsers, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(stUserList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
   //  aqui inicia el RETURN del componente --------------------\\\\
 
   return (
+    <>{ !(loading) ? 
     <Page title="User | Minimal-UI">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -182,7 +208,7 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dataUsers.length}
+                  rowCount={stUserList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -276,7 +302,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={dataUsers.length}
+            count={stUserList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -285,5 +311,7 @@ export default function User() {
         </Card>
       </Container>
     </Page>
+    :<p>Loading...</p>}
+    </>
   );
 }

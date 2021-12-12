@@ -60,5 +60,31 @@ const GET_PROJECT_ADMIN_BYID = gql`
   }
 `;
 
+const GET_PROJECTS_OF_LEADER= gql`
+  query Query($leaderId: ID!) {
+    projectByLeaderId(leader_id: $leaderId) {
+      _id
+      name
+      generalObjective
+      specificObjectives
+      budget
+      startDate
+      endDate
+      leader_id
+      status
+      phase
+      leader {
+        _id
+        email
+        documentId
+        name
+        lastName
+        status
+        role
+      }
+    }
+  }
+`;
+
 // afrp- ojo con el leader{...}
-export { GET_PROJECTS_ALL, GET_PROJECT_BYID, GET_PROJECT_ADMIN_BYID};
+export { GET_PROJECTS_ALL, GET_PROJECT_BYID, GET_PROJECT_ADMIN_BYID, GET_PROJECTS_OF_LEADER};
