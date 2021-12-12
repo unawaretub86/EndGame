@@ -5,14 +5,6 @@ import { Typography, Box } from '@mui/material';
 import { GET_PROJECT_BYID } from '../../graphql/projects/prj-queries';
 
 
-function typoCouple(first, second) {
-  return (
-    <Box display="flex" flexDirection="row" alignItems="center">
-      <Typography variant="body2">{first}</Typography>
-      <Typography variant="body2">{second}</Typography>
-    </Box>
-  );
-}
 
 InfoProject.propTypes = {
   dataID: PropTypes.object
@@ -40,33 +32,49 @@ export default function InfoProject({ dataID }) {
   
   return(
     <>
-      <Box sx={{ minWidth: 240 }}>
-        {typoCouple()}
-        <Typography variant="subtitle2" noWrap>
-          Project Name:
+      <Box>
+        <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+          Project Name : &nbsp;
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+        <Typography variant="h12"  noWrap>
           {projectInfo.name}
         </Typography>
       </Box>
-      <ul>
-        <li><h2>Project Name : {projectInfo.name}</h2></li>
-        <li><h3>Project ID : {projectInfo._id.substr(-4,4)} OJO '(*solo 4*)'</h3></li>
-        <li><h2>General Objective:</h2></li>
-        <li><p>{projectInfo.generalObjective}</p></li>
-        <li><h2>Specific objectives</h2></li>
-        <li><ul>
+      <Box>  {/* sx={{ minWidth: 240 }} */}
+        <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+          Project ID : &nbsp;
+        </Typography>
+        <Typography variant="h12"  noWrap>
+          {projectInfo._id.substr(-5,5)}
+        </Typography>
+      </Box>
+      <Box>
+        <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+          General Objective : &nbsp;
+        </Typography>
+        <Typography variant="h12"  noWrap>
+          {projectInfo.generalObjective}
+        </Typography>
+      </Box>
+      <Box>
+        <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+          Specific objectives : &nbsp;
+        </Typography>
+        <ul>
           {projectInfo.specificObjectives.map((elem, index) => 
-            <li key={index}><p>{elem}</p></li>
+            <li key={index}><Typography variant="p"  noWrap>&nbsp;&nbsp;&nbsp;{elem}</Typography></li>
           )}
-        </ul></li>
+        </ul>
+      </Box>
+      <ul>
+        
         <li><h2>Start date: {projectInfo.startDate}</h2></li>
         <li><h2>End date: {projectInfo.endDate}</h2></li>
         <li><h2>Project details</h2></li>
         <li><h3>Budget: {projectInfo.budget}</h3></li>
         <li><h3>Status: {projectInfo.status}</h3></li>
-        <li><h3>Leader: {projectInfo.leader_id}</h3></li>
-        <li><h3>Leader ID: {projectInfo.leader_id}</h3></li>
+        <li><h3>Leader: {projectInfo.leader.name} {projectInfo.leader.lastName}</h3></li>
+        <li><h3>Leader ID: {projectInfo.leader._id}</h3></li>
       </ul>
     </>
   );
