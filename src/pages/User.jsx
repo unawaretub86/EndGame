@@ -30,7 +30,7 @@ import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 //
 import { UPDATE_STATE_ADMIN } from '../graphql/users/mutations';
-import { GET_USERS, GET_STUDENTS} from '../graphql/users/queries';
+import { GET_USERS, GET_STUDENTS } from '../graphql/users/queries';
 import { ContextUser } from '../contexts/ContextUser';
 // ----------------------------------------------------------------------
 
@@ -82,13 +82,13 @@ export default function User() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  
+
   const [UpdateStateAdmin, { loading: loadMutation }] = useMutation(UPDATE_STATE_ADMIN);
   const { userData } = React.useContext(ContextUser);
-  const [ stUserList, setStUserList ] = useState([]);
+  const [stUserList, setStUserList] = useState([]);
 
   let QUERY_BY_ROLE;
-  
+
   if (userData.role === 'admin') {
     QUERY_BY_ROLE = GET_USERS;
     console.log('user page ~ query by role USERS: ', QUERY_BY_ROLE);
@@ -97,12 +97,11 @@ export default function User() {
     QUERY_BY_ROLE = GET_STUDENTS;
     console.log('user page ~ query by role STUDENTS: ', QUERY_BY_ROLE);
   }
-  
+
   const { data, error, loading } = useQuery(QUERY_BY_ROLE);
 
   // const [ getAllUsers, {loading: loadingUsers, data: dataUsers}] = useLazyQuery(GET_USERS);
   // const [ getStudents, {loading: loadingStudents, data: dataStudents}] = useLazyQuery(GET_STUDENTS);
-  
 
   useEffect(() => {
     if (data) {
@@ -113,12 +112,11 @@ export default function User() {
       if (userData.role === 'leader') {
         // getStudents();
         setStUserList(data.allStudents);
+      }
     }
-  }
   }, [data]);
 
   if (loading) return <div>Loading....</div>;
-
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -185,133 +183,136 @@ export default function User() {
   //  aqui inicia el RETURN del componente --------------------\\\\
 
   return (
-    <>{ !(loading) ? 
-    <Page title="User | Minimal-UI">
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            User
-          </Typography>
-        </Stack>
+    <>
+      {!loading ? (
+        <Page title="User | End Game">
+          <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h4" gutterBottom>
+                User
+              </Typography>
+            </Stack>
 
-        <Card>
-          <UserListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+            <Card>
+              <UserListToolbar
+                numSelected={selected.length}
+                filterName={filterName}
+                onFilterName={handleFilterByName}
+              />
 
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={stUserList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { _id, name, lastName, role, status } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
-                      return (
-                        <TableRow
-                          hover
-                          key={_id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar
-                                alt={name}
-                                src="/static/mock-images/avatars/avatar_default.jpg"
-                              />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{lastName}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">
-                            <FormControl fullWidth>
-                              <InputLabel
-                                variant="standard"
-                                htmlFor="uncontrolled-native"
-                                color="success"
-                              >
-                                {status}
-                              </InputLabel>
-                              <NativeSelect
-                                defaultValue={status}
-                                inputProps={{
-                                  name: 'select',
-                                  id: 'uncontrolled-native'
-                                }}
-                                onChange={(e) => handleChangeStatus(_id, e.target.value)}
-                              >
-                                <option disabled hidden>
-                                  {' '}
-                                </option>
-                                <option value="pending">Pending</option>
-                                <option value="authorized">Authorized</option>
-                                <option value="unauthorized">Unauthorized</option>
-                              </NativeSelect>
-                            </FormControl>
-                          </TableCell>
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <UserListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={stUserList.length}
+                      numSelected={selected.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
+                    />
+                    <TableBody>
+                      {filteredUsers
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row) => {
+                          const { _id, name, lastName, role, status } = row;
+                          const isItemSelected = selected.indexOf(name) !== -1;
+                          return (
+                            <TableRow
+                              hover
+                              key={_id}
+                              tabIndex={-1}
+                              role="checkbox"
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
+                            >
+                              <TableCell padding="checkbox">
+                                <Checkbox
+                                  checked={isItemSelected}
+                                  onChange={(event) => handleClick(event, name)}
+                                />
+                              </TableCell>
+                              <TableCell component="th" scope="row" padding="none">
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                  <Avatar
+                                    alt={name}
+                                    src="/static/mock-images/avatars/avatar_default.jpg"
+                                  />
+                                  <Typography variant="subtitle2" noWrap>
+                                    {name}
+                                  </Typography>
+                                </Stack>
+                              </TableCell>
+                              <TableCell align="left">{lastName}</TableCell>
+                              <TableCell align="left">{role}</TableCell>
+                              <TableCell align="left">
+                                <FormControl fullWidth>
+                                  <InputLabel
+                                    variant="standard"
+                                    htmlFor="uncontrolled-native"
+                                    color="success"
+                                  >
+                                    {status}
+                                  </InputLabel>
+                                  <NativeSelect
+                                    defaultValue={status}
+                                    inputProps={{
+                                      name: 'select',
+                                      id: 'uncontrolled-native'
+                                    }}
+                                    onChange={(e) => handleChangeStatus(_id, e.target.value)}
+                                  >
+                                    <option disabled hidden>
+                                      {' '}
+                                    </option>
+                                    <option value="pending">Pending</option>
+                                    <option value="authorized">Authorized</option>
+                                    <option value="unauthorized">Unauthorized</option>
+                                  </NativeSelect>
+                                </FormControl>
+                              </TableCell>
 
-                          <TableCell align="right">
-                            <UserMoreMenu />
+                              <TableCell align="right">
+                                <UserMoreMenu />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
+                        </TableRow>
+                      )}
+                    </TableBody>
+                    {isUserNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <SearchNotFound searchQuery={filterName} />
                           </TableCell>
                         </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={stUserList.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
-      </Container>
-    </Page>
-    :<p>Loading...</p>}
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={stUserList.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+          </Container>
+        </Page>
+      ) : (
+        <p>Loading...</p>
+      )}
     </>
   );
 }

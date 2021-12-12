@@ -20,20 +20,18 @@ import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
 
 // <<< afrp- para organizar la info como pide gql
 // ampliar a 5 spec obj
-// extraer leader de un UserContext          
+// extraer leader de un UserContext
 
 FormUpdateProject.propTypes = {
   dataID: PropTypes.string
 };
 
-
-
 // <<< afrp- inicio del componente ------------------------------------->>
 
 export default function FormUpdateProject({ dataID }) {
-  const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
-  const [mtUpdateProject, { loading: loadMutation }] = useMutation (UPDATE_PROJECT);
-  
+  const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: '' });
+  const [mtUpdateProject, { loading: loadMutation }] = useMutation(UPDATE_PROJECT);
+
   console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_BYID);
   console.log('Update Project ~ dataID ~ ', dataID);
   const resp = useQuery(GET_PROJECT_BYID, {
@@ -42,17 +40,19 @@ export default function FormUpdateProject({ dataID }) {
     },
     fetchPolicy: 'network-only'
   });
-  
-  
+
   console.log('Update Project ~ resp ~ ', resp);
-  const { data, error, loading } = resp
-  console.log('Update Project ~ data ~ ', data,
-  'Update Project ~ error ~ ', error,
-  'Update Project ~ loadingQuery ~ ', loading);  
-  
+  const { data, error, loading } = resp;
+  console.log(
+    'Update Project ~ data ~ ',
+    data,
+    'Update Project ~ error ~ ',
+    error,
+    'Update Project ~ loadingQuery ~ ',
+    loading
+  );
+
   // const [mtUpdateProject, { loading: loadingMutation }] = useMutation (UPDATE_PROJECT);
-  
-  
 
   const RegisterSchema = Yup.object().shape({
     // name: Yup.string().required('Name is required').min(5, 'Too Short!'),
@@ -64,56 +64,57 @@ export default function FormUpdateProject({ dataID }) {
     // startDate: Yup.string().required('Start Date is required'),
     // endDate: Yup.string().required('End Date is required')
   });
-  
+
   function packData(formikOriginal, prjID) {
-    const toSend = {...formikOriginal};
+    const toSend = { ...formikOriginal };
     delete toSend.specificObjective1;
     delete toSend.specificObjective2;
     delete toSend.specificObjective3;
     delete toSend.startDate;
     delete toSend.endDate;
     toSend.projectById = prjID;
-    toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
+    toSend.specificObjectives = [
+      formikOriginal.specificObjective1,
+      formikOriginal.specificObjective2,
+      formikOriginal.specificObjective3
+    ];
     toSend.budget = parseInt(formikOriginal.budget, 10);
     return toSend;
   }
-  
+
   const formik = useFormik({
-    initialValues: {
-    },
+    initialValues: {},
     validationSchema: RegisterSchema,
     enableReinitialize: true,
     onSubmit: async () => {
-      
       const toSend = packData(formik.values, dataID);
-      console.log("UpdateProject: onSubmit -> gql toSend", toSend);
-      const resp = mtUpdateProject({ variables: {input: toSend} },)
-      console.log("FormUpdateProject: onSubmit -> gql resp", resp);
-      setStAlert({open:true, isGood:true, txt:'Project created successfully'})
+      console.log('UpdateProject: onSubmit -> gql toSend', toSend);
+      const resp = mtUpdateProject({ variables: { input: toSend } });
+      console.log('FormUpdateProject: onSubmit -> gql resp', resp);
+      setStAlert({ open: true, isGood: true, txt: 'Project created successfully' });
     }
-    
   });
-  
+
   React.useEffect(() => {
     if (data) {
-    formik.setFieldValue('name', data.projectById.name);
-    formik.setFieldValue('generalObjective', data.projectById.generalObjective);
-    formik.setFieldValue('specificObjective1', data.projectById.specificObjectives[0]);
-    formik.setFieldValue('specificObjective2', data.projectById.specificObjectives[1]);
-    formik.setFieldValue('specificObjective3', data.projectById.specificObjectives[2]);
-    formik.setFieldValue('budget', data.projectById.budget);
+      formik.setFieldValue('name', data.projectById.name);
+      formik.setFieldValue('generalObjective', data.projectById.generalObjective);
+      formik.setFieldValue('specificObjective1', data.projectById.specificObjectives[0]);
+      formik.setFieldValue('specificObjective2', data.projectById.specificObjectives[1]);
+      formik.setFieldValue('specificObjective3', data.projectById.specificObjectives[2]);
+      formik.setFieldValue('budget', data.projectById.budget);
     }
   }, [data]);
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-  
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
-  
+
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
+        <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
@@ -170,7 +171,6 @@ export default function FormUpdateProject({ dataID }) {
             https://stackoverflow.com/questions/56312372/react-datepicker-with-a-formik-form
             https://stackoverflow.com/questions/57109680/how-to-use-mutations-in-react-apollo-hooks-and-formik
             */}
-                       
           </Stack>
           <TextField
             fullWidth
@@ -180,7 +180,6 @@ export default function FormUpdateProject({ dataID }) {
             helperText={touched.imgurl && errors.imgurl}
           />
 
-
           <LoadingButton
             fullWidth
             size="large"
@@ -188,7 +187,7 @@ export default function FormUpdateProject({ dataID }) {
             variant="contained"
             loading={isSubmitting}
           >
-            Create Project
+            Update Project
           </LoadingButton>
         </Stack>
       </Form>

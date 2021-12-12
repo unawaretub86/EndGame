@@ -14,9 +14,6 @@ import {
 import Login from './Login';
 import { ContextUser } from '../contexts/ContextUser';
 
-
-
-
 // ----------------------------------------------------------------------
 // const VIEWER_QUERY = gql`
 //   query {
@@ -50,7 +47,7 @@ export default function DashboardApp() {
   // const { data, loading } = useQuery(VIEWER_QUERY);
   const [first, setFirst] = useState(1);
   // const { data, loading, refetch } = useQuery(REPOSITORIES_QUERY, { variables: { first } });
-  
+
   const { userData } = useContext(ContextUser);
   console.log(userData);
 
@@ -68,22 +65,23 @@ export default function DashboardApp() {
         ))}
       </div> */}
 
-      <Page title="Dashboard | Minimal-UI">
+      <Page title="Dashboard | End Game">
         <Container maxWidth="xl">
-          
           <Box sx={{ pb: 5 }}>
-            <Typography variant="h4">Hi, {userData.name} {userData.lastName} . Welcome back</Typography>
+            <Typography variant="h4">
+              Hi, {userData.name} {userData.lastName} . Welcome back
+            </Typography>
           </Box>
           <Grid container spacing={3}>
-            {userData.role === 'admin' || userData.role === 'leader'? 
+            {userData.role === 'admin' || userData.role === 'leader' ? (
               <Grid item xs={12} sm={6} md={3}>
                 <AppUsers />
               </Grid>
-              :null}
+            ) : null}
             <Grid item xs={12} sm={6} md={3}>
               <AppNewProjects />
             </Grid>
-            {userData.role === 'student' || userData.role === 'leader'? 
+            {userData.role === 'student' || userData.role === 'leader' ? (
               <>
                 <Grid item xs={12} sm={6} md={3}>
                   <AppEnrollments />
@@ -92,7 +90,7 @@ export default function DashboardApp() {
                   <AppAdvances />
                 </Grid>
               </>
-              :null}
+            ) : null}
           </Grid>
         </Container>
       </Page>
