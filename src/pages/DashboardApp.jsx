@@ -14,35 +14,6 @@ import {
 import Login from './Login';
 import { ContextUser } from '../contexts/ContextUser';
 
-// ----------------------------------------------------------------------
-// const VIEWER_QUERY = gql`
-//   query {
-//     viewer {
-//       name
-//       login
-//     }
-//   }
-// `;
-// const REPOSITORIES_QUERY = gql`
-//   query MyRepositories($first: Int!) {
-//     viewer {
-//       name
-//       avatarUrl
-//       login
-//       repositories(first: $first) {
-//         nodes {
-//           id
-//           name
-//           stargazers {
-//             totalCount
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
-
-// ----------------------------------------------------------------------
 export default function DashboardApp() {
   // const { data, loading } = useQuery(VIEWER_QUERY);
   const [first, setFirst] = useState(1);
@@ -53,18 +24,6 @@ export default function DashboardApp() {
 
   return (
     <>
-      {/* {loading ? '' : `${data.viewer.name} - ${data.viewer.login}`}
-      <div>
-        {data?.viewer?.map(({ name, login }) => (
-          <>
-            <p>bar
-              {}
-              {name} - {login}
-            </p>
-          </>
-        ))}
-      </div> */}
-
       <Page title="Dashboard | End Game">
         <Container maxWidth="xl">
           <Box sx={{ pb: 5 }}>
