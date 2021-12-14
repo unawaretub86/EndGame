@@ -30,7 +30,7 @@ FormUpdateProject.propTypes = {
 
 export default function FormUpdateProject({ dataID }) {
   const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: '' });
-  const [mtUpdateProject, { loading: loadMutation }] = useMutation(UPDATE_PROJECT);
+  const [mtUpdateProject] = useMutation(UPDATE_PROJECT);
 
   console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_BYID);
   console.log('Update Project ~ dataID ~ ', dataID);

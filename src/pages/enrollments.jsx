@@ -86,7 +86,7 @@ export default function Enrollments() {
   const [orderBy, setOrderBy] = useState('project');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [changeStatusEnrollment, { loading: loadMutation }] = useMutation(CHANGE_STATUS_ENROLLMENT);
+  const [changeStatusEnrollment] = useMutation(CHANGE_STATUS_ENROLLMENT);
 
   const { data, error, loading } = useQuery(GET_ENROLLMENTS);
   console.log(data);

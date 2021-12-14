@@ -83,7 +83,7 @@ export default function User() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [UpdateStateAdmin, { loading: loadMutation }] = useMutation(UPDATE_STATE_ADMIN);
+  const [UpdateStateAdmin] = useMutation(UPDATE_STATE_ADMIN);
   const { userData } = React.useContext(ContextUser);
   const [stUserList, setStUserList] = useState([]);
 
