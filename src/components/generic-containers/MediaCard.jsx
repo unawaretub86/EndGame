@@ -17,6 +17,7 @@ import EnrollProject from '../projects/EnrollProject';
 
 // context
 import { ContextUser } from '../../contexts/ContextUser';
+import FormDoAdvnc from '../projects/FormDoAdvnc';
 
 
 export default function MediaCard({ dataID, title, description, image, alt }) {
@@ -69,6 +70,7 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
           </Button>
           : null}
         {userData.role === 'student' ?
+        <>
           <Button
             onClick={()=>setStModal({
               content: <EnrollProject dataID={dataID} />,
@@ -78,6 +80,16 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
             size="small">
             Enroll
           </Button>
+          <Button
+            onClick={()=>setStModal({
+              content: <FormDoAdvnc dataID={dataID} />,
+              title: "Advancement",
+              open: true
+            })}
+            size="small">
+            Advance
+          </Button>
+        </>
           : null}
       </CardActions>
     </Card>
