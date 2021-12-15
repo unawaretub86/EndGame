@@ -19,14 +19,17 @@ import * as Yup from 'yup';
 
 import { UPDATE_USER } from '../../graphql/users/mutations';
 import { GET_USER_BY_ID } from '../../graphql/users/queries';
+import { ContextUser } from '../../contexts/ContextUser';
 
 export default function ProfileForm() {
   // const [UpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
   const [showPassword, setShowPassword] = React.useState(false);
+  const { userData } = React.useContext(ContextUser);
+  console.log('ProfileForm ~ userData: ', userData);
 
   const resp = useQuery(GET_USER_BY_ID, {
     variables: {
-      id: '61ac499b6a529329c646eef3'
+      id: userData._id
     },
     fetchPolicy: 'network-only'
   });
