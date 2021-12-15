@@ -53,7 +53,7 @@ function Project() {
   //   }
   //   return query;
   // }
-  const { data, error, loading } = useQuery(GET_PROJECTS_ALL, { variables: { id: null } });
+  const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
 
   if (loading) return <p>Loading...</p>;
   if (error) {
