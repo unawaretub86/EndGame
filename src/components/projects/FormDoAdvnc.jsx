@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/client';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
-import { Stack, TextField, Typography, TextareaAutosize } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // our components
 import AlertAndres from '../generic-containers/AlertAndres';
@@ -16,12 +16,11 @@ import { ContextModal } from '../../contexts/ContextModal';
 
 // ----------------------------------------------------------------------
 
-export default function FormDoAdvnc({ dataID }) {
+export default function FormDoAdvnc({ dataID, prjTitle }) {
 
   
   const { stModal, setStModal } = React.useContext(ContextModal);
   const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
-  // const [mtCreateProject, { loading }] = useMutation (CREATE_PROJECT);
 
   const { userData } = React.useContext(ContextUser);
 
@@ -34,7 +33,7 @@ export default function FormDoAdvnc({ dataID }) {
       description: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: async () => {
+    onSubmit: () => {
       const toSend = {
                         input : {
                                   description: formik.values,
@@ -43,10 +42,10 @@ export default function FormDoAdvnc({ dataID }) {
                                 }
                      };
       
-      setStAlert({open:true, isGood:true, txt:'Project created successfully'})
+      setStAlert({open:true, isGood:true, txt:'Advancement successfully registered'})
       setTimeout(()=>{
         setStModal({...stModal, open: false})
-      }, 1000)
+      }, 2000)
     }
   });
 
@@ -57,22 +56,27 @@ export default function FormDoAdvnc({ dataID }) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <Typography variant="h12" sx={{ mb: 2 }}>
-              Creado por : {userData.name} {userData.lastName} , id: {userData._id}
+          <Stack sx={{mt:3}} direction={{ xs: 'column', sm: 'row'}}>
+            <Typography variant="h10">
+              Made by : {userData.name} {userData.lastName}
+            </Typography>
+          </Stack>
+          <Stack direction={{ xs: 'column', sm: 'row'}}>
+            <Typography variant="h10">
+              For the project : {prjTitle}
             </Typography>
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextareaAutosize
+            <TextField
+              multiline
               fullWidth
               aria-label="minimum height"
-              minRows={3}
-              placeholder="Minimum 3 rows"
-              style={{ width: 200 }}
+              rows={4}
               label="Advancement Description"
               {...getFieldProps('description')}
               error={Boolean(touched.description && errors.description)}
               helperText={touched.description && errors.description}
+              placeholder="Write your advance here"
             />
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>

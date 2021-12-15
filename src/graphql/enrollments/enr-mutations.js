@@ -8,4 +8,11 @@ const CHANGE_STATUS_ENROLLMENT = gql`
     }
   }
 `;
-export { CHANGE_STATUS_ENROLLMENT };
+
+const ADD_ENROLLMENT = gql`
+  mutation AddEnrollment($input: addEnrollmentInput!) {
+    addEnrollment(input: $input) 
+  }
+`;
+
+export { CHANGE_STATUS_ENROLLMENT, ADD_ENROLLMENT };

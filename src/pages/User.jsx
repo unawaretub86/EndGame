@@ -164,14 +164,15 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
-  const handleChangeStatus = (_id, nextOption) => {
+  const handleChangeStatus = async (_id, nextOption) => {
     const paqueteEnvioBd = {
       input: {
-        userById: _id,
+        userById : _id,
         status: nextOption
       }
     };
-    UpdateStateAdmin({ variables: paqueteEnvioBd });
+    console.log('paqueteEnvioBd: ', paqueteEnvioBd);
+    await UpdateStateAdmin({ variables: paqueteEnvioBd });
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stUserList.length) : 0;

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 // import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
-
 // material
 import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -20,16 +19,13 @@ import { ContextUser } from '../../contexts/ContextUser';
 // <<< afrp- para organizar la info como pide gql
           // ampliar a 5 spec obj
           // extraer leader de un UserContext
-function packData(formikOriginal, leaderID) {
+function packData(formikOriginal) {
       const toSend = {...formikOriginal};
       delete toSend.specificObjective1;
       delete toSend.specificObjective2;
       delete toSend.specificObjective3;
       toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
-      toSend.leader_id = leaderID
       // <<< afrp- mover esta asignación de status al backend >>>
-      
-      toSend.budget = parseInt(formikOriginal.budget, 10);
       return toSend;
 }
 
@@ -68,7 +64,7 @@ export default function FormCreateProject() {
       // afrp- 
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
-      const toSend = {input : packData(formik.values, userData._id)};
+      const toSend = {input : packData(formik.values)};
       
       console.log("FormCreateProject: onSubmit -> gql toSend 7pm", toSend);
       const resp = await mtCreateProject({ variables: toSend },)

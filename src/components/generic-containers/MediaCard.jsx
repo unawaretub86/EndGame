@@ -73,7 +73,7 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
         <>
           <Button
             onClick={()=>setStModal({
-              content: <EnrollProject dataID={dataID} />,
+              content: <EnrollProject dataID={dataID}/>,
               title: "Enroll",
               open: true
             })}
@@ -82,7 +82,7 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
           </Button>
           <Button
             onClick={()=>setStModal({
-              content: <FormDoAdvnc dataID={dataID} />,
+              content: <FormDoAdvnc dataID={dataID} prjTitle={title}/>,
               title: "Advancement",
               open: true
             })}
