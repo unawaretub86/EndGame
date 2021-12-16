@@ -44,7 +44,8 @@ export default function EnrollProject({ dataID }) {
       <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
       <Box sx={{ my: 2 }} textAlign="center">
         <Typography variant="h10" noWrap>
-          Please confirm your enrollment in this project.
+          {userData.name}
+          Please, confirm your enrollment into this project.
         </Typography>
       </Box>
       <Box>

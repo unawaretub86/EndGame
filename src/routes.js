@@ -26,7 +26,6 @@ export default function Router() {
         { path: 'project', element: <Project /> },
         { path: 'enrollments', element: <Enrollments /> },
         { path: 'profile', element: <ProfileUpdate /> },
-        // { path: 'advance', element: <Advance /> },
         { path: 'advance', element: <Advances /> }
       ]
     },
