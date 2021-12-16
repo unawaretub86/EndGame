@@ -18,8 +18,8 @@ export default function AlertAndres( {open, isGood, txt} ) {
     return (
         <Box sx={{ width: '100%' }}>
         <Collapse in={open}>
-          {isGood ? <Alert severity="success">{txt}</Alert>
-                  : <Alert severity="warning">{txt}</Alert>
+          {isGood ? <Alert variant="filled" severity="success">{txt}</Alert>
+                  : <Alert variant="filled" severity="warning">{txt}</Alert>
           }
         </Collapse>
       </Box>

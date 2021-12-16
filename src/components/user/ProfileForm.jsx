@@ -17,13 +17,15 @@ import { LoadingButton } from '@mui/lab';
 import { useFormik, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 
+import AlertAndres from '../generic-containers/AlertAndres';
 import { UPDATE_USER } from '../../graphql/users/mutations';
 import { GET_USER_BY_ID } from '../../graphql/users/queries';
 import { ContextUser } from '../../contexts/ContextUser';
 
 export default function ProfileForm() {
-  // const [UpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
+  const [mtUpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [stAlert, setStAlert] = React.useState({open:false, isGood:true, txt:''})
   const { userData } = React.useContext(ContextUser);
   console.log('ProfileForm ~ userData: ', userData);
 
@@ -63,8 +65,17 @@ export default function ProfileForm() {
         .required('Password Confirm is required')
         .oneOf([Yup.ref('password')], 'Passwords must match')
     }),
-    onSubmit: () => {
-      console.log('ProfileUpdate ~ formik.values ~ ', formik.values);
+    onSubmit: async () => {
+      let toSend = {...formik.values};
+      delete toSend.passwordConfirm;
+      toSend = { input : toSend };
+      console.log('ProfileUpdate ~ toSend ~ ', toSend);
+      const resp = await mtUpdateUser({
+        variables: toSend
+      });
+      console.log('ProfileUpdate ~ resp ~ ', resp);
+      if (resp.data.updateUser.email) setStAlert({open:true, isGood:true, txt:'User updated successfully'});
+      else setStAlert({open:true, isGood:false, txt:'User not updated'});
     }
   });
 
@@ -92,7 +103,8 @@ export default function ProfileForm() {
           <CardHeader subheader="The information can be edited" title="Profile" />
           <Divider />
           <CardContent>
-            <Grid container spacing={3}>
+            <AlertAndres open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
+            <Grid sx={{ mt:1 }} container spacing={3}>
               <Grid item md={6} xs={12}>
                 {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}> */}
                 <TextField
