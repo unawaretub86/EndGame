@@ -10,7 +10,7 @@ import MediaCard from '../components/generic-containers/MediaCard';
 import InfoProject from '../components/projects/InfoProject';
 import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
-import { GET_PROJECTS_ALL, GET_PROJECTS_OF_LEADER } from '../graphql/projects/prj-queries';
+import { GET_PROJECTS_ALL, GET_PROJECTS_OF_LEADER, GET_PROJECTS_BY_STATUS } from '../graphql/projects/prj-queries';
 import { ContextUser } from '../contexts/ContextUser';
 import { enumRole } from '../utils/enums';
 
@@ -56,9 +56,12 @@ function Project() {
     PROJECT_QUERY = GET_PROJECTS_ALL;
     subSet = 'allProjects'
   }
-  if (userData.role === enumRole.STUDENT) PROJECT_QUERY = GET_PROJECTS_OF_LEADER;
+  if (userData.role === enumRole.STUDENT){
+    PROJECT_QUERY = GET_PROJECTS_BY_STATUS;
+    subSet = 'projectByStatus'
+  }
 
-  const { data, error, loading } = useQuery(PROJECT_QUERY, { variables : { leaderId: userData._id } });
+  const { data, error, loading } = useQuery(PROJECT_QUERY, { variables : { leaderId: userData._id, inStatus:'active' } });
   
   if (loading) return <p>Loading...</p>;
   if (error) {

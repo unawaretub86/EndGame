@@ -59,6 +59,7 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
           </Button>
           :null}
         {userData.role === 'admin' ? 
+        <>
           <Button 
             onClick={()=>setStModal({
               content: <AdminProject dataID={dataID} />,
@@ -68,6 +69,16 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
             size="small">
             Admin
           </Button>
+          <Button
+          onClick={()=>setStModal({
+            content: <FormDoAdvnc dataID={dataID} prjTitle={title}/>,
+            title: "Advancement",
+            open: true
+          })}
+          size="small">
+          Advance
+        </Button>
+        </>
           : null}
         {userData.role === 'student' ?
         <>
