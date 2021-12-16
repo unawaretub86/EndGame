@@ -88,7 +88,7 @@
     "prettier": "^2.4.1"
   },
   "engines": {
-    "node": "16.x",
+    "node": "14.x",
     "yarn": "1.x"
   }
 }
