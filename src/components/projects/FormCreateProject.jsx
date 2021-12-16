@@ -17,25 +17,28 @@ import { ContextUser } from '../../contexts/ContextUser';
 // ----------------------------------------------------------------------
 
 // <<< afrp- para organizar la info como pide gql
-          // ampliar a 5 spec obj
-          // extraer leader de un UserContext
+// ampliar a 5 spec obj
+// extraer leader de un UserContext
 function packData(formikOriginal) {
-      const toSend = {...formikOriginal};
-      delete toSend.specificObjective1;
-      delete toSend.specificObjective2;
-      delete toSend.specificObjective3;
-      toSend.specificObjectives = [formikOriginal.specificObjective1, formikOriginal.specificObjective2, formikOriginal.specificObjective3];
-      // <<< afrp- mover esta asignación de status al backend >>>
-      return toSend;
+  const toSend = { ...formikOriginal };
+  delete toSend.specificObjective1;
+  delete toSend.specificObjective2;
+  delete toSend.specificObjective3;
+  toSend.specificObjectives = [
+    formikOriginal.specificObjective1,
+    formikOriginal.specificObjective2,
+    formikOriginal.specificObjective3
+  ];
+  // <<< afrp- mover esta asignación de status al backend >>>
+  return toSend;
 }
 
 export default function FormCreateProject() {
+  console.log('renderiza FormCreateProject');
 
-  console.log("renderiza FormCreateProject");
-  
-  const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
+  const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: '' });
   // const { setStModal } = React.useContext(ContextModal);
-  const [mtCreateProject, { loading }] = useMutation (CREATE_PROJECT);
+  const [mtCreateProject] = useMutation(CREATE_PROJECT);
 
   const { userData } = React.useContext(ContextUser);
 
@@ -61,15 +64,15 @@ export default function FormCreateProject() {
     validationSchema: RegisterSchema,
     onSubmit: async () => {
       // afrp- {jalar al user context y sacar el user_id del usuario}
-      // afrp- 
+      // afrp-
       // afrp- {mutation de firebase para guardar el proyecto}
       // afrp- {jalar el modal ctx para cerrarlo}
-      const toSend = {input : packData(formik.values)};
-      
-      console.log("FormCreateProject: onSubmit -> gql toSend 7pm", toSend);
-      const resp = await mtCreateProject({ variables: toSend },)
-      console.log("FormCreateProject: onSubmit -> gql resp", resp);
-      setStAlert({open:true, isGood:true, txt:'Project created successfully'})
+      const toSend = { input: packData(formik.values) };
+
+      console.log('FormCreateProject: onSubmit -> gql toSend 7pm', toSend);
+      const resp = await mtCreateProject({ variables: toSend });
+      console.log('FormCreateProject: onSubmit -> gql resp', resp);
+      setStAlert({ open: true, isGood: true, txt: 'Project created successfully' });
     }
   });
 
@@ -78,7 +81,7 @@ export default function FormCreateProject() {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
+        <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
@@ -130,7 +133,6 @@ export default function FormCreateProject() {
               error={Boolean(touched.budget && errors.budget)}
               helperText={touched.budget && errors.budget}
             />
-                
           </Stack>
           <TextField
             fullWidth
@@ -143,7 +145,6 @@ export default function FormCreateProject() {
           <Typography variant="h12" sx={{ mb: 2 }}>
             Creado por : {userData.name} {userData.lastName} , id: {userData._id}
           </Typography>
-
 
           <LoadingButton
             fullWidth
