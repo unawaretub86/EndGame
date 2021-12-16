@@ -59,6 +59,7 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
           </Button>
           :null}
         {userData.role === 'admin' ? 
+        <>
           <Button 
             onClick={()=>setStModal({
               content: <AdminProject dataID={dataID} />,
@@ -68,6 +69,7 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
             size="small">
             Admin
           </Button>
+        </>
           : null}
         {userData.role === 'student' ?
         <>

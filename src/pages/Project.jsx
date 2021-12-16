@@ -10,8 +10,9 @@ import MediaCard from '../components/generic-containers/MediaCard';
 import InfoProject from '../components/projects/InfoProject';
 import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
-import { GET_PROJECTS_ALL, GET_PROJECTS_OF_LEADER } from '../graphql/projects/prj-queries';
+import { GET_PROJECTS_ALL, GET_PROJECTS_OF_LEADER, GET_PROJECTS_BY_STATUS } from '../graphql/projects/prj-queries';
 import { ContextUser } from '../contexts/ContextUser';
+import { enumRole } from '../utils/enums';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -42,26 +43,34 @@ function Project() {
   const { userData } = React.useContext(ContextUser);
 
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
+  
+  
+  let PROJECT_QUERY;      // una variable para alojar el gql
+  let subSet;             // una var para definir nombre de sub-objeto de la data
+  // condiciones para definir el estado segun rol
+  if (userData.role === enumRole.LEADER ){
+    PROJECT_QUERY = GET_PROJECTS_OF_LEADER;
+    subSet = 'projectByLeaderId'
+  }
+  if (userData.role === enumRole.ADMIN){
+    PROJECT_QUERY = GET_PROJECTS_ALL;
+    subSet = 'allProjects'
+  }
+  if (userData.role === enumRole.STUDENT){
+    PROJECT_QUERY = GET_PROJECTS_BY_STATUS;
+    subSet = 'projectByStatus'
+  }
 
-  // const projectQueryUponUser = ()=>{
-  //   let query = []
-  //   if(userData.user.role === 'admin'){
-  //     query = GET_PROJECTS_ALL;
-  //   }
-  //   if(userData.user.role === 'leader'){
-  //     query = [GET_PROJECTS_OF_LEADER, { variables: { id: userData._id } }];
-  //   }
-  //   return query;
-  // }
-  const { data, error, loading } = useQuery(GET_PROJECTS_ALL);
-
+  const { data, error, loading } = useQuery(PROJECT_QUERY, { variables : { leaderId: userData._id, inStatus:'active' } });
+  
   if (loading) return <p>Loading...</p>;
   if (error) {
     console.log(error);
     return <p>Error :x</p>;
   }
-
-  const dataAllProjects = data.allProjects.map((project, index) => ({
+  
+  console.log('Projects ~ data ~ ', data);
+  const dataAllProjects = data[subSet].map((project, index) => ({
     ...project,
     urlimg: imgarray[index]
   }));
@@ -112,84 +121,3 @@ function Project() {
 }
 
 export default Project;
-
-// import { useFormik } from 'formik';
-// import { useState } from 'react';
-// // material
-// import { Container, Stack, Typography } from '@mui/material';
-// // components
-// import Page from '../components/Page';
-// import {
-//   ProductSort,
-//   ProductList,
-//   ProductCartWidget,
-//   ProductFilterSidebar
-// } from '../components/_dashboard/products';
-// //
-// import PRODUCTS from '../_mocks_/products';
-
-// // ----------------------------------------------------------------------
-
-// export default function EcommerceShop() {
-//   const [openFilter, setOpenFilter] = useState(false);
-
-//   const formik = useFormik({
-//     initialValues: {
-//       gender: '',
-//       category: '',
-//       colors: '',
-//       priceRange: '',
-//       rating: ''
-//     },
-//     onSubmit: () => {
-//       setOpenFilter(false);
-//     }
-//   });
-
-//   const { resetForm, handleSubmit } = formik;
-
-//   const handleOpenFilter = () => {
-//     setOpenFilter(true);
-//   };
-
-//   const handleCloseFilter = () => {
-//     setOpenFilter(false);
-//   };
-
-//   const handleResetFilter = () => {
-//     handleSubmit();
-//     resetForm();
-//   };
-
-//   return (
-//     <Page title="Dashboard: Products | Minimal-UI">
-//       <Container>
-//         <Typography variant="h4" sx={{ mb: 5 }}>
-//           Products
-//         </Typography>
-
-//         <Stack
-//           direction="row"
-//           flexWrap="wrap-reverse"
-//           alignItems="center"
-//           justifyContent="flex-end"
-//           sx={{ mb: 5 }}
-//         >
-//           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-//             <ProductFilterSidebar
-//               formik={formik}
-//               isOpenFilter={openFilter}
-//               onResetFilter={handleResetFilter}
-//               onOpenFilter={handleOpenFilter}
-//               onCloseFilter={handleCloseFilter}
-//             />
-//             <ProductSort />
-//           </Stack>
-//         </Stack>
-
-//         <ProductList products={PRODUCTS} />
-//         <ProductCartWidget />
-//       </Container>
-//     </Page>
-//   );
-// }

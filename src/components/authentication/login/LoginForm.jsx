@@ -25,31 +25,6 @@ import AlertAndres from '../../generic-containers/AlertAndres';
 
 // ----------------------------------------------------------------------
 
-const anAdmin = {
-  email: 'admin@admin.admin',
-  documentId: '1111111111',
-  name: 'Adminerto',
-  lastName: 'Adminandez',
-  status: 'authorized',
-  role: 'admin'
-};
-const aLeader = {
-  email: 'leader@leader.leader',
-  documentId: '22222222222',
-  name: 'Leadererto',
-  lastName: 'Leaderandez',
-  status: 'authorized',
-  role: 'leader'
-};
-const aStudent = {
-  email: 'student@student.student',
-  documentId: '33333333333',
-  name: 'Studenerto',
-  lastName: 'Studenandez',
-  status: 'authorized',
-  role: 'student'
-};
-
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);

@@ -1,10 +1,15 @@
 import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from '@mui/lab';
-import { Card } from '@mui/material';
 import * as React from 'react';
+import PropTypes from 'prop-types';
+import { Card } from '@mui/material';
 
+CardTimeLineThree.propTypes = {
+    title: PropTypes.string.isRequired,
+    fase1: PropTypes.string.isRequired,
+    fase2: PropTypes.string.isRequired,
+};
 
-
-export default function CardTimeLineTwo({fase1, fase2, fase3, title}){
+export default function CardTimeLineThree({fase1, fase2, fase3, title}){
     return(
         <Card sx={{minWidth:275}}>
             <h3>{title}</h3>

@@ -26,11 +26,11 @@ export default function AdminProject({ dataID }) {
     const toSend = { input: { projectById: dataID, status: nextStatus } };
     if (stAdminProject.phase === null && nextStatus === 'active') {
       toSend.input = { ...toSend.input, phase: 'started' };
-      mtUpdateProject({ variables: toSend });
+      // mtUpdateProject({ variables: toSend });
       setStAdminProject({ ...stAdminProject, status: nextStatus, phase: 'started' });
       return;
     }
-    mtUpdateProject({ variables: toSend });
+    // mtUpdateProject({ variables: toSend });
     setStAdminProject({ ...stAdminProject, status: nextStatus });
   };
 
