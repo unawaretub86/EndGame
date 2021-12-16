@@ -7,10 +7,13 @@ import { useQuery } from '@apollo/client';
 import { ContextModal } from '../contexts/ContextModal';
 import ModalWindow from '../components/generic-containers/ModalWindow';
 import MediaCard from '../components/generic-containers/MediaCard';
-import InfoProject from '../components/projects/InfoProject';
 import FormCreateProject from '../components/projects/FormCreateProject';
 // utilities
-import { GET_PROJECTS_ALL, GET_PROJECTS_OF_LEADER, GET_PROJECTS_BY_STATUS } from '../graphql/projects/prj-queries';
+import {
+  GET_PROJECTS_ALL,
+  GET_PROJECTS_OF_LEADER,
+  GET_PROJECTS_BY_STATUS
+} from '../graphql/projects/prj-queries';
 import { ContextUser } from '../contexts/ContextUser';
 import { enumRole } from '../utils/enums';
 
@@ -39,36 +42,36 @@ const imgarray = [
 ];
 
 function Project() {
-
   const { userData } = React.useContext(ContextUser);
 
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
-  
-  
-  let PROJECT_QUERY;      // una variable para alojar el gql
-  let subSet;             // una var para definir nombre de sub-objeto de la data
+
+  let PROJECT_QUERY; // una variable para alojar el gql
+  let subSet; // una var para definir nombre de sub-objeto de la data
   // condiciones para definir el estado segun rol
-  if (userData.role === enumRole.LEADER ){
+  if (userData.role === enumRole.LEADER) {
     PROJECT_QUERY = GET_PROJECTS_OF_LEADER;
-    subSet = 'projectByLeaderId'
+    subSet = 'projectByLeaderId';
   }
-  if (userData.role === enumRole.ADMIN){
+  if (userData.role === enumRole.ADMIN) {
     PROJECT_QUERY = GET_PROJECTS_ALL;
-    subSet = 'allProjects'
+    subSet = 'allProjects';
   }
-  if (userData.role === enumRole.STUDENT){
+  if (userData.role === enumRole.STUDENT) {
     PROJECT_QUERY = GET_PROJECTS_BY_STATUS;
-    subSet = 'projectByStatus'
+    subSet = 'projectByStatus';
   }
 
-  const { data, error, loading } = useQuery(PROJECT_QUERY, { variables : { leaderId: userData._id, inStatus:'active' } });
-  
+  const { data, error, loading } = useQuery(PROJECT_QUERY, {
+    variables: { leaderId: userData._id, inStatus: 'active' }
+  });
+
   if (loading) return <p>Loading...</p>;
   if (error) {
     console.log(error);
     return <p>Error :x</p>;
   }
-  
+
   console.log('Projects ~ data ~ ', data);
   const dataAllProjects = data[subSet].map((project, index) => ({
     ...project,
@@ -83,7 +86,7 @@ function Project() {
           contentModal={stModal.content}
           openModal={stModal.open}
         />
-        {userData.role === 'leader' ?
+        {userData.role === 'leader' ? (
           <Button
             size="small"
             type="button"
@@ -92,11 +95,11 @@ function Project() {
             onClick={() =>
               setStModal({ title: 'Create Project', content: <FormCreateProject />, open: true })
             }
-            >
+          >
             <Icon icon="bi:plus-circle" width={24} height={24} />
             <Typography>Add Project</Typography>
           </Button>
-          : null}
+        ) : null}
         <Grid container spacing={2}>
           {dataAllProjects.map((project) => (
             <Grid key={project._id} item xs={4}>
@@ -112,9 +115,7 @@ function Project() {
             </Grid>
           ))}
         </Grid>
-        <pre>
-          {JSON.stringify(dataAllProjects, null, 2)}
-        </pre>
+        <pre>{JSON.stringify(dataAllProjects, null, 2)}</pre>
       </ContextModal.Provider>
     </>
   );

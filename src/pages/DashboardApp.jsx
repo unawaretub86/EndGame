@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useMutation, useQuery, gql } from '@apollo/client';
+import React, { useContext } from 'react';
+// import { useMutation, useQuery, gql } from '@apollo/client';
 /* eslint-disable import/named */
 // material
-import { Box, Grid, Container, Typography, Breadcrumbs, Link } from '@mui/material';
+import { Box, Grid, Container, Typography } from '@mui/material';
 // components
 import Page from '../components/Page';
 import {
@@ -11,12 +11,12 @@ import {
   AppNewProjects,
   AppEnrollments
 } from '../components/_dashboard/app';
-import Login from './Login';
+// import Login from './Login';
 import { ContextUser } from '../contexts/ContextUser';
 
 export default function DashboardApp() {
   // const { data, loading } = useQuery(VIEWER_QUERY);
-  const [first, setFirst] = useState(1);
+  // const [first, setFirst] = useState(1);
   // const { data, loading, refetch } = useQuery(REPOSITORIES_QUERY, { variables: { first } });
 
   const { userData } = useContext(ContextUser);

@@ -104,6 +104,7 @@ export default function FormUpdateProject({ dataID }) {
       formik.setFieldValue('specificObjective3', data.projectById.specificObjectives[2]);
       formik.setFieldValue('budget', data.projectById.budget);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;

@@ -9,7 +9,6 @@ import DashboardApp from './pages/DashboardApp';
 import Project from './pages/Project';
 import Enrollments from './pages/enrollments';
 import User from './pages/User';
-import Advance from './pages/Advance';
 import ProfileUpdate from './pages/ProfileUpdate';
 import Advances from './pages/Advances';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useMutation } from '@apollo/client';
+// import { useMutation } from '@apollo/client';
 // import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 
@@ -21,7 +21,7 @@ FormDoAdvnc.propTypes = {
   dataID: PropTypes.string,
   prjTitle: PropTypes.string
 };
-export default function FormDoAdvnc({ dataID, prjTitle }) {
+export default function FormDoAdvnc({ prjTitle }) {
   const { stModal, setStModal } = React.useContext(ContextModal);
   const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: '' });
 
