@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Button, Typography } from '@mui/material';
-
+import PropTypes from 'prop-types';
 import { GET_PROJECT_ADMIN_BYID } from '../../graphql/projects/prj-queries';
-import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
-
+// import { UPDATE_PROJECT } from '../../graphql/projects/prj-mutations';
+AdminProject.propTypes = {
+  dataID: PropTypes.string
+};
 export default function AdminProject({ dataID }) {
   const [stAdminProject, setStAdminProject] = React.useState({});
-  const [mtUpdateProject] = useMutation(UPDATE_PROJECT);
+  // const [mtUpdateProject] = useMutation(UPDATE_PROJECT);
 
   const { data, loading, error } = useQuery(GET_PROJECT_ADMIN_BYID, {
     variables: {
