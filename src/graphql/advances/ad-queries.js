@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 const GET_ADVANCES = gql`
-  query allAdvances {
+  query AllAdvances {
     allAdvances {
       _id
       enrollment {
