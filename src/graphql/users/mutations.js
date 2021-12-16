@@ -22,6 +22,15 @@ const UPDATE_STATE_ADMIN = gql`
   }
 `;
 
+const UPDATE_STATE_LEADER = gql`
+  mutation updateStateLeader($input: UpdateStateLeaderInput!) {
+    updateStateLeader(input: $input) {
+      _id
+      status
+    }
+  }
+`;
+
 const CREATE_USER = gql`
   mutation registerUser($input: RegisterInput!) {
     registerUser(input: $input)
@@ -34,4 +43,4 @@ mutation Login($input: LoginInput!) {
 }
 `;
 
-export { UPDATE_USER, UPDATE_STATE_ADMIN, CREATE_USER, LOGIN_USER }
+export { UPDATE_USER, UPDATE_STATE_ADMIN, CREATE_USER, LOGIN_USER, UPDATE_STATE_LEADER }

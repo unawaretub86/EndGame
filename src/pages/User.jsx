@@ -29,7 +29,7 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 //
-import { UPDATE_STATE_ADMIN } from '../graphql/users/mutations';
+import { UPDATE_STATE_ADMIN, UPDATE_STATE_LEADER } from '../graphql/users/mutations';
 import { GET_USERS, GET_STUDENTS } from '../graphql/users/queries';
 import { ContextUser } from '../contexts/ContextUser';
 // ----------------------------------------------------------------------
@@ -83,6 +83,7 @@ export default function User() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [mtUpdateStateLeader] = useMutation(UPDATE_STATE_LEADER);
   const [UpdateStateAdmin] = useMutation(UPDATE_STATE_ADMIN);
   const { userData } = React.useContext(ContextUser);
   const [stUserList, setStUserList] = useState([]);
@@ -172,7 +173,8 @@ export default function User() {
       }
     };
     console.log('paqueteEnvioBd: ', paqueteEnvioBd);
-    await UpdateStateAdmin({ variables: paqueteEnvioBd });
+    if (userData.role === 'admin') await UpdateStateAdmin({ variables: paqueteEnvioBd });
+    if (userData.role === 'leader') await mtUpdateStateLeader({ variables: paqueteEnvioBd });
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stUserList.length) : 0;

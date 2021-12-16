@@ -64,7 +64,7 @@ export default function EnrollProject( { dataID } ) {
                 Project leader : &nbsp;
             </Typography>
             <Typography variant="h12"  noWrap>
-                {projectInfo.leader.name} {projectInfo.leader.lastName}
+                projectInfo.leader.name projectInfo.leader.lastName
             </Typography>
         </Box>
         <Box textAlign='center' spacing={3}>
