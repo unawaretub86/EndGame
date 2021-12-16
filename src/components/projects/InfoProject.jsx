@@ -67,7 +67,7 @@ export default function InfoProject({ dataID }) {
           </Typography>
           {projectInfo.specificObjectives.map((elem, index) => (
             <li key={index}>
-              <Typography variant="p" noWrap>
+              <Typography variant="p">
                 {elem}
               </Typography>
             </li>
@@ -110,7 +110,7 @@ export default function InfoProject({ dataID }) {
             <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
               Leader: &nbsp;
             </Typography>
-            <Typography variant="h12" noWrap>
+            <Typography variant="h12">
               {projectInfo.leader.name} {projectInfo.leader.lastName}
             </Typography>
           </Grid>
