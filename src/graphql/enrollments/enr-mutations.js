@@ -11,7 +11,16 @@ const CHANGE_STATUS_ENROLLMENT = gql`
 
 const ADD_ENROLLMENT = gql`
   mutation AddEnrollment($input: addEnrollmentInput!) {
-    addEnrollment(input: $input) 
+    addEnrollment(input: $input) {
+      _id
+      status
+      enrollmentDate
+      project {
+        leader{
+          name
+        }
+      }
+    }
   }
 `;
 

@@ -18,7 +18,7 @@ export default function EnrollProject({ dataID }) {
   const [stAlert, setStAlert] = React.useState({ open: false, isGood: true, txt: '' });
 
   const hdlClick = async () => {
-    const toSend = { variables: { project_id: dataID, user_id: userData._id } };
+    const toSend = { variables: { input : { project_id: dataID, user_id: userData._id } } };
     console.log('EnrollProject.jsx ~ toSend ~ ', toSend);
     const resp = await mtEnroll(toSend);
     console.log('EnrollProject.jsx ~ resp ~ ', resp);

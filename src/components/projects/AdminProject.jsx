@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { Button, Typography, Box } from '@mui/material';
+import PropTypes from 'prop-types';
 
 import { GET_PROJECT_BYID_TOADMIN } from '../../graphql/projects/prj-queries';
 import { ACTIVATE_PROJECT, INACTIVATE_PROJECT, UPD_PHASE_PROJECT } from '../../graphql/projects/prj-mutations';
+
+AdminProject.propTypes = {
+  dataID: PropTypes.object.isRequired,
+};
 
 export default function AdminProject({ dataID }) {
   const [stAdminPrj, setStAdminPrj] = React.useState({});
   const [mtActivatePrj] = useMutation(ACTIVATE_PROJECT);
   const [mtInactivatePrj ] = useMutation(INACTIVATE_PROJECT);
-  const [mtTerminatePrj ] = useMutation(UPD_PHASE_PROJECT);
+  // const [mtTerminatePrj ] = useMutation(UPD_PHASE_PROJECT);
 
   const { data, loading, error } = useQuery(GET_PROJECT_BYID_TOADMIN, {
     variables: {
