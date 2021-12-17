@@ -146,7 +146,7 @@ export default function Advances() {
   const isProjectNotFound = filteredProjects.length === 0;
 
   return (
-    <Page title="Advances | End Game">
+    <Page title="Advances | Mercurio">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>

@@ -46,7 +46,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Login() {
   return (
-    <RootStyle title="Login | End Game">
+    <RootStyle title="Login | Mercurio">
       <AuthLayout>
         Don’t have an account? &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">

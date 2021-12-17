@@ -71,14 +71,9 @@ const sidebarConfig = (role) => {
         icon: getIcon(pieChart2Fill)
       },
       {
-        title: 'project',
+        title: 'Projects',
         path: '/dashboard/project',
         icon: getIcon(shoppingBagFill)
-      },
-      {
-        title: 'enrollments',
-        path: '/dashboard/enrollments',
-        icon: getIcon(fileTextFill)
       },
       {
         title: 'advancements',
