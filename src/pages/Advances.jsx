@@ -33,10 +33,8 @@ import { GET_ADVANCES } from '../graphql/advances/ad-queries';
 const TABLE_HEAD = [
   { id: 'project', label: 'Project', alignRight: false },
   { id: 'student', label: 'Student', alignRight: false },
-  { id: 'addDate', label: 'Role', alignRight: false },
-  { id: 'description', label: 'Status', alignRight: false },
-  { id: 'leaderDate', label: 'LeaderDate', alignRight: false },
-  { id: 'observations', label: 'Observations', alignRight: false }
+  { id: 'addDate', label: 'addDate', alignRight: false },
+  { id: 'leaderDate', label: 'LeaderDate', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -85,7 +83,7 @@ export default function Advances() {
   console.log(data);
   useEffect(() => {
     if (error) {
-      console.log('Error consulting enrollments', error);
+      console.log('Error consulting advances', error);
     }
   }, [error]);
 
@@ -177,16 +175,8 @@ export default function Advances() {
                   {filteredProjects
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const {
-                        _id,
-                        project,
-                        student,
-                        addDate,
-                        description,
-                        leaderDate,
-                        observations
-                      } = row;
-                      const isItemSelected = selected.indexOf(project) !== -1;
+                      const { _id, enrollment, addDate, leaderDate } = row;
+                      const isItemSelected = selected.indexOf(addDate) !== -1;
 
                       return (
                         <TableRow
@@ -200,21 +190,19 @@ export default function Advances() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleClick(event, project.name)}
+                              onChange={(event) => handleClick(event, enrollment.project.name)}
                             />
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" noWrap>
-                                {project.name}
+                                {enrollment.project.name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{student.name}</TableCell>
+                          <TableCell align="left">{enrollment.student.name}</TableCell>
                           <TableCell align="left">{addDate}</TableCell>
-                          <TableCell align="left">{description}</TableCell>
                           <TableCell align="left">{leaderDate}</TableCell>
-                          <TableCell align="left">{observations}</TableCell>
                           <TableCell align="right">
                             <ProjectMoreMenu />
                           </TableCell>

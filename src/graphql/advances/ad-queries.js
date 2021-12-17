@@ -1,9 +1,11 @@
 import { gql } from '@apollo/client';
 
 const GET_ADVANCES = gql`
-  query AllAdvances {
+  query Query {
     allAdvances {
       _id
+      addDate
+      leaderDate
       enrollment {
         project {
           name
@@ -12,10 +14,6 @@ const GET_ADVANCES = gql`
           name
         }
       }
-      addDate
-      description
-      leaderId
-      observations
     }
   }
 `;
