@@ -45,13 +45,14 @@ const GET_PROJECT_BYID = gql`
   }
 `;
 
-const GET_PROJECT_ADMIN_BYID = gql`
+const GET_PROJECT_BYID_TOADMIN = gql`
   query ($id: ID!) {
     projectById(_id: $id) {
       _id
       name
       status
       phase
+      startDate
       leader{
         _id
         name
@@ -97,4 +98,4 @@ const GET_PROJECTS_BY_STATUS = gql`
 `;
 
 // afrp- ojo con el leader{...}
-export { GET_PROJECTS_ALL, GET_PROJECT_BYID, GET_PROJECT_ADMIN_BYID, GET_PROJECTS_OF_LEADER, GET_PROJECTS_BY_STATUS};
+export { GET_PROJECTS_ALL, GET_PROJECT_BYID, GET_PROJECT_BYID_TOADMIN, GET_PROJECTS_OF_LEADER, GET_PROJECTS_BY_STATUS};

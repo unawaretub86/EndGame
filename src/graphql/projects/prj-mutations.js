@@ -24,6 +24,40 @@ const UPDATE_PROJECT = gql`
     }
 `;
 
+const ACTIVATE_PROJECT = gql`
+    mutation activateProject($input: ActivateProjectInput!) {
+        activateProject(input: $input) {
+            _id
+            name
+            status
+            phase
+        }
+    }
+`;
+
+const INACTIVATE_PROJECT = gql`
+    mutation inactivateProject($input: InactivateProjectInput!) {
+        inactivateProject(input: $input) {
+            _id
+            name
+            status
+            phase
+        }
+    }
+`;
+
+const UPD_PHASE_PROJECT = gql`
+    mutation changePhaseProject($input: changePhaseInput!) {
+        changePhaseProject(input: $input) {
+            _id
+            name
+            status
+            phase
+        }
+    }
+`;
+
+
 export {
-    CREATE_PROJECT, UPDATE_PROJECT
+    CREATE_PROJECT, UPDATE_PROJECT, ACTIVATE_PROJECT, INACTIVATE_PROJECT, UPD_PHASE_PROJECT
 };
