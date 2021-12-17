@@ -49,10 +49,10 @@ export default function AdminProject({ dataID }) {
     
   };
 
-  const hdlClickTerminate = () => {
+  const hdlClickTerminate = async () => {
     const toSend = { input : { _id: dataID } };
     console.log('AdminProject.jsx: hdlClickTerminate: toSend: ', toSend);
-    const resp = mtTerminatePrj({ variables: toSend  });
+    const resp = await mtTerminatePrj({ variables: toSend  });
     console.log('AdminProject.jsx: hdlClickTerminate: resp: ', resp);
     setStAdminPrj({ ...stAdminPrj, status: resp.data.changePhaseProject.status, phase: resp.data.changePhaseProject.phase });
   };
