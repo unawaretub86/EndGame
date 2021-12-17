@@ -1,6 +1,6 @@
+import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import { filter } from 'lodash';
-import { useState, useEffect } from 'react';
 import * as React from 'react';
 // material
 import {
@@ -14,18 +14,16 @@ import {
   Container,
   Typography,
   TableContainer,
+  IconButton,
   TablePagination
 } from '@mui/material';
+import { Icon } from '@iconify/react';
 // components
 import Page from '../components/Page';
 // import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import {
-  ProjectListHead,
-  ProjectListToolbar,
-  ProjectMoreMenu
-} from '../components/_dashboard/enrollments';
+import { ProjectListHead, ProjectListToolbar } from '../components/_dashboard/enrollments';
 //
 import { GET_ADVANCES } from '../graphql/advances/ad-queries';
 // ----------------------------------------------------------------------
@@ -78,6 +76,7 @@ export default function Advances() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const ref = useRef(null);
 
   const { data, error, loading } = useQuery(GET_ADVANCES);
   console.log(data);
@@ -204,7 +203,15 @@ export default function Advances() {
                           <TableCell align="left">{addDate}</TableCell>
                           <TableCell align="left">{leaderDate}</TableCell>
                           <TableCell align="right">
-                            <ProjectMoreMenu />
+                            <IconButton ref={ref}>
+                              <Icon
+                                icon="et:search"
+                                width={30}
+                                height={30}
+                                color="success"
+                                variant="outlined"
+                              />
+                            </IconButton>
                           </TableCell>
                         </TableRow>
                       );
