@@ -50,8 +50,10 @@ export default function AdminProject({ dataID }) {
   };
 
   const hdlClickTerminate = () => {
-    const toSend = { input : { _id: dataID, phase: 'terminated' } };
+    const toSend = { input : { _id: dataID } };
+    console.log('AdminProject.jsx: hdlClickTerminate: toSend: ', toSend);
     const resp = mtTerminatePrj({ variables: toSend  });
+    console.log('AdminProject.jsx: hdlClickTerminate: resp: ', resp);
     setStAdminPrj({ ...stAdminPrj, status: resp.data.changePhaseProject.status, phase: resp.data.changePhaseProject.phase });
   };
 
@@ -71,12 +73,12 @@ export default function AdminProject({ dataID }) {
           <Typography> Project Phase :: {stAdminPrj.phase}</Typography>
           
           <Box textAlign='center'>
-            <Button sx={{mx:2}} color='warning' variant="outlined" onClick={hdlClickActivation}>
+            <Button sx={{mx:2}} color='warning' variant="outlined" onClick={hdlClickActivation} disabled={stAdminPrj.phase === 'ended'}>
               {stAdminPrj.status === 'inactive' ? 'Activate' : 'Inactivate'}
             </Button>
-            {stAdminPrj.phase === 'inProgress' ?
-            <Button sx={{mx:2}} color="error" variant="outlined" onClick={hdlClickTerminate}>
-              Terminate project
+            {stAdminPrj.phase === ('inProgress' || 'ended') ?
+            <Button sx={{mx:2}} color="error" variant="outlined" onClick={hdlClickTerminate} disabled={stAdminPrj.phase === 'ended'}>
+              { stAdminPrj.phase === 'inProgress' ? 'Terminate' : 'Terminated'}
             </Button>
             : null}
           </Box>
