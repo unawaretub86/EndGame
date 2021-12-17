@@ -16,14 +16,16 @@ export default function EnrollProject({ dataID }) {
   const [mtEnroll] = useMutation(ADD_ENROLLMENT);
   const { userData } = React.useContext(ContextUser);
   const [stAlert, setStAlert] = React.useState({ open: false, isGood: true, txt: '' });
+  const [stOK, setStOK] = React.useState(false);
 
   const hdlClick = async () => {
     const toSend = { variables: { input : { project_id: dataID, user_id: userData._id } } };
     console.log('EnrollProject.jsx ~ toSend ~ ', toSend);
-    const resp = await mtEnroll(toSend);
+    const respMt = await mtEnroll(toSend);
     console.log('EnrollProject.jsx ~ resp ~ ', resp);
-    if (resp) {
+    if (respMt) {
       setStAlert({ open: true, isGood: true, txt: 'Advancement successfully registered' });
+      setStOK(true);
     } else setStAlert({ open: true, isGood: false, txt: 'Advancement NOT registered' });
   };
 
@@ -64,8 +66,8 @@ export default function EnrollProject({ dataID }) {
         </Typography>
       </Box>
       <Box textAlign="center" spacing={3}>
-        <Button onClick={hdlClick} variant="contained" color="primary">
-          Enroll now
+        <Button onClick={hdlClick} variant="contained" color="primary" disabled={stOK}>
+          { stOK ? 'Already Erolled' : 'Enroll now' }
         </Button>
       </Box>
     </>

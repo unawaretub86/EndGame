@@ -45,6 +45,7 @@ function Project() {
   const { userData } = React.useContext(ContextUser);
 
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
+  const [isStudentProjects, setIsStudentProjects] = React.useState(true);
 
   let PROJECT_QUERY; // una variable para alojar el gql
   let subSet; // una var para definir nombre de sub-objeto de la data
@@ -63,7 +64,8 @@ function Project() {
   }
 
   const { data, error, loading } = useQuery(PROJECT_QUERY, {
-    variables: { leaderId: userData._id, inStatus: 'active' }
+    variables: { leaderId: userData._id, inStatus: 'active' },
+    fetchPolicy: 'network-only'
   });
 
   if (loading) return <p>Loading...</p>;
@@ -99,6 +101,32 @@ function Project() {
             <Icon icon="bi:plus-circle" width={24} height={24} />
             <Typography>Add Project</Typography>
           </Button>
+        ) : null}
+        {userData.role === 'student' ? (
+          <>
+            <Button
+              size={isStudentProjects ? 'medium' : 'small'} 
+              type="button"
+              xs={6}
+              variant={isStudentProjects ? 'contained' : 'outlined'}
+              sx={{ mb: 2}}
+              onClick={() => setIsStudentProjects(true)}
+            >
+              <Icon icon="bytesize:portfolio" width={24} height={24}/>
+              <Typography sx={{ml:2}}>My Projects</Typography>
+            </Button>
+            <Button
+              size={isStudentProjects ? 'small' : 'medium'}
+              xs={6}
+              type="button"
+              variant={isStudentProjects ? 'outlined' : 'contained'}
+              sx={{ mb: 2, mx: 1 }}
+              onClick={() =>setIsStudentProjects(false)}
+            >
+              <Icon icon="fa-solid:university" width={24} height={24} />
+              <Typography sx={{ml:2}}>All projects</Typography>
+            </Button>
+          </>
         ) : null}
         <Grid container spacing={2}>
           {dataAllProjects.map((project) => (
