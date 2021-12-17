@@ -14,7 +14,7 @@ export default function AdminProject({ dataID }) {
   const [stAdminPrj, setStAdminPrj] = React.useState({});
   const [mtActivatePrj] = useMutation(ACTIVATE_PROJECT);
   const [mtInactivatePrj ] = useMutation(INACTIVATE_PROJECT);
-  // const [mtTerminatePrj ] = useMutation(UPD_PHASE_PROJECT);
+  const [mtTerminatePrj ] = useMutation(UPD_PHASE_PROJECT);
 
   const { data, loading, error } = useQuery(GET_PROJECT_BYID_TOADMIN, {
     variables: {
@@ -50,6 +50,9 @@ export default function AdminProject({ dataID }) {
   };
 
   const hdlClickTerminate = () => {
+    const toSend = { input : { _id: dataID, phase: 'terminated' } };
+    const resp = mtTerminatePrj({ variables: toSend  });
+    setStAdminPrj({ ...stAdminPrj, status: resp.data.changePhaseProject.status, phase: resp.data.changePhaseProject.phase });
   };
 
 
