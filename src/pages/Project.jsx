@@ -64,7 +64,7 @@ function Project() {
   }
 
   const { data, error, loading } = useQuery(PROJECT_QUERY, {
-    variables: { leaderId: userData._id, inStatus: 'active' },
+    variables: { inStatus: 'active' },
     fetchPolicy: 'network-only'
   });
 

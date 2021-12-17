@@ -62,8 +62,8 @@ const GET_PROJECT_BYID_TOADMIN = gql`
 `;
 
 const GET_PROJECTS_OF_LEADER= gql`
-  query Query($leaderId: ID!) {
-    projectByLeaderId(leader_id: $leaderId) {
+  query Query {
+    projectByLeaderId {
       _id
       name
       generalObjective
