@@ -169,7 +169,7 @@ export default function Enrollments() {
   const isProjectNotFound = filteredProjects.length === 0;
 
   return (
-    <Page title="Enrollments | End Game">
+    <Page title="Enrollments | Mercurio">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
