@@ -12,110 +12,87 @@ import { enumRole } from '../../utils/enums';
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
 
-const sidebarConfig = ( role ) => {
+const sidebarConfig = (role) => {
+  const configArray = [];
 
-  const configArray = []
-  
-  if (role === enumRole.ADMIN) 
+  if (role === enumRole.ADMIN)
     configArray.push(
-  {
-    title: 'dashboard',
-    path: '/dashboard/app',
-    icon: getIcon(pieChart2Fill)
-  },
-  {
-    title: 'user',
-    path: '/dashboard/user',
-    icon: getIcon(peopleFill)
-  },
-  {
-    title: 'project',
-    path: '/dashboard/project',
-    icon: getIcon(shoppingBagFill)
-  });
-
-    
-
-if(role === enumRole.LEADER)
-configArray.push(
-  {
-    title: 'dashboard',
-    path: '/dashboard/app',
-    icon: getIcon(pieChart2Fill)
-  },
-  {
-    title: 'user',
-    path: '/dashboard/user',
-    icon: getIcon(peopleFill)
-  },
-  {
-    title: 'project',
-    path: '/dashboard/project',
-    icon: getIcon(shoppingBagFill)
-  },
-  {
-    title: 'enrollments',
-    path: '/dashboard/enrollments',
-    icon: getIcon(fileTextFill)
-  },
-  {
-    title: 'advance',
-    path: '/dashboard/advance',
-    icon: getIcon(BarChartFill)
-  }
+      {
+        title: 'dashboard',
+        path: '/dashboard/app',
+        icon: getIcon(pieChart2Fill)
+      },
+      {
+        title: 'user',
+        path: '/dashboard/user',
+        icon: getIcon(peopleFill)
+      },
+      {
+        title: 'project',
+        path: '/dashboard/project',
+        icon: getIcon(shoppingBagFill)
+      }
     );
 
-if(role === enumRole.STUDENT)
-configArray.push(
-  {
-      title: 'dashboard',
-      path: '/dashboard/app',
-      icon: getIcon(pieChart2Fill)
-    },
-    {
-      title: 'project',
-      path: '/dashboard/project',
-      icon: getIcon(shoppingBagFill)
-    },
-    {
-      title: 'enrollments',
-      path: '/dashboard/enrollments',
-      icon: getIcon(fileTextFill)
-    },
-    {
-      title: 'advancements',
-      path: '/dashboard/advance',
-      icon: getIcon(BarChartFill)
-    }
-);
+  if (role === enumRole.LEADER)
+    configArray.push(
+      {
+        title: 'dashboard',
+        path: '/dashboard/app',
+        icon: getIcon(pieChart2Fill)
+      },
+      {
+        title: 'user',
+        path: '/dashboard/user',
+        icon: getIcon(peopleFill)
+      },
+      {
+        title: 'project',
+        path: '/dashboard/project',
+        icon: getIcon(shoppingBagFill)
+      },
+      {
+        title: 'enrollments',
+        path: '/dashboard/enrollments',
+        icon: getIcon(fileTextFill)
+      },
+      {
+        title: 'advancements',
+        path: '/dashboard/advance',
+        icon: getIcon(BarChartFill)
+      }
+    );
 
-console.log(configArray);
+  if (role === enumRole.STUDENT)
+    configArray.push(
+      {
+        title: 'dashboard',
+        path: '/dashboard/app',
+        icon: getIcon(pieChart2Fill)
+      },
+      {
+        title: 'project',
+        path: '/dashboard/project',
+        icon: getIcon(shoppingBagFill)
+      },
+      {
+        title: 'enrollments',
+        path: '/dashboard/enrollments',
+        icon: getIcon(fileTextFill)
+      },
+      {
+        title: 'advancements',
+        path: '/dashboard/advance',
+        icon: getIcon(BarChartFill)
+      }
+    );
 
-return configArray;
+  console.log(configArray);
 
-}
+  return configArray;
+};
 
 export default sidebarConfig;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 

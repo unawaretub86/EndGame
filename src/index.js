@@ -4,7 +4,6 @@ import 'simplebar/src/simplebar.css';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { Auth0Provider } from '@auth0/auth0-react';
 import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 //
@@ -13,7 +12,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 //
-
 
 const httpLink = createHttpLink({
   uri: 'https://end-game-release.herokuapp.com/graphql'
@@ -38,23 +36,14 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-
-
 ReactDOM.render(
-  <Auth0Provider
-    domain="endgame1.us.auth0.com"
-    clientId="rvSEehaYlTfkqADuQ1HpdqFwi9khW7Vi"
-    redirectUri={window.location.origin}
-  >    
-    <HelmetProvider>
-      <BrowserRouter>
-        <ApolloProvider client={client}>
-          <App />
-        </ApolloProvider>
-      </BrowserRouter>
-    </HelmetProvider>
-   ,
-  </Auth0Provider>,
+  <HelmetProvider>
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </BrowserRouter>
+  </HelmetProvider>,
   document.getElementById('root')
 );
 

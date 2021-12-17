@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@apollo/client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -23,9 +23,9 @@ import { GET_USER_BY_ID } from '../../graphql/users/queries';
 import { ContextUser } from '../../contexts/ContextUser';
 
 export default function ProfileForm() {
-  const [mtUpdateUser, { loading: loadMutation }] = useMutation(UPDATE_USER);
+  const [mtUpdateUser] = useMutation(UPDATE_USER);
   const [showPassword, setShowPassword] = React.useState(false);
-  const [stAlert, setStAlert] = React.useState({open:false, isGood:true, txt:''})
+  const [stAlert, setStAlert] = React.useState({ open: false, isGood: true, txt: '' });
   const { userData } = React.useContext(ContextUser);
   console.log('ProfileForm ~ userData: ', userData);
 
@@ -66,16 +66,17 @@ export default function ProfileForm() {
         .oneOf([Yup.ref('password')], 'Passwords must match')
     }),
     onSubmit: async () => {
-      let toSend = {...formik.values};
+      let toSend = { ...formik.values };
       delete toSend.passwordConfirm;
-      toSend = { input : toSend };
+      toSend = { input: toSend };
       console.log('ProfileUpdate ~ toSend ~ ', toSend);
       const resp = await mtUpdateUser({
         variables: toSend
       });
       console.log('ProfileUpdate ~ resp ~ ', resp);
-      if (resp.data.updateUser.email) setStAlert({open:true, isGood:true, txt:'User updated successfully'});
-      else setStAlert({open:true, isGood:false, txt:'User not updated'});
+      if (resp.data.updateUser.email)
+        setStAlert({ open: true, isGood: true, txt: 'User updated successfully' });
+      else setStAlert({ open: true, isGood: false, txt: 'User not updated' });
     }
   });
 
@@ -89,6 +90,7 @@ export default function ProfileForm() {
     }
     // afrp- buscar la forma que no pida esta mondá de formik
     // posible solución es usar Formik con props en el jsx
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (loading) return <p>Loading...</p>;
@@ -104,7 +106,7 @@ export default function ProfileForm() {
           <Divider />
           <CardContent>
             <AlertAndres open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
-            <Grid sx={{ mt:1 }} container spacing={3}>
+            <Grid sx={{ mt: 1 }} container spacing={3}>
               <Grid item md={6} xs={12}>
                 {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}> */}
                 <TextField

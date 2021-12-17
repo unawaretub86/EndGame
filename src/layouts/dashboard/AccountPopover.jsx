@@ -8,8 +8,6 @@ import { alpha } from '@mui/material/styles';
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material';
 // components
 import MenuPopover from '../../components/MenuPopover';
-// cosas de Auth
-import { logOutUsuario } from '../../firebase/auth-control';
 // context
 import { ContextUser } from '../../contexts/ContextUser';
 
@@ -19,7 +17,7 @@ const MENU_OPTIONS = [
   {
     label: 'Home',
     icon: homeFill,
-    linkTo: '/'
+    linkTo: '/dashboard'
   },
   {
     label: 'Profile',
@@ -65,7 +63,7 @@ export default function AccountPopover() {
           })
         }}
       >
-        <Avatar src='/static/mock-images/avatars/avatar_default.jpg' alt="photoURL" />
+        <Avatar src="/static/mock-images/avatars/avatar_default.jpg" alt="photoURL" />
       </IconButton>
 
       <MenuPopover
@@ -108,11 +106,14 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <RouterLink to="/login"  style={{ textDecoration: 'inherit' }}>
-            <Button onClick={()=>(logOutUsuario())} fullWidth color="inherit" variant="outlined">
-              <Typography>
-                Logout
-              </Typography>
+          <RouterLink to="/login" style={{ textDecoration: 'inherit' }}>
+            <Button
+              onClick={() => localStorage.removeItem('token')}
+              fullWidth
+              color="inherit"
+              variant="outlined"
+            >
+              <Typography>Logout</Typography>
             </Button>
           </RouterLink>
         </Box>

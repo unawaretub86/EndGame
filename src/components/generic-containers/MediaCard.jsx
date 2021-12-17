@@ -5,11 +5,10 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 
 // our components
 import { ContextModal } from '../../contexts/ContextModal';
-import ModalWindow from './ModalWindow';
-import Form from '../Form/Form';
 import InfoProject from '../projects/InfoProject';
 import FormUpdateProject from '../projects/FormUpdateProject';
 import AdminProject from '../projects/AdminProject';
@@ -19,6 +18,13 @@ import EnrollProject from '../projects/EnrollProject';
 import { ContextUser } from '../../contexts/ContextUser';
 import FormDoAdvnc from '../projects/FormDoAdvnc';
 
+MediaCard.propTypes = {
+  dataID: PropTypes.string,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  image: PropTypes.string,
+  alt: PropTypes.string
+};
 
 export default function MediaCard({ dataID, title, description, image, alt }) {
   console.log('Renders MediaCard');
@@ -39,60 +45,75 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
       <CardActions>
         <Button
           // afrp- con este setStModal se define el modal que seva a mostrar desde cualquier parte
-          onClick={()=>setStModal({
-            content: <InfoProject dataID={dataID} />,
-            title: "Learn More",
-            open: true
-          })}
-          size="small">
+          onClick={() =>
+            setStModal({
+              content: <InfoProject dataID={dataID} />,
+              title: 'Learn More',
+              open: true
+            })
+          }
+          size="small"
+        >
           Learn More
         </Button>
-        {userData.role === 'leader' ?
-          <Button 
-            onClick={()=>setStModal({
-              content: <FormUpdateProject dataID={dataID} />,
-              title: "Update",
-              open: true
-            })}
-            size="small">
+        {userData.role === 'leader' ? (
+          <Button
+            onClick={() =>
+              setStModal({
+                content: <FormUpdateProject dataID={dataID} />,
+                title: 'Update',
+                open: true
+              })
+            }
+            size="small"
+          >
             Update
           </Button>
-          :null}
-        {userData.role === 'admin' ? 
-        <>
-          <Button 
-            onClick={()=>setStModal({
-              content: <AdminProject dataID={dataID} />,
-              title: "Administrate",
-              open: true
-            })}
-            size="small">
-            Admin
-          </Button>
-        </>
-          : null}
-        {userData.role === 'student' ?
-        <>
-          <Button
-            onClick={()=>setStModal({
-              content: <EnrollProject dataID={dataID}/>,
-              title: "Enroll",
-              open: true
-            })}
-            size="small">
-            Enroll
-          </Button>
-          <Button
-            onClick={()=>setStModal({
-              content: <FormDoAdvnc dataID={dataID} prjTitle={title}/>,
-              title: "Advancement",
-              open: true
-            })}
-            size="small">
-            Advance
-          </Button>
-        </>
-          : null}
+        ) : null}
+        {userData.role === 'admin' ? (
+          <>
+            <Button
+              onClick={() =>
+                setStModal({
+                  content: <AdminProject dataID={dataID} />,
+                  title: 'Administrate',
+                  open: true
+                })
+              }
+              size="small"
+            >
+              Admin
+            </Button>
+          </>
+        ) : null}
+        {userData.role === 'student' ? (
+          <>
+            <Button
+              onClick={() =>
+                setStModal({
+                  content: <EnrollProject dataID={dataID} />,
+                  title: 'Enroll',
+                  open: true
+                })
+              }
+              size="small"
+            >
+              Enroll
+            </Button>
+            <Button
+              onClick={() =>
+                setStModal({
+                  content: <FormDoAdvnc dataID={dataID} prjTitle={title} />,
+                  title: 'Advancement',
+                  open: true
+                })
+              }
+              size="small"
+            >
+              Advance
+            </Button>
+          </>
+        ) : null}
       </CardActions>
     </Card>
   );

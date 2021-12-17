@@ -1,4 +1,4 @@
-import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 
@@ -99,7 +99,7 @@ export default function User() {
     console.log('user page ~ query by role STUDENTS: ', QUERY_BY_ROLE);
   }
 
-  const { data, error, loading } = useQuery(QUERY_BY_ROLE);
+  const { data, loading } = useQuery(QUERY_BY_ROLE);
 
   // const [ getAllUsers, {loading: loadingUsers, data: dataUsers}] = useLazyQuery(GET_USERS);
   // const [ getStudents, {loading: loadingStudents, data: dataStudents}] = useLazyQuery(GET_STUDENTS);
@@ -115,6 +115,7 @@ export default function User() {
         setStUserList(data.allStudents);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (loading) return <div>Loading....</div>;
@@ -168,7 +169,7 @@ export default function User() {
   const handleChangeStatus = async (_id, nextOption) => {
     const paqueteEnvioBd = {
       input: {
-        userById : _id,
+        userById: _id,
         status: nextOption
       }
     };

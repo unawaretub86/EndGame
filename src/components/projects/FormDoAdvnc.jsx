@@ -1,31 +1,34 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useMutation } from '@apollo/client';
+// import { useMutation } from '@apollo/client';
 // import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
 import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import PropTypes from 'prop-types';
 // our components
 import AlertAndres from '../generic-containers/AlertAndres';
-import { CREATE_PROJECT } from '../../graphql/projects/prj-mutations';
+// import { CREATE_PROJECT } from '../../graphql/projects/prj-mutations';
 import { ContextUser } from '../../contexts/ContextUser';
 import { ContextModal } from '../../contexts/ContextModal';
 
 // ----------------------------------------------------------------------
 
-export default function FormDoAdvnc({ dataID, prjTitle }) {
-
-  
+FormDoAdvnc.propTypes = {
+  dataID: PropTypes.string,
+  prjTitle: PropTypes.string
+};
+export default function FormDoAdvnc({ prjTitle }) {
   const { stModal, setStModal } = React.useContext(ContextModal);
-  const [stAlert, setStAlert] = useState({open:false, isGood:true, txt:''})
+  const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: '' });
 
   const { userData } = React.useContext(ContextUser);
 
   const RegisterSchema = Yup.object().shape({
-    description: Yup.string().required('Advance is required').min(5, 'Too Short!'),
+    description: Yup.string().required('Advance is required').min(5, 'Too Short!')
   });
 
   const formik = useFormik({
@@ -34,18 +37,18 @@ export default function FormDoAdvnc({ dataID, prjTitle }) {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      const toSend = {
-                        input : {
-                                  description: formik.values,
-                                  project_id: dataID,
-                                  student_id: userData.id
-                                }
-                     };
-      
-      setStAlert({open:true, isGood:true, txt:'Advancement successfully registered'})
-      setTimeout(()=>{
-        setStModal({...stModal, open: false})
-      }, 2000)
+      // const toSend = {
+      //   input: {
+      //     description: formik.values,
+      //     project_id: dataID,
+      //     student_id: userData.id
+      //   }
+      // };
+
+      setStAlert({ open: true, isGood: true, txt: 'Advancement successfully registered' });
+      setTimeout(() => {
+        setStModal({ ...stModal, open: false });
+      }, 2000);
     }
   });
 
@@ -54,17 +57,15 @@ export default function FormDoAdvnc({ dataID, prjTitle }) {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <AlertAndres sx={{ mb:2}} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
+        <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
-          <Stack sx={{mt:3}} direction={{ xs: 'column', sm: 'row'}}>
+          <Stack sx={{ mt: 3 }} direction={{ xs: 'column', sm: 'row' }}>
             <Typography variant="h10">
               Made by : {userData.name} {userData.lastName}
             </Typography>
           </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row'}}>
-            <Typography variant="h10">
-              For the project : {prjTitle}
-            </Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }}>
+            <Typography variant="h10">For the project : {prjTitle}</Typography>
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
@@ -80,15 +81,15 @@ export default function FormDoAdvnc({ dataID, prjTitle }) {
             />
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-          >
-            Submit advancement
-          </LoadingButton>
+            <LoadingButton
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+            >
+              Submit advancement
+            </LoadingButton>
           </Stack>
         </Stack>
       </Form>
