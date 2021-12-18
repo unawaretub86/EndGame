@@ -41,41 +41,42 @@ const imgarray = [
   'https://sites.uw.edu/bevanseries/files/2018/03/154062807_science-communication_-iStockphoto_Thinkstock-1goqkz6-816x528.jpg'
 ];
 
+function queryDefinition(role) {
+  switch (role) {
+    case enumRole.LEADER:
+      return [GET_PROJECTS_OF_LEADER, 'projectByLeaderId'];
+    case enumRole.ADMIN:
+      return [GET_PROJECTS_ALL, 'allProjects'];
+    case enumRole.USER:
+      return [GET_PROJECTS_BY_STATUS, 'projectsByStatus'];
+    default:
+      return GET_PROJECTS_ALL;
+  }
+}
+
+
+
 function Project() {
   const { userData } = React.useContext(ContextUser);
 
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
   const [isStudentProjects, setIsStudentProjects] = React.useState(true);
 
-  let PROJECT_QUERY; // una variable para alojar el gql
-  let subSet; // una var para definir nombre de sub-objeto de la data
-  // condiciones para definir el estado segun rol
-  if (userData.role === enumRole.LEADER) {
-    PROJECT_QUERY = GET_PROJECTS_OF_LEADER;
-    subSet = 'projectByLeaderId';
-  }
-  if (userData.role === enumRole.ADMIN) {
-    PROJECT_QUERY = GET_PROJECTS_ALL;
-    subSet = 'allProjects';
-  }
-  if (userData.role === enumRole.STUDENT) {
-    PROJECT_QUERY = GET_PROJECTS_BY_STATUS;
-    subSet = 'projectByStatus';
-  }
-
-  const { data, error, loading } = useQuery(PROJECT_QUERY, {
+  console.log(" queryDefinition ",queryDefinition(userData.role)[0])
+  const { data, error, loading } = useQuery(queryDefinition(userData.role)[0], {
     variables: { inStatus: 'active' },
     fetchPolicy: 'network-only'
   });
-
+  
+  
   if (loading) return <p>Loading...</p>;
   if (error) {
     console.log(error);
     return <p>Error :x</p>;
   }
-
+  
   console.log('Projects ~ data ~ ', data);
-  const dataAllProjects = data[subSet].map((project, index) => ({
+  const dataAllProjects = data[queryDefinition(userData.role)[1]].map((project, index) => ({
     ...project,
     urlimg: imgarray[index]
   }));

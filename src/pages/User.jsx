@@ -1,8 +1,6 @@
 import { useQuery, useMutation } from '@apollo/client';
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
-
-// import { Link as RouterLink } from 'react-router-dom';
 import * as React from 'react';
 // material
 import {
@@ -24,11 +22,10 @@ import {
 } from '@mui/material';
 // components
 import Page from '../components/Page';
-// import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
-//
+// our thing
 import { UPDATE_STATE_ADMIN, UPDATE_STATE_LEADER } from '../graphql/users/mutations';
 import { GET_USERS, GET_STUDENTS } from '../graphql/users/queries';
 import { ContextUser } from '../contexts/ContextUser';
@@ -73,7 +70,23 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// aquí inicia el componente -----------------------------------
+
+
+
+// afr - function to define gql document upon session user role
+function queryUSERS(role){
+  switch(role){
+    case 'admin':
+      return GET_USERS;
+    case 'leader':
+      return GET_STUDENTS;
+    default:
+      return GET_USERS;
+  }
+}
+
+
+// afr - aquí inicia el componente -----------------------------------
 
 export default function User() {
   const [page, setPage] = useState(0);
@@ -83,37 +96,21 @@ export default function User() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  // afr - to change the student status as leader
   const [mtUpdateStateLeader] = useMutation(UPDATE_STATE_LEADER);
+  // afr - to change any user status as admin
   const [UpdateStateAdmin] = useMutation(UPDATE_STATE_ADMIN);
+  // afr - take the session user data
   const { userData } = React.useContext(ContextUser);
+  // afr - the list to be rendered
   const [stUserList, setStUserList] = useState([]);
-
-  let QUERY_BY_ROLE;
-
-  if (userData.role === 'admin') {
-    QUERY_BY_ROLE = GET_USERS;
-    console.log('user page ~ query by role USERS: ', QUERY_BY_ROLE);
-  }
-  if (userData.role === 'leader') {
-    QUERY_BY_ROLE = GET_STUDENTS;
-    console.log('user page ~ query by role STUDENTS: ', QUERY_BY_ROLE);
-  }
-
-  const { data, loading } = useQuery(QUERY_BY_ROLE);
-
-  // const [ getAllUsers, {loading: loadingUsers, data: dataUsers}] = useLazyQuery(GET_USERS);
-  // const [ getStudents, {loading: loadingStudents, data: dataStudents}] = useLazyQuery(GET_STUDENTS);
-
+  // afr - loading from DDBB with a conditioned query inside the function
+  const { data, loading } = useQuery( queryUSERS(userData.role ));
+  // - setting the list state on data fetching
   useEffect(() => {
     if (data) {
-      if (userData.role === 'admin') {
-        // getAllUsers();
-        setStUserList(data.allUsers);
-      }
-      if (userData.role === 'leader') {
-        // getStudents();
-        setStUserList(data.allStudents);
-      }
+      if (userData.role === 'admin') setStUserList(data.allUsers);
+      if (userData.role === 'leader') setStUserList(data.allStudents);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -166,6 +163,7 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
+  // afr - to change the student status as leader on dropdown change
   const handleChangeStatus = async (_id, nextOption) => {
     const paqueteEnvioBd = {
       input: {
@@ -184,7 +182,7 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
 
-  //  aqui inicia el RETURN del componente --------------------\\\\
+  //  afr - aqui inicia el RETURN del componente --------------------\\\\
 
   return (
     <>
