@@ -47,10 +47,8 @@ function queryDefinition(role) {
       return [GET_PROJECTS_OF_LEADER, 'projectByLeaderId'];
     case enumRole.ADMIN:
       return [GET_PROJECTS_ALL, 'allProjects'];
-    case enumRole.USER:
-      return [GET_PROJECTS_BY_STATUS, 'projectsByStatus'];
     default:
-      return GET_PROJECTS_ALL;
+      return [GET_PROJECTS_BY_STATUS, 'projectByStatus'];
   }
 }
 
