@@ -60,34 +60,50 @@ function Project() {
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
   const [isStudentProjects, setIsStudentProjects] = React.useState(true);
   const [stDataToList, setStDataToList] = React.useState([]);
+  const [stDataToExclude, setStDataToExclude] = React.useState([]);
  
+  
+  // afr - meantime silly data fetching
+  useQuery(GET_PROJECTS_OFASTUDENT, {
+    variables: { inStatus: 'active' },
+    fetchPolicy: 'network-only',
+    onCompleted: (data) => {
+      console.log(" data2 ",data);
+      setStDataToExclude(data.projectsStudentEnrolled);
+      console.log(" stDataToExclude ",stDataToExclude);
+    }
+  });
+
   console.log(" queryDefinition ",queryDefinition(userData.role)[0])
   const { data, error, loading } = useQuery(queryDefinition(userData.role, isStudentProjects)[0], {
     variables: { inStatus: 'active' },
     fetchPolicy: 'network-only'
-  });  
+  });
   
   React.useEffect(() => {
     if (data) {
+      console.log(" stDataToExclude ",stDataToExclude);
       console.log('Projects ~ data ~ ', data);
       console.log("User data: ", userData);
       console.log("isStudentProjects: ", isStudentProjects);
       console.log("sub object name", queryDefinition(userData.role, isStudentProjects)[1]);
-      const dataAllProjects = data[queryDefinition(userData.role,isStudentProjects)[1]].map((project, index) => ({
+      let projectsList = data[queryDefinition(userData.role, isStudentProjects)[1]];
+      console.log("projectsList: ", projectsList);
+      if(userData.role === 'student' && !isStudentProjects){
+        projectsList = projectsList.filter(
+          (project) => !stDataToExclude.find((projectEnrolled) => projectEnrolled._id === project._id)
+        );
+      }
+      const prjWithIMG = projectsList.map((project, index) => ({
         ...project,
         urlimg: imgarray[index]
       }));
-      setStDataToList(dataAllProjects);
+      setStDataToList(prjWithIMG);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (loading) return <p>Loading...</p>;
-  // if (error) {
-  //   console.log(error);
-  //   return <p>Error :x</p>;
-  // }
-  
 
   return (
     <>

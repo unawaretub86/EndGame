@@ -89,11 +89,22 @@ export default function MediaCard({ prjData, title, description, image, alt }) {
           </>
         ) : null}
         {/* buttons of STUDENT */}
-        {userData.role === 'student' ? (
+        {userData.role === 'student' ? 
           <>
             {prjData.isStudentProjects ? 
-              null
-              :<Button
+              <Button
+              onClick={() =>
+                setStModal({
+                  content: <FormDoAdvnc dataID={prjData.ID} prjTitle={title} />,
+                  title: 'Advancement',
+                  open: true
+                })
+              }
+              size="small"
+              >
+                Advance
+              </Button>
+            : <Button
                 onClick={() =>
                   setStModal({
                     content: <EnrollProject dataID={prjData.ID} />,
@@ -106,20 +117,8 @@ export default function MediaCard({ prjData, title, description, image, alt }) {
                 Enroll
               </Button>
             }
-            <Button
-              onClick={() =>
-                setStModal({
-                  content: <FormDoAdvnc dataID={prjData.ID} prjTitle={title} />,
-                  title: 'Advancement',
-                  open: true
-                })
-              }
-              size="small"
-            >
-              Advance
-            </Button>
           </>
-        ) : null}
+        : null}
       </CardActions>
     </Card>
   );
