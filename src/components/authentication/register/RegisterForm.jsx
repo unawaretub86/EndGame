@@ -12,25 +12,26 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { CREATE_USER } from '../../../graphql/users/mutations';
-// import { resolvePlugin } from '@babel/core';
 
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [ mtCreateUser ] = useMutation(CREATE_USER);
+  const [mtCreateUser] = useMutation(CREATE_USER);
 
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('First name required'),
+    name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
     documentId: Yup.number('Must be a number').required('Identification is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters').matches(/[a-zA-Z0-9]/, 'Password must contain letters and numbers'),
-    passwordConfirm: Yup.string().required('Password Confirm is required').oneOf([Yup.ref('password')], 'Passwords must match'),
+    password: Yup.string()
+      .required('Password is required')
+      .min(6, 'Password must be at least 6 characters')
+      .matches(/[a-zA-Z0-9]/, 'Password must contain letters and numbers'),
+    passwordConfirm: Yup.string()
+      .required('Password Confirm is required')
+      .oneOf([Yup.ref('password')], 'Passwords must match'),
     role: Yup.string().oneOf(['student', 'leader', 'admin'])
   });
 
@@ -46,13 +47,13 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: async () => {
-      console.log("Register ~ formik.values ~ ", formik.values);
-      const toSend = { input : {...formik.values}};
-      console.log("Register ~ toSend11 ~ ", toSend);
+      console.log('Register ~ formik.values ~ ', formik.values);
+      const toSend = { input: { ...formik.values } };
+      console.log('Register ~ toSend11 ~ ', toSend);
       delete toSend.input.passwordConfirm;
-      console.log("Register ~ toSend22 ~ ", toSend);
-      const resp = await mtCreateUser({ variables: toSend })
-      console.log("Register ~ resp ~ ", resp);
+      console.log('Register ~ toSend22 ~ ', toSend);
+      const resp = await mtCreateUser({ variables: toSend });
+      console.log('Register ~ resp ~ ', resp);
       navigate('/login');
     }
   });
@@ -89,7 +90,6 @@ export default function RegisterForm() {
               helperText={touched.documentId && errors.documentId}
             />
 
-            
             <TextField
               select
               fullWidth
@@ -106,12 +106,11 @@ export default function RegisterForm() {
               <option value="leader">Leader</option>
               <option value="student">Student</option>
             </TextField>
-
           </Stack>
 
           <TextField
             fullWidth
-            autoComplete="username"
+            // autoComplete="username"
             type="email"
             label="Email address"
             {...getFieldProps('email')}
@@ -121,7 +120,7 @@ export default function RegisterForm() {
 
           <TextField
             fullWidth
-            autoComplete="current-password"
+            // autoComplete="current-password"/
             type={showPassword ? 'text' : 'password'}
             label="Password"
             {...getFieldProps('password')}
@@ -137,15 +136,15 @@ export default function RegisterForm() {
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
-          
+
           <TextField
-              fullWidth
-              label="re-enter Password"
-              type={showPassword ? 'text' : 'password'}
-              {...getFieldProps('passwordConfirm')}
-              error={Boolean(touched.passwordConfirm && errors.passwordConfirm)}
-              helperText={touched.passwordConfirm && errors.passwordConfirm}
-            />
+            fullWidth
+            label="re-enter Password"
+            type={showPassword ? 'text' : 'password'}
+            {...getFieldProps('passwordConfirm')}
+            error={Boolean(touched.passwordConfirm && errors.passwordConfirm)}
+            helperText={touched.passwordConfirm && errors.passwordConfirm}
+          />
 
           <LoadingButton
             fullWidth
