@@ -12,7 +12,8 @@ import FormCreateProject from '../components/projects/FormCreateProject';
 import {
   GET_PROJECTS_ALL,
   GET_PROJECTS_OF_LEADER,
-  GET_PROJECTS_BY_STATUS
+  GET_PROJECTS_BY_STATUS,
+  GET_PROJECTS_OFASTUDENT
 } from '../graphql/projects/prj-queries';
 import { ContextUser } from '../contexts/ContextUser';
 import { enumRole } from '../utils/enums';
@@ -41,45 +42,68 @@ const imgarray = [
   'https://sites.uw.edu/bevanseries/files/2018/03/154062807_science-communication_-iStockphoto_Thinkstock-1goqkz6-816x528.jpg'
 ];
 
-function queryDefinition(role) {
+function queryDefinition(role, isStudentProjects) {
   switch (role) {
     case enumRole.LEADER:
       return [GET_PROJECTS_OF_LEADER, 'projectByLeaderId'];
     case enumRole.ADMIN:
       return [GET_PROJECTS_ALL, 'allProjects'];
-    case enumRole.USER:
-      return [GET_PROJECTS_BY_STATUS, 'projectsByStatus'];
     default:
-      return GET_PROJECTS_ALL;
+      return (isStudentProjects ? [GET_PROJECTS_OFASTUDENT, 'projectsStudentEnrolled']
+                                : [GET_PROJECTS_BY_STATUS, 'projectByStatus']);
   }
 }
-
-
 
 function Project() {
   const { userData } = React.useContext(ContextUser);
 
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
   const [isStudentProjects, setIsStudentProjects] = React.useState(true);
+  const [stDataToList, setStDataToList] = React.useState([]);
+  const [stDataToExclude, setStDataToExclude] = React.useState([]);
+ 
+  
+  // afr - meantime silly data fetching
+  useQuery(GET_PROJECTS_OFASTUDENT, {
+    variables: { inStatus: 'active' },
+    fetchPolicy: 'network-only',
+    onCompleted: (data) => {
+      console.log(" data2 ",data);
+      setStDataToExclude(data.projectsStudentEnrolled);
+      console.log(" stDataToExclude ",stDataToExclude);
+    }
+  });
 
   console.log(" queryDefinition ",queryDefinition(userData.role)[0])
-  const { data, error, loading } = useQuery(queryDefinition(userData.role)[0], {
+  const { data, error, loading } = useQuery(queryDefinition(userData.role, isStudentProjects)[0], {
     variables: { inStatus: 'active' },
     fetchPolicy: 'network-only'
   });
   
-  
+  React.useEffect(() => {
+    if (data) {
+      console.log(" stDataToExclude ",stDataToExclude);
+      console.log('Projects ~ data ~ ', data);
+      console.log("User data: ", userData);
+      console.log("isStudentProjects: ", isStudentProjects);
+      console.log("sub object name", queryDefinition(userData.role, isStudentProjects)[1]);
+      let projectsList = data[queryDefinition(userData.role, isStudentProjects)[1]];
+      console.log("projectsList: ", projectsList);
+      if(userData.role === 'student' && !isStudentProjects){
+        projectsList = projectsList.filter(
+          (project) => !stDataToExclude.find((projectEnrolled) => projectEnrolled._id === project._id)
+        );
+      }
+      const prjWithIMG = projectsList.map((project, index) => ({
+        ...project,
+        urlimg: imgarray[index]
+      }));
+      setStDataToList(prjWithIMG);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   if (loading) return <p>Loading...</p>;
-  if (error) {
-    console.log(error);
-    return <p>Error :x</p>;
-  }
-  
-  console.log('Projects ~ data ~ ', data);
-  const dataAllProjects = data[queryDefinition(userData.role)[1]].map((project, index) => ({
-    ...project,
-    urlimg: imgarray[index]
-  }));
 
   return (
     <>
@@ -89,6 +113,7 @@ function Project() {
           contentModal={stModal.content}
           openModal={stModal.open}
         />
+        {/* afr - leader button */}
         {userData.role === 'leader' ? (
           <Button
             size="small"
@@ -103,6 +128,7 @@ function Project() {
             <Typography>Add Project</Typography>
           </Button>
         ) : null}
+        {/* // afr - student buttons */}
         {userData.role === 'student' ? (
           <>
             <Button
@@ -129,12 +155,13 @@ function Project() {
             </Button>
           </>
         ) : null}
+        { error ? <p>Error :x</p> :
         <Grid container spacing={2}>
-          {dataAllProjects.map((project) => (
+          {stDataToList.map((project) => (
             <Grid key={project._id} item xs={4}>
               <Item>
                 <MediaCard
-                  dataID={project._id}
+                  prjData={{ID: project._id, status: project.status, isStudentProjects}}
                   title={project.name}
                   description={project.generalObjective}
                   image={project.urlimg}
@@ -142,9 +169,10 @@ function Project() {
                 />
               </Item>
             </Grid>
-          ))}
+          ))}  {/* closes: jsx, mapBody, map */}
         </Grid>
-        <pre>{JSON.stringify(dataAllProjects, null, 2)}</pre>
+        }
+        <pre>{JSON.stringify(stDataToList, null, 2)}</pre>
       </ContextModal.Provider>
     </>
   );

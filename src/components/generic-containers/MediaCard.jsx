@@ -19,14 +19,14 @@ import { ContextUser } from '../../contexts/ContextUser';
 import FormDoAdvnc from '../projects/FormDoAdvnc';
 
 MediaCard.propTypes = {
-  dataID: PropTypes.string,
+  prjData: PropTypes.object,
   title: PropTypes.string,
   description: PropTypes.string,
   image: PropTypes.string,
   alt: PropTypes.string
 };
 
-export default function MediaCard({ dataID, title, description, image, alt }) {
+export default function MediaCard({ prjData, title, description, image, alt }) {
   console.log('Renders MediaCard');
   const { setStModal } = React.useContext(ContextModal);
   const { userData } = React.useContext(ContextUser);
@@ -47,7 +47,7 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
           // afrp- con este setStModal se define el modal que seva a mostrar desde cualquier parte
           onClick={() =>
             setStModal({
-              content: <InfoProject dataID={dataID} />,
+              content: <InfoProject dataID={prjData.ID} />,
               title: 'Learn More',
               open: true
             })
@@ -56,11 +56,12 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
         >
           Learn More
         </Button>
+        {/* buttons of LEADER */}
         {userData.role === 'leader' ? (
           <Button
             onClick={() =>
               setStModal({
-                content: <FormUpdateProject dataID={dataID} />,
+                content: <FormUpdateProject dataID={prjData.ID} />,
                 title: 'Update',
                 open: true
               })
@@ -70,12 +71,13 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
             Update
           </Button>
         ) : null}
+        {/* buttons of ADMIN */}
         {userData.role === 'admin' ? (
           <>
             <Button
               onClick={() =>
                 setStModal({
-                  content: <AdminProject dataID={dataID} />,
+                  content: <AdminProject dataID={prjData.ID} />,
                   title: 'Administrate',
                   open: true
                 })
@@ -86,34 +88,37 @@ export default function MediaCard({ dataID, title, description, image, alt }) {
             </Button>
           </>
         ) : null}
-        {userData.role === 'student' ? (
+        {/* buttons of STUDENT */}
+        {userData.role === 'student' ? 
           <>
-            <Button
+            {prjData.isStudentProjects ? 
+              <Button
               onClick={() =>
                 setStModal({
-                  content: <EnrollProject dataID={dataID} />,
-                  title: 'Enroll',
-                  open: true
-                })
-              }
-              size="small"
-            >
-              Enroll
-            </Button>
-            <Button
-              onClick={() =>
-                setStModal({
-                  content: <FormDoAdvnc dataID={dataID} prjTitle={title} />,
+                  content: <FormDoAdvnc dataID={prjData.ID} prjTitle={title} />,
                   title: 'Advancement',
                   open: true
                 })
               }
               size="small"
-            >
-              Advance
-            </Button>
+              >
+                Advance
+              </Button>
+            : <Button
+                onClick={() =>
+                  setStModal({
+                    content: <EnrollProject dataID={prjData.ID} />,
+                    title: 'Enroll',
+                    open: true
+                  })
+                }
+                size="small"
+              >
+                Enroll
+              </Button>
+            }
           </>
-        ) : null}
+        : null}
       </CardActions>
     </Card>
   );
