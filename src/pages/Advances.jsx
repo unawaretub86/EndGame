@@ -208,7 +208,7 @@ export default function Advances() {
                                 icon="et:search"
                                 width={30}
                                 height={30}
-                                color="success"
+                                color="secondary"
                                 variant="outlined"
                               />
                             </IconButton>
