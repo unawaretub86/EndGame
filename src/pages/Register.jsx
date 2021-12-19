@@ -62,9 +62,11 @@ export default function Register() {
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Just Get started
+              Just get started into MERCURIO
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Make real work happen Now!</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+              Your project manager that makes real work happen Now!
+            </Typography>
           </Box>
 
           {/* JWT xx <AuthSocial /> */}

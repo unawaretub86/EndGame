@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { useContext, useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Link, Drawer, Typography, Avatar, Stack } from '@mui/material';
+import { Box, Drawer, Typography, Avatar, Stack } from '@mui/material';
 // components
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
@@ -27,7 +27,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
+  padding: theme.spacing(1, 1),
   borderRadius: theme.shape.borderRadiusSm,
   backgroundColor: theme.palette.grey[200]
 }));
@@ -61,40 +61,40 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         '& .simplebar-content': { height: '100%', display: 'flex', flexDirection: 'column' }
       }}
     >
-      <Box sx={{ px: 2.5, py: 3 }}>
-        <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
+      <Box sx={{ px: 1, py: 1 }}>
+        <Box>
           <Logo />
         </Box>
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none" component={RouterLink} to="#">
-          <AccountStyle>
-            <Avatar src='/static/mock-images/avatars/avatar_default.jpg' alt="photoURL" />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {userData.name} {userData.lastName}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {userData.role}
-              </Typography>
-            </Box>
-          </AccountStyle>
-        </Link>
+      <Box sx={{ mb: 3, mx: 1 }}>
+        {/* <Link underline="none" component={RouterLink} to="#"> */}
+        <AccountStyle>
+          <Avatar src="/static/mock-images/avatars/avatar_default.jpg" alt="photoURL" />
+          <Box sx={{ ml: 1 }}>
+            <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+              {userData.name} {userData.lastName}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {userData.role}
+            </Typography>
+          </Box>
+        </AccountStyle>
+        {/* </Link> */}
       </Box>
 
       <NavSection navConfig={userSideBar} />
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      <Box sx={{ px: 1.5, pb: 2, mt: 5 }}>
         <Stack
           alignItems="center"
           spacing={3}
           sx={{
-            p: 2.5,
+            p: 3,
             pt: 5,
-            borderRadius: 2,
+            borderRadius: 3,
             position: 'relative',
             bgcolor: 'grey.200'
           }}

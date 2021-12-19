@@ -88,8 +88,6 @@ export default function ProfileForm() {
       formik.setFieldValue('email', data.userById.email);
       formik.setFieldValue('password', data.userById.password);
     }
-    // afrp- buscar la forma que no pida esta mondá de formik
-    // posible solución es usar Formik con props en el jsx
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
@@ -108,7 +106,6 @@ export default function ProfileForm() {
             <AlertAndres open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
             <Grid sx={{ mt: 1 }} container spacing={3}>
               <Grid item md={6} xs={12}>
-                {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}> */}
                 <TextField
                   fullWidth
                   label="First name"
@@ -127,8 +124,6 @@ export default function ProfileForm() {
                 />
               </Grid>
               <Grid item md={6} xs={12}>
-                {/* </Stack> */}
-                {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}> */}
                 <TextField
                   fullWidth
                   label="personal ID"
@@ -152,7 +147,6 @@ export default function ProfileForm() {
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
-                  autoComplete="current-password"
                   type={showPassword ? 'text' : 'password'}
                   label="Password"
                   {...getFieldProps('password')}
