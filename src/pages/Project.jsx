@@ -145,7 +145,7 @@ function Project() {
             <Grid key={project._id} item xs={4}>
               <Item>
                 <MediaCard
-                  dataID={project._id}
+                  prjData={{ID: project._id, status: project.status, isStudentProjects}}
                   title={project.name}
                   description={project.generalObjective}
                   image={project.urlimg}
