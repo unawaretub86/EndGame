@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
-import { Typography, Card, Divider, Grid, CardContent } from '@mui/material';
+import { Typography, Card, Divider, Grid, CardContent, Box } from '@mui/material';
 import { GET_PROJECT_BYID } from '../../graphql/projects/prj-queries';
 
 InfoProject.propTypes = {
@@ -36,46 +36,25 @@ export default function InfoProject({ dataID }) {
     <Card>
       <Divider />
       <CardContent>
-        <Grid item md={6} xs={6}>
-          <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+          {/* <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
             Project Name : &nbsp;
-          </Typography>
-          <Typography variant="h12" noWrap>
+          </Typography> */}
+          <Typography variant="h3" sx={{ color: '#229A16' }} justifyContent="stretch" Wrap>
             {projectInfo.name}
           </Typography>
         </Grid>
-        <Grid item md={6} xs={6}>
-          {' '}
-          <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
-            Project ID : &nbsp;
-          </Typography>
-          <Typography variant="h12" noWrap>
-            {projectInfo._id.substr(-5, 5)}
-          </Typography>
-        </Grid>
-        <Grid>
-          <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
-            General Objective : &nbsp;
-          </Typography>
-          <Typography variant="h12" noWrap>
-            {projectInfo.generalObjective}
-          </Typography>
-        </Grid>
         <Grid item md={6} xs={2}>
-          <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
-            Specific objectives : &nbsp;
+          <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
+            Leader: &nbsp;
           </Typography>
-          {projectInfo.specificObjectives.map((elem, index) => (
-            <li key={index}>
-              <Typography variant="p">
-                {elem}
-              </Typography>
-            </li>
-          ))}
+          <Typography variant="h12">
+            {projectInfo.leader.name.concat(' ', projectInfo.leader.lastName)}
+          </Typography>
         </Grid>
         <Grid container spacing={4} rowSpacing={1}>
           <Grid item md={6} xs={2}>
-            <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+            <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
               Start date: &nbsp;
               <Typography variant="h12" noWrap>
                 {projectInfo.startDate}
@@ -83,7 +62,7 @@ export default function InfoProject({ dataID }) {
             </Typography>
           </Grid>
           <Grid item md={6} xs={2}>
-            <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+            <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
               End date: &nbsp;
               <Typography variant="h12" noWrap>
                 {projectInfo.endDate}
@@ -91,7 +70,7 @@ export default function InfoProject({ dataID }) {
             </Typography>
           </Grid>
           <Grid item md={6} xs={2}>
-            <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+            <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
               Budget: &nbsp;
             </Typography>
             <Typography variant="h12" noWrap>
@@ -99,29 +78,56 @@ export default function InfoProject({ dataID }) {
             </Typography>
           </Grid>
           <Grid item md={6} xs={2}>
-            <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+            <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
               Status: &nbsp;
             </Typography>
             <Typography variant="h12" noWrap>
               {projectInfo.status}
             </Typography>
           </Grid>
+        </Grid>
+        {/* <Grid item md={6} xs={6}>
+          {' '}
+          <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
+            Project ID : &nbsp;
+          </Typography>
+          <Typography variant="h12" noWrap>
+            {projectInfo._id.substr(-5, 5)}
+          </Typography>
+        </Grid> */}
+        <Box paddingTop={4}>
           <Grid item md={6} xs={2}>
-            <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
-              Leader: &nbsp;
+            <Typography variant="h10" sx={{ color: '#229A16' }}>
+              General Objective : &nbsp;
             </Typography>
-            <Typography variant="h12">
-              {projectInfo.leader.name} {projectInfo.leader.lastName}
+            <Typography variant="h12" noWrap>
+              {projectInfo.generalObjective}
             </Typography>
           </Grid>
+        </Box>
+
+        <Grid container spacing={4} rowSpacing={2}>
           <Grid item md={6} xs={2}>
-            <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+            <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
+              Specific objectives : &nbsp;
+            </Typography>
+            {projectInfo.specificObjectives.map((elem, index) => (
+              <li key={index}>
+                <Typography variant="p" justifyContent="stretch">
+                  {elem}
+                </Typography>
+              </li>
+            ))}
+          </Grid>
+
+          {/* <Grid item md={6} xs={2}>
+            <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
               Leader ID: &nbsp;
             </Typography>
             <Typography variant="h12" noWrap>
               {projectInfo.leader._id}
             </Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       </CardContent>
       <Divider />

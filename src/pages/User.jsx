@@ -35,8 +35,7 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'lastName', label: 'lastName', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
+  { id: 'status', label: 'Status', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -172,7 +171,7 @@ export default function User() {
     if (userData.role === 'leader') await mtUpdateStateLeader({ variables: paqueteEnvioBd });
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stUserList.length) : 0;
+  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stUserList.length) : 0;
 
   const filteredUsers = applySortFilter(stUserList, getComparator(order, orderBy), filterName);
 
@@ -247,7 +246,7 @@ export default function User() {
                               <TableCell align="left">{lastName}</TableCell>
                               <TableCell align="left">{role}</TableCell>
                               <TableCell align="left">
-                                <FormControl fullWidth>
+                                <FormControl minWidth>
                                   <InputLabel
                                     variant="standard"
                                     htmlFor="uncontrolled-native"
@@ -277,11 +276,11 @@ export default function User() {
                             </TableRow>
                           );
                         })}
-                      {emptyRows > 0 && (
+                      {/* {emptyRows > 0 && (
                         <TableRow style={{ height: 53 * emptyRows }}>
                           <TableCell colSpan={6} />
                         </TableRow>
-                      )}
+                      )} */}
                     </TableBody>
                     {isUserNotFound && (
                       <TableBody>

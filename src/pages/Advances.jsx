@@ -7,7 +7,6 @@ import {
   Card,
   Table,
   Stack,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -105,23 +104,23 @@ export default function Advances() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, name) => {
+  //   const selectedIndex = selected.indexOf(name);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, name);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -136,7 +135,7 @@ export default function Advances() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataAdvances.length) : 0;
+  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataAdvances.length) : 0;
 
   const filteredProjects = applySortFilter(dataAdvances, getComparator(order, orderBy), filterName);
 
@@ -187,13 +186,14 @@ export default function Advances() {
                           aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox
+                            <Typography>&nbsp;</Typography>
+                            {/* <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, enrollment.project.name)}
-                            />
+                            /> */}
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack direction="row" alignItems="center" spacing={1}>
                               <Typography variant="subtitle2" noWrap>
                                 {enrollment.project.name}
                               </Typography>
@@ -216,11 +216,11 @@ export default function Advances() {
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
                 {isProjectNotFound && (
                   <TableBody>

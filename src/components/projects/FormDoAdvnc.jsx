@@ -15,7 +15,6 @@ import AlertAndres from '../generic-containers/AlertAndres';
 import { ContextUser } from '../../contexts/ContextUser';
 import { ContextModal } from '../../contexts/ContextModal';
 
-
 // ----------------------------------------------------------------------
 
 FormDoAdvnc.propTypes = {
@@ -62,12 +61,20 @@ export default function FormDoAdvnc({ prjTitle }) {
         <Stack spacing={3}>
           <Stack sx={{ mt: 3 }} direction={{ xs: 'column', sm: 'row' }}>
             <Typography variant="h10">
-              Advance made by :: <strong><i>{userData.name} {userData.lastName}</i></strong>
+              Advance made by :{' '}
+              <strong>
+                <i>
+                  {userData.name} {userData.lastName}
+                </i>
+              </strong>
             </Typography>
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }}>
             <Typography variant="h10">
-              To the project :: <i><strong>{prjTitle}</strong></i>
+              To the project :{' '}
+              <i>
+                <strong>{prjTitle}</strong>
+              </i>
             </Typography>
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>

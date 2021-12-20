@@ -19,7 +19,7 @@ export default function EnrollProject({ dataID }) {
   const [stOK, setStOK] = React.useState(false);
 
   const hdlClick = async () => {
-    const toSend = { variables: { input : { project_id: dataID, user_id: userData._id } } };
+    const toSend = { variables: { input: { project_id: dataID, user_id: userData._id } } };
     console.log('EnrollProject.jsx ~ toSend ~ ', toSend);
     const respMt = await mtEnroll(toSend);
     console.log('EnrollProject.jsx ~ resp ~ ', resp);
@@ -45,7 +45,7 @@ export default function EnrollProject({ dataID }) {
     <>
       <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
       <Box sx={{ my: 2 }} textAlign="center">
-        <Typography variant="h10" noWrap>
+        <Typography variant="h10" fontWeight="bold" sx={{ color: '#229A16' }} noWrap>
           {userData.name}! Please, confirm your enrollment into this project.
         </Typography>
       </Box>
@@ -53,7 +53,7 @@ export default function EnrollProject({ dataID }) {
         <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
           Project Name : &nbsp;
         </Typography>
-        <Typography variant="h12" noWrap>
+        <Typography variant="h12" fontWeight="bold" noWrap>
           {projectInfo.name}
         </Typography>
       </Box>
@@ -61,13 +61,13 @@ export default function EnrollProject({ dataID }) {
         <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
           Project leader : &nbsp;
         </Typography>
-        <Typography variant="h12" noWrap>
-          projectInfo.leader.name projectInfo.leader.lastName
+        <Typography variant="h12" fontWeight="bold" noWrap>
+          {projectInfo.leader.name.concat(' ', projectInfo.leader.lastName)}
         </Typography>
       </Box>
       <Box textAlign="center" spacing={3}>
         <Button onClick={hdlClick} variant="contained" color="primary" disabled={stOK}>
-          { stOK ? 'Already Erolled' : 'Enroll now' }
+          {stOK ? 'Already Erolled' : 'Enroll now'}
         </Button>
       </Box>
     </>

@@ -8,7 +8,6 @@ import {
   Card,
   Table,
   Stack,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -25,11 +24,7 @@ import Page from '../components/Page';
 // import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import {
-  ProjectListHead,
-  ProjectListToolbar,
-  ProjectMoreMenu
-} from '../components/_dashboard/enrollments';
+import { ProjectListHead, ProjectListToolbar } from '../components/_dashboard/enrollments';
 //
 import { CHANGE_STATUS_ENROLLMENT } from '../graphql/enrollments/enr-mutations';
 import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
@@ -37,7 +32,6 @@ import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  // { id: 'id', label: 'Id', alignRight: false },
   { id: 'project', label: 'Project', alignRight: false },
   { id: 'student', label: 'student', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
@@ -115,23 +109,23 @@ export default function Enrollments() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, name) => {
+  //   const selectedIndex = selected.indexOf(name);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, name);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -158,7 +152,7 @@ export default function Enrollments() {
     changeStatusEnrollment({ variables: paqueteEnvioBd });
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataEnrollments.length) : 0;
+  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataEnrollments.length) : 0;
 
   const filteredProjects = applySortFilter(
     dataEnrollments,
@@ -185,7 +179,7 @@ export default function Enrollments() {
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: 300 }}>
               <Table>
                 <ProjectListHead
                   order={order}
@@ -212,14 +206,15 @@ export default function Enrollments() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
+                          <TableCell>
+                            <Typography>&nbsp;</Typography>
+                            {/* <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, project.name)}
-                            />
+                            /> */}
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack direction="row" alignItems="center">
                               <Typography variant="subtitle2" noWrap>
                                 {project.name}
                               </Typography>
@@ -227,7 +222,7 @@ export default function Enrollments() {
                           </TableCell>
                           <TableCell align="left">{student.name}</TableCell>
                           <TableCell align="left">
-                            <FormControl fullWidth>
+                            <FormControl>
                               <InputLabel
                                 variant="standard"
                                 htmlFor="uncontrolled-native"
@@ -254,17 +249,15 @@ export default function Enrollments() {
                           </TableCell>
                           <TableCell align="left">{enrollmentDate}</TableCell>
                           <TableCell align="left">{egressDate}</TableCell>
-                          <TableCell align="right">
-                            <ProjectMoreMenu />
-                          </TableCell>
+                          <TableCell align="right">{/* <ProjectMoreMenu /> */}</TableCell>
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
                 {isProjectNotFound && (
                   <TableBody>

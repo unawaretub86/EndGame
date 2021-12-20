@@ -49,8 +49,9 @@ function queryDefinition(role, isStudentProjects) {
     case enumRole.ADMIN:
       return [GET_PROJECTS_ALL, 'allProjects'];
     default:
-      return (isStudentProjects ? [GET_PROJECTS_OFASTUDENT, 'projectsStudentEnrolled']
-                                : [GET_PROJECTS_BY_STATUS, 'projectByStatus']);
+      return isStudentProjects
+        ? [GET_PROJECTS_OFASTUDENT, 'projectsStudentEnrolled']
+        : [GET_PROJECTS_BY_STATUS, 'projectByStatus'];
   }
 }
 
@@ -61,37 +62,37 @@ function Project() {
   const [isStudentProjects, setIsStudentProjects] = React.useState(true);
   const [stDataToList, setStDataToList] = React.useState([]);
   const [stDataToExclude, setStDataToExclude] = React.useState([]);
- 
-  
+
   // afr - meantime silly data fetching
   useQuery(GET_PROJECTS_OFASTUDENT, {
     variables: { inStatus: 'active' },
     fetchPolicy: 'network-only',
     onCompleted: (data) => {
-      console.log(" data2 ",data);
+      console.log(' data2 ', data);
       setStDataToExclude(data.projectsStudentEnrolled);
-      console.log(" stDataToExclude ",stDataToExclude);
+      console.log(' stDataToExclude ', stDataToExclude);
     }
   });
 
-  console.log(" queryDefinition ",queryDefinition(userData.role)[0])
+  console.log(' queryDefinition ', queryDefinition(userData.role)[0]);
   const { data, error, loading } = useQuery(queryDefinition(userData.role, isStudentProjects)[0], {
     variables: { inStatus: 'active' },
     fetchPolicy: 'network-only'
   });
-  
+
   React.useEffect(() => {
     if (data) {
-      console.log(" stDataToExclude ",stDataToExclude);
+      console.log(' stDataToExclude ', stDataToExclude);
       console.log('Projects ~ data ~ ', data);
-      console.log("User data: ", userData);
-      console.log("isStudentProjects: ", isStudentProjects);
-      console.log("sub object name", queryDefinition(userData.role, isStudentProjects)[1]);
+      console.log('User data: ', userData);
+      console.log('isStudentProjects: ', isStudentProjects);
+      console.log('sub object name', queryDefinition(userData.role, isStudentProjects)[1]);
       let projectsList = data[queryDefinition(userData.role, isStudentProjects)[1]];
-      console.log("projectsList: ", projectsList);
-      if(userData.role === 'student' && !isStudentProjects){
+      console.log('projectsList: ', projectsList);
+      if (userData.role === 'student' && !isStudentProjects) {
         projectsList = projectsList.filter(
-          (project) => !stDataToExclude.find((projectEnrolled) => projectEnrolled._id === project._id)
+          (project) =>
+            !stDataToExclude.find((projectEnrolled) => projectEnrolled._id === project._id)
         );
       }
       const prjWithIMG = projectsList.map((project, index) => ({
@@ -100,7 +101,7 @@ function Project() {
       }));
       setStDataToList(prjWithIMG);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (loading) return <p>Loading...</p>;
@@ -132,15 +133,15 @@ function Project() {
         {userData.role === 'student' ? (
           <>
             <Button
-              size={isStudentProjects ? 'medium' : 'small'} 
+              size={isStudentProjects ? 'medium' : 'small'}
               type="button"
               xs={6}
               variant={isStudentProjects ? 'contained' : 'outlined'}
-              sx={{ mb: 2}}
+              sx={{ mb: 2 }}
               onClick={() => setIsStudentProjects(true)}
             >
-              <Icon icon="bytesize:portfolio" width={24} height={24}/>
-              <Typography sx={{ml:2}}>My Projects</Typography>
+              <Icon icon="bytesize:portfolio" width={24} height={24} />
+              <Typography sx={{ ml: 2 }}>My Projects</Typography>
             </Button>
             <Button
               size={isStudentProjects ? 'small' : 'medium'}
@@ -148,31 +149,33 @@ function Project() {
               type="button"
               variant={isStudentProjects ? 'outlined' : 'contained'}
               sx={{ mb: 2, mx: 1 }}
-              onClick={() =>setIsStudentProjects(false)}
+              onClick={() => setIsStudentProjects(false)}
             >
               <Icon icon="fa-solid:university" width={24} height={24} />
-              <Typography sx={{ml:2}}>All projects</Typography>
+              <Typography sx={{ ml: 2 }}>All projects</Typography>
             </Button>
           </>
         ) : null}
-        { error ? <p>Error :x</p> :
-        <Grid container spacing={2}>
-          {stDataToList.map((project) => (
-            <Grid key={project._id} item xs={4}>
-              <Item>
-                <MediaCard
-                  prjData={{ID: project._id, status: project.status, isStudentProjects}}
-                  title={project.name}
-                  description={project.generalObjective}
-                  image={project.urlimg}
-                  alt={project.name}
-                />
-              </Item>
-            </Grid>
-          ))}  {/* closes: jsx, mapBody, map */}
-        </Grid>
-        }
-        <pre>{JSON.stringify(stDataToList, null, 2)}</pre>
+        {error ? (
+          <p>Error :x</p>
+        ) : (
+          <Grid container spacing={2}>
+            {stDataToList.map((project) => (
+              <Grid key={project._id} item xs={4}>
+                <Item>
+                  <MediaCard
+                    prjData={{ ID: project._id, status: project.status, isStudentProjects }}
+                    title={project.name}
+                    description={project.generalObjective}
+                    image={project.urlimg}
+                    alt={project.name}
+                  />
+                </Item>
+              </Grid>
+            ))}{' '}
+            {/* closes: jsx, mapBody, map */}
+          </Grid>
+        )}
       </ContextModal.Provider>
     </>
   );

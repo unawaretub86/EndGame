@@ -117,26 +117,33 @@ export default function FormUpdateProject({ dataID }) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextField
-              fullWidth
-              label="Project Name"
-              {...getFieldProps('name')}
-              error={Boolean(touched.name && errors.name)}
-              helperText={touched.name && errors.name}
-            />
+          {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}> */}
+          <TextField
+            sx={{ mt: 3 }}
+            fullWidth
+            label="Project Name"
+            {...getFieldProps('name')}
+            error={Boolean(touched.name && errors.name)}
+            helperText={touched.name && errors.name}
+          />
 
-            <TextField
-              fullWidth
-              label="General Objective"
-              {...getFieldProps('generalObjective')}
-              error={Boolean(touched.generalObjective && errors.generalObjective)}
-              helperText={touched.generalObjective && errors.generalObjective}
-            />
-          </Stack>
+          <TextField
+            fullWidth
+            multiline
+            aria-label="minimum height"
+            rows={2}
+            label="General Objective"
+            {...getFieldProps('generalObjective')}
+            error={Boolean(touched.generalObjective && errors.generalObjective)}
+            helperText={touched.generalObjective && errors.generalObjective}
+          />
+          {/* </Stack> */}
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
+              multiline
+              aria-label="minimum height"
+              rows={3}
               label="First Specific Objective"
               {...getFieldProps('specificObjective1')}
               error={Boolean(touched.specificObjective1 && errors.specificObjective1)}
@@ -145,7 +152,10 @@ export default function FormUpdateProject({ dataID }) {
 
             <TextField
               fullWidth
-              label="*Mejor TextArea* Second Specific Objective"
+              multiline
+              aria-label="minimum height"
+              rows={3}
+              label="Second Specific Objective"
               {...getFieldProps('specificObjective2')}
               error={Boolean(touched.specificObjective2 && errors.specificObjective2)}
               helperText={touched.specificObjective2 && errors.specificObjective2}
@@ -153,6 +163,9 @@ export default function FormUpdateProject({ dataID }) {
 
             <TextField
               fullWidth
+              multiline
+              aria-label="minimum height"
+              rows={3}
               label="Third Specific Objective"
               {...getFieldProps('specificObjective3')}
               error={Boolean(touched.specificObjective3 && errors.specificObjective3)}
