@@ -49,17 +49,17 @@ export default function EnrollProject({ dataID }) {
           {userData.name}! Please, confirm your enrollment into this project.
         </Typography>
       </Box>
-      <Box>
-        <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
+      <Box sx={{ my: 2 }} textAlign="center">
+        {/* <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
           Project Name : &nbsp;
-        </Typography>
+        </Typography> */}
         <Typography variant="h12" fontWeight="bold" noWrap>
           {projectInfo.name}
         </Typography>
       </Box>
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ my: 2 }} textAlign="center">
         <Typography variant="h10" sx={{ color: 'text.secondary' }} noWrap>
-          Project leader : &nbsp;
+          By : &nbsp;
         </Typography>
         <Typography variant="h12" fontWeight="bold" noWrap>
           {projectInfo.leader.name.concat(' ', projectInfo.leader.lastName)}

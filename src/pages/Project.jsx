@@ -8,6 +8,7 @@ import { ContextModal } from '../contexts/ContextModal';
 import ModalWindow from '../components/generic-containers/ModalWindow';
 import MediaCard from '../components/generic-containers/MediaCard';
 import FormCreateProject from '../components/projects/FormCreateProject';
+import Page from '../components/Page';
 // utilities
 import {
   GET_PROJECTS_ALL,
@@ -107,7 +108,7 @@ function Project() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <>
+    <Page title="Project | Mercurio">
       <ContextModal.Provider value={{ stModal, setStModal }}>
         <ModalWindow
           titleModal={stModal.title}
@@ -177,7 +178,7 @@ function Project() {
           </Grid>
         )}
       </ContextModal.Provider>
-    </>
+    </Page>
   );
 }
 
