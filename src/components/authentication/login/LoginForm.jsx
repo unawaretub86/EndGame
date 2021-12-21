@@ -117,7 +117,6 @@ export default function LoginForm() {
         </Stack> */}
         <LoadingButton
           fullWidth
-          justifyContent="space-between"
           size="large"
           type="submit"
           variant="contained"

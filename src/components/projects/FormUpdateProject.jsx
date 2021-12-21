@@ -31,6 +31,7 @@ FormUpdateProject.propTypes = {
 export default function FormUpdateProject({ dataID }) {
   const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: '' });
   const [mtUpdateProject] = useMutation(UPDATE_PROJECT);
+  const [stIsActive , setStIsActive] = useState(false);
 
   console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_BYID);
   console.log('Update Project ~ dataID ~ ', dataID);
@@ -38,7 +39,10 @@ export default function FormUpdateProject({ dataID }) {
     variables: {
       id: dataID
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
+    onCompleted: data => {
+      setStIsActive(data.projectById.status === 'active');
+    }
   });
 
   console.log('Update Project ~ resp ~ ', resp);
@@ -55,14 +59,14 @@ export default function FormUpdateProject({ dataID }) {
   // const [mtUpdateProject, { loading: loadingMutation }] = useMutation (UPDATE_PROJECT);
 
   const RegisterSchema = Yup.object().shape({
-    // name: Yup.string().required('Name is required').min(5, 'Too Short!'),
-    // generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
-    // specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
-    // specificObjective2: Yup.string().min(20, 'Too Short!'),
-    // specificObjective3: Yup.string().min(20, 'Too Short!'),
-    // budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
-    // startDate: Yup.string().required('Start Date is required'),
-    // endDate: Yup.string().required('End Date is required')
+    name: Yup.string().required('Name is required').min(5, 'Too Short!'),
+    generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
+    specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
+    specificObjective2: Yup.string().min(20, 'Too Short!'),
+    specificObjective3: Yup.string().min(20, 'Too Short!'),
+    budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
+    startDate: Yup.string().required('Start Date is required'),
+    endDate: Yup.string().required('End Date is required')
   });
 
   function packData(formikOriginal, prjID) {
@@ -87,11 +91,13 @@ export default function FormUpdateProject({ dataID }) {
     validationSchema: RegisterSchema,
     enableReinitialize: true,
     onSubmit: async () => {
-      const toSend = packData(formik.values, dataID);
-      console.log('UpdateProject: onSubmit -> gql toSend', toSend);
-      const resp = mtUpdateProject({ variables: { input: toSend } });
-      console.log('FormUpdateProject: onSubmit -> gql resp', resp);
-      setStAlert({ open: true, isGood: true, txt: 'Project created successfully' });
+      if(stIsActive) {
+        const toSend = packData(formik.values, dataID);
+        console.log('UpdateProject: onSubmit -> gql toSend', toSend);
+        const resp = mtUpdateProject({ variables: { input: toSend } });
+        console.log('FormUpdateProject: onSubmit -> gql resp', resp);
+        setStAlert({ open: true, isGood: true, txt: 'Project created successfully' });
+      }
     }
   });
 
@@ -114,11 +120,13 @@ export default function FormUpdateProject({ dataID }) {
 
   return (
     <FormikProvider value={formik}>
+      
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
           {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}> */}
           <TextField
+            disabled={!stIsActive}
             sx={{ mt: 3 }}
             fullWidth
             label="Project Name"
@@ -128,6 +136,7 @@ export default function FormUpdateProject({ dataID }) {
           />
 
           <TextField
+            disabled={!stIsActive}
             fullWidth
             multiline
             aria-label="minimum height"
@@ -140,6 +149,7 @@ export default function FormUpdateProject({ dataID }) {
           {/* </Stack> */}
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
+              disabled={!stIsActive}
               fullWidth
               multiline
               aria-label="minimum height"
@@ -151,6 +161,7 @@ export default function FormUpdateProject({ dataID }) {
             />
 
             <TextField
+              disabled={!stIsActive}
               fullWidth
               multiline
               aria-label="minimum height"
@@ -162,6 +173,7 @@ export default function FormUpdateProject({ dataID }) {
             />
 
             <TextField
+              disabled={!stIsActive}
               fullWidth
               multiline
               aria-label="minimum height"
@@ -174,6 +186,7 @@ export default function FormUpdateProject({ dataID }) {
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
+              disabled={!stIsActive}
               fullWidth
               label="Budget"
               {...getFieldProps('budget')}
@@ -187,6 +200,7 @@ export default function FormUpdateProject({ dataID }) {
             */}
           </Stack>
           <TextField
+            disabled={!stIsActive}
             fullWidth
             label="Paste Image URL"
             {...getFieldProps('imgurl')}
@@ -195,24 +209,18 @@ export default function FormUpdateProject({ dataID }) {
           />
 
           <LoadingButton
+            disabled={!stIsActive}
             fullWidth
             size="large"
             type="submit"
             variant="contained"
             loading={isSubmitting}
           >
-            Update Project
+            {data.projectById.status === 'active' ? 'Update Project' : 'Project not active'}
           </LoadingButton>
         </Stack>
       </Form>
+
     </FormikProvider>
   );
 }
-
-/* rellenos
-Project 4.12.10.34
-GenObj Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
-SpObj11 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
-SpObj22 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
-SpObj22 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
-*/
