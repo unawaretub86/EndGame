@@ -12,6 +12,7 @@ const GET_ADVANCES = gql`
         }
         student {
           name
+          lastName
         }
       }
     }
