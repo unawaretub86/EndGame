@@ -37,15 +37,9 @@ export default function FormDoAdvnc({ prjTitle }) {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      // const toSend = {
-      //   input: {
-      //     description: formik.values,
-      //     project_id: dataID,
-      //     student_id: userData.id
-      //   }
-      // };
-
       setStAlert({ open: true, isGood: true, txt: 'Advancement successfully registered' });
+      const toSend = { input: { description: formik.values.description, project: { id: prjTitle } } };
+      console.log("FormDoAdvnc ~ toSend: ", toSend);
       setTimeout(() => {
         setStModal({ ...stModal, open: false });
       }, 2000);
