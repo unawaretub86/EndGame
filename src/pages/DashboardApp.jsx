@@ -40,11 +40,13 @@ export default function DashboardApp() {
             <Grid item xs={12} sm={6} md={3}>
               <AppNewProjects />
             </Grid>
-            {userData.role === 'student' || userData.role === 'leader' ? (
-              <>
+            {userData.role === 'leader' ? (
                 <Grid item xs={12} sm={6} md={3}>
                   <AppEnrollments />
                 </Grid>
+              ) : null}
+            {userData.role === 'student' || userData.role === 'leader' ? (
+              <>
                 <Grid item xs={12} sm={6} md={3}>
                   <AppAdvances />
                 </Grid>

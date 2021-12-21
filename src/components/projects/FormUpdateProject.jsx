@@ -55,14 +55,14 @@ export default function FormUpdateProject({ dataID }) {
   // const [mtUpdateProject, { loading: loadingMutation }] = useMutation (UPDATE_PROJECT);
 
   const RegisterSchema = Yup.object().shape({
-    // name: Yup.string().required('Name is required').min(5, 'Too Short!'),
-    // generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
-    // specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
-    // specificObjective2: Yup.string().min(20, 'Too Short!'),
-    // specificObjective3: Yup.string().min(20, 'Too Short!'),
-    // budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
-    // startDate: Yup.string().required('Start Date is required'),
-    // endDate: Yup.string().required('End Date is required')
+    name: Yup.string().required('Name is required').min(5, 'Too Short!'),
+    generalObjective: Yup.string().required('General Objective is required').min(20, 'Too Short!'),
+    specificObjective1: Yup.string().required('At least One is required').min(20, 'Too Short!'),
+    specificObjective2: Yup.string().min(20, 'Too Short!'),
+    specificObjective3: Yup.string().min(20, 'Too Short!'),
+    budget: Yup.number('Must be a number').required('Budget is required').min(1, 'Must be greater than 0').max(10000000, 'Must be less than 10000000'),
+    startDate: Yup.string().required('Start Date is required'),
+    endDate: Yup.string().required('End Date is required')
   });
 
   function packData(formikOriginal, prjID) {
@@ -87,11 +87,13 @@ export default function FormUpdateProject({ dataID }) {
     validationSchema: RegisterSchema,
     enableReinitialize: true,
     onSubmit: async () => {
-      const toSend = packData(formik.values, dataID);
-      console.log('UpdateProject: onSubmit -> gql toSend', toSend);
-      const resp = mtUpdateProject({ variables: { input: toSend } });
-      console.log('FormUpdateProject: onSubmit -> gql resp', resp);
-      setStAlert({ open: true, isGood: true, txt: 'Project created successfully' });
+      if(data.projectById.status === 'active') {
+        const toSend = packData(formik.values, dataID);
+        console.log('UpdateProject: onSubmit -> gql toSend', toSend);
+        const resp = mtUpdateProject({ variables: { input: toSend } });
+        console.log('FormUpdateProject: onSubmit -> gql resp', resp);
+        setStAlert({ open: true, isGood: true, txt: 'Project created successfully' });
+      }
     }
   });
 
@@ -199,9 +201,10 @@ export default function FormUpdateProject({ dataID }) {
             size="large"
             type="submit"
             variant="contained"
+            disabled={data.projectById.status === 'inactive'}
             loading={isSubmitting}
           >
-            Update Project
+            {data.projectById.status === 'active' ? 'Update Project' : 'Project not active'}
           </LoadingButton>
         </Stack>
       </Form>
