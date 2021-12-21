@@ -14,7 +14,8 @@ import {
   Typography,
   TableContainer,
   IconButton,
-  TablePagination
+  TablePagination,
+  Button
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 // components
@@ -25,6 +26,9 @@ import SearchNotFound from '../components/SearchNotFound';
 import { ProjectListHead, ProjectListToolbar } from '../components/_dashboard/enrollments';
 //
 import { GET_ADVANCES } from '../graphql/advances/ad-queries';
+import { ContextModal } from '../contexts/ContextModal';
+import ModalWindow from '../components/generic-containers/ModalWindow';
+import FormDoObserv from '../components/projects/FormDoObserv';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -77,6 +81,7 @@ export default function Advances() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [dataAdvances, setDataAdvances] = useState([]);
   const ref = useRef(null);
+  const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
 
   const { data, error, loading } = useQuery(GET_ADVANCES,
     {
@@ -163,6 +168,15 @@ export default function Advances() {
 
   return (
     <Page title="Advances | Mercurio">
+      <ContextModal.Provider value={{ stModal, setStModal }}>
+      <ModalWindow
+          titleModal={stModal.title}
+          contentModal={stModal.content}
+          openModal={stModal.open}
+        />
+      <Button onClick={() => setStModal({ title: 'Add Advance', content: <p>Hola Modal</p>, open: true })}>
+        Add Advance
+      </Button>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -223,7 +237,13 @@ export default function Advances() {
                           <TableCell align="left">{addDate}</TableCell>
                           <TableCell align="left">{leaderDate}</TableCell>
                           <TableCell align="right">
-                            <IconButton ref={ref}>
+                            <IconButton ref={ref} onClick={() => 
+                              setStModal({
+                                title: 'Observe Advance',
+                                content: <FormDoObserv/>,
+                                open: true
+                              })
+                            }>
                               <Icon
                                 icon="et:search"
                                 width={30}
@@ -267,6 +287,7 @@ export default function Advances() {
         </Card>
       </Container>
       <pre>{JSON.stringify(dataAdvances, null, 2)}</pre>
+      </ContextModal.Provider>
     </Page>
   );
 }
