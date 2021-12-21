@@ -84,6 +84,37 @@ const GET_PROJECTS_OF_LEADER = gql`
         status
         role
       }
+      enrollments {
+        _id
+        project {
+          name
+        }
+        student {
+          name
+        }
+        status
+        enrollmentDate
+        egressDate
+      }
+    }
+  }
+`;
+
+const GET_ENROLLMENTS_FROM_LEADER_PROJECTS = gql`
+  query Query {
+    projectByLeaderId {
+      enrollments {
+        _id
+        project {
+          name
+        }
+        student {
+          name
+        }
+        status
+        enrollmentDate
+        egressDate
+      }
     }
   }
 `;
@@ -115,5 +146,6 @@ export {
   GET_PROJECT_BYID_TOADMIN,
   GET_PROJECTS_OF_LEADER,
   GET_PROJECTS_BY_STATUS,
-  GET_PROJECTS_OFASTUDENT
+  GET_PROJECTS_OFASTUDENT,
+  GET_ENROLLMENTS_FROM_LEADER_PROJECTS
 };
