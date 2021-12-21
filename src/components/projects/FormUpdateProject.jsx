@@ -31,6 +31,7 @@ FormUpdateProject.propTypes = {
 export default function FormUpdateProject({ dataID }) {
   const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: '' });
   const [mtUpdateProject] = useMutation(UPDATE_PROJECT);
+  const [stIsActive , setStIsActive] = useState(false);
 
   console.log('Update Project ~ GET_PROJECT_ID ~ ', GET_PROJECT_BYID);
   console.log('Update Project ~ dataID ~ ', dataID);
@@ -38,7 +39,10 @@ export default function FormUpdateProject({ dataID }) {
     variables: {
       id: dataID
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
+    onCompleted: data => {
+      setStIsActive(data.projectById.status === 'active');
+    }
   });
 
   console.log('Update Project ~ resp ~ ', resp);
@@ -87,7 +91,7 @@ export default function FormUpdateProject({ dataID }) {
     validationSchema: RegisterSchema,
     enableReinitialize: true,
     onSubmit: async () => {
-      if(data.projectById.status === 'active') {
+      if(stIsActive) {
         const toSend = packData(formik.values, dataID);
         console.log('UpdateProject: onSubmit -> gql toSend', toSend);
         const resp = mtUpdateProject({ variables: { input: toSend } });
@@ -116,11 +120,13 @@ export default function FormUpdateProject({ dataID }) {
 
   return (
     <FormikProvider value={formik}>
+      
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
         <Stack spacing={3}>
           {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}> */}
           <TextField
+            disabled={!stIsActive}
             sx={{ mt: 3 }}
             fullWidth
             label="Project Name"
@@ -130,6 +136,7 @@ export default function FormUpdateProject({ dataID }) {
           />
 
           <TextField
+            disabled={!stIsActive}
             fullWidth
             multiline
             aria-label="minimum height"
@@ -142,6 +149,7 @@ export default function FormUpdateProject({ dataID }) {
           {/* </Stack> */}
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
+              disabled={!stIsActive}
               fullWidth
               multiline
               aria-label="minimum height"
@@ -153,6 +161,7 @@ export default function FormUpdateProject({ dataID }) {
             />
 
             <TextField
+              disabled={!stIsActive}
               fullWidth
               multiline
               aria-label="minimum height"
@@ -164,6 +173,7 @@ export default function FormUpdateProject({ dataID }) {
             />
 
             <TextField
+              disabled={!stIsActive}
               fullWidth
               multiline
               aria-label="minimum height"
@@ -176,6 +186,7 @@ export default function FormUpdateProject({ dataID }) {
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
+              disabled={!stIsActive}
               fullWidth
               label="Budget"
               {...getFieldProps('budget')}
@@ -189,6 +200,7 @@ export default function FormUpdateProject({ dataID }) {
             */}
           </Stack>
           <TextField
+            disabled={!stIsActive}
             fullWidth
             label="Paste Image URL"
             {...getFieldProps('imgurl')}
@@ -197,25 +209,18 @@ export default function FormUpdateProject({ dataID }) {
           />
 
           <LoadingButton
+            disabled={!stIsActive}
             fullWidth
             size="large"
             type="submit"
             variant="contained"
-            disabled={data.projectById.status === 'inactive'}
             loading={isSubmitting}
           >
             {data.projectById.status === 'active' ? 'Update Project' : 'Project not active'}
           </LoadingButton>
         </Stack>
       </Form>
+
     </FormikProvider>
   );
 }
-
-/* rellenos
-Project 4.12.10.34
-GenObj Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
-SpObj11 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
-SpObj22 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
-SpObj22 Project 4.12.10.34 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et venenatis ligula. Sed maximus pharetra molestie.
-*/
