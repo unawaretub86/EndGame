@@ -58,6 +58,7 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
+  console.log('applySortFilter', 'array', array, 'comparator', comparator, 'query', query);
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -67,7 +68,7 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_project) => _project.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_project) => _project.project.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -79,10 +80,28 @@ export default function Enrollments() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('project');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [changeStatusEnrollment] = useMutation(CHANGE_STATUS_ENROLLMENT);
+  const [stDataEnrollments, setStDataEnrollments] = useState([]);
 
-  const { data, error, loading } = useQuery(GET_ENROLLMENTS);
+  const { data, error, loading } = useQuery(GET_ENROLLMENTS,
+    {
+      onCompleted: (data) => {
+        const enrollmentList = data.allEnrollments;
+        const realList = enrollmentList.map((elem) => 
+          ({
+            _id: elem._id,
+            project: elem.project.name,
+            student: elem.student.name,
+            status: elem.status,
+            enrollmentDate: elem.enrollmentDate,
+            egressDate: elem.egressDate
+          })
+        );
+        setStDataEnrollments(realList);
+    }
+  }
+  );
   console.log(data);
   useEffect(() => {
     if (error) {
@@ -92,7 +111,7 @@ export default function Enrollments() {
 
   if (loading) return <div>Loading....</div>;
 
-  const dataEnrollments = data.allEnrollments;
+  const stDataEnrollments2 = data.allEnrollments;
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -102,7 +121,7 @@ export default function Enrollments() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = dataEnrollments.map((n) => n.name);
+      const newSelecteds = stDataEnrollments.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -155,7 +174,7 @@ export default function Enrollments() {
   // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataEnrollments.length) : 0;
 
   const filteredProjects = applySortFilter(
-    dataEnrollments,
+    stDataEnrollments,
     getComparator(order, orderBy),
     filterName
   );
@@ -185,7 +204,7 @@ export default function Enrollments() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dataEnrollments.length}
+                  rowCount={stDataEnrollments.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -216,11 +235,11 @@ export default function Enrollments() {
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center">
                               <Typography variant="subtitle2" noWrap>
-                                {project.name}
+                                {project}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{student.name}</TableCell>
+                          <TableCell align="left">{student}</TableCell>
                           <TableCell align="left">
                             <FormControl>
                               <InputLabel
@@ -242,7 +261,7 @@ export default function Enrollments() {
                                   {' '}
                                 </option>
                                 <option value="">Pending</option>
-                                <option value="acepted">Accepted</option>
+                                <option value="accepted">Accepted</option>
                                 <option value="rejected">Rejected</option>
                               </NativeSelect>
                             </FormControl>
@@ -275,7 +294,7 @@ export default function Enrollments() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={dataEnrollments.length}
+            count={stDataEnrollments.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -283,6 +302,10 @@ export default function Enrollments() {
           />
         </Card>
       </Container>
+      <pre>{JSON.stringify(stDataEnrollments, null, 2)}</pre>
+      <hr />
+      <hr />
+      <pre>{JSON.stringify(stDataEnrollments2, null, 2)}</pre>
     </Page>
   );
 }
