@@ -27,7 +27,7 @@ import SearchNotFound from '../components/SearchNotFound';
 import { ProjectListHead, ProjectListToolbar } from '../components/_dashboard/enrollments';
 //
 import { CHANGE_STATUS_ENROLLMENT } from '../graphql/enrollments/enr-mutations';
-import { GET_ENROLLMENTS } from '../graphql/enrollments/enr-queries';
+import { GET_ENROLLMENTS_FROM_LEADER_PROJECTS } from '../graphql/projects/prj-queries';
 
 // ----------------------------------------------------------------------
 
@@ -84,11 +84,18 @@ export default function Enrollments() {
   const [changeStatusEnrollment] = useMutation(CHANGE_STATUS_ENROLLMENT);
   const [stDataEnrollments, setStDataEnrollments] = useState([]);
 
-  const { data, error, loading } = useQuery(GET_ENROLLMENTS,
+  const { data, error, loading } = useQuery(GET_ENROLLMENTS_FROM_LEADER_PROJECTS,
     {
       onCompleted: (data) => {
-        const enrollmentList = data.allEnrollments;
-        const realList = enrollmentList.map((elem) => 
+        const projectList = data.projectByLeaderId;
+        console.log('projectList', projectList);
+        const enrollmentList = projectList.map((project) => 
+          project.enrollments
+        );
+        const flatArrray = enrollmentList.flat();
+        console.log('flatArrray', flatArrray);
+        console.log('enrollmentList', enrollmentList);
+        const realList = flatArrray.map((elem) => 
           ({
             _id: elem._id,
             project: elem.project.name,
