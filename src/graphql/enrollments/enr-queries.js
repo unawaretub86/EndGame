@@ -17,4 +17,14 @@ const GET_ENROLLMENTS = gql`
   }
 `;
 
-export { GET_ENROLLMENTS };
+const GET_ENROLLMENTS_OFSTUDENT = gql`
+  query enrollmentByUserId($user_id: ID!) {
+    enrollmentByUserId(user_id: $user_id) {
+      _id
+      project_id
+      status
+    }
+  }
+`;
+
+export { GET_ENROLLMENTS,GET_ENROLLMENTS_OFSTUDENT };

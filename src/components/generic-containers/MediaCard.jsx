@@ -95,7 +95,7 @@ export default function MediaCard({ prjData, title, description, image, alt }) {
               <Button
               onClick={() =>
                 setStModal({
-                  content: <FormDoAdvnc dataID={prjData.ID} prjTitle={title} />,
+                  content: <FormDoAdvnc dataID={prjData.ID} />,
                   title: 'Advancement',
                   open: true
                 })

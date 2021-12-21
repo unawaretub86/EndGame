@@ -62,6 +62,23 @@ const GET_PROJECT_BYID_TOADMIN = gql`
   }
 `;
 
+const GET_PROJECT_BYID_TOADVANCE = gql`
+  query ($id: ID!) {
+    projectById(_id: $id) {
+      _id
+      name
+      status
+      phase
+      enrollments {
+        _id
+        project {
+            _id
+        }
+      }
+    }
+  }
+`;
+
 const GET_PROJECTS_OF_LEADER = gql`
   query Query {
     projectByLeaderId {
@@ -147,5 +164,6 @@ export {
   GET_PROJECTS_OF_LEADER,
   GET_PROJECTS_BY_STATUS,
   GET_PROJECTS_OFASTUDENT,
-  GET_ENROLLMENTS_FROM_LEADER_PROJECTS
+  GET_ENROLLMENTS_FROM_LEADER_PROJECTS,
+  GET_PROJECT_BYID_TOADVANCE
 };

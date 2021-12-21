@@ -1,7 +1,8 @@
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Card, Stack, Link, Container, Typography } from '@mui/material';
+import { Card, Stack, Link, Container, Typography, Button } from '@mui/material';
+import { Icon } from '@iconify/react';
 // import { useAuth0 } from '@auth0/auth0-react';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
@@ -74,6 +75,9 @@ export default function Login() {
           {/* JWT <AuthSocial /> */}
 
           <LoginForm />
+          <Button variant="outlined" color="error" target="_blank" href="https://youtu.be/jLbqbqszKs8">
+            About Mercurio &nbsp; <Icon icon="logos:youtube-icon" inline />
+          </Button>
 
           <MHidden width="smUp">
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>
@@ -83,6 +87,12 @@ export default function Login() {
               </Link>
             </Typography>
           </MHidden>
+          <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+              Know more about&nbsp;
+            <Link variant="subtitle2" href='https://github.com/minimal-ui-kit/material-kit-react'>
+              minimal-UI-kit
+            </Link>
+          </Typography>
         </ContentStyle>
       </Container>
     </RootStyle>
