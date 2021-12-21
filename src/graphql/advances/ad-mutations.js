@@ -1,8 +1,11 @@
 import { gql } from '@apollo/client';
 
 const CREATE_ADVANCE = gql`
-    mutation CreateAdvance($input: AdvanceInput!) {
-        createAdvance(input: $input) {
+    mutation addAdvance($input: AddAdvanceInput!) {
+        addAdvance(input: $input) {
+            _id
         }
     }
-`;	
+`;
+
+export { CREATE_ADVANCE };
