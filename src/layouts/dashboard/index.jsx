@@ -36,25 +36,23 @@ const MainStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
-  
   const [open, setOpen] = useState(false);
-  
+
   const { userData, setUserData } = useContext(ContextUser);
-  
+
   useEffect(() => {
     const localToken = localStorage.getItem('token');
     console.log('Dashboard Index ~ localToken: ', localToken);
     const decode = jwtDecode(localToken);
     setUserData(decode);
   }, [setUserData]);
-  
 
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
       <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle>
-        {userData ? <Outlet /> :<Typography>xx Usuario no registrado xx</Typography>}
+        {userData ? <Outlet /> : <Typography>User hasn't been registered yet</Typography>}
       </MainStyle>
     </RootStyle>
   );

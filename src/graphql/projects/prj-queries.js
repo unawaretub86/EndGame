@@ -36,7 +36,7 @@ const GET_PROJECT_BYID = gql`
       endDate
       status
       phase
-      leader{
+      leader {
         _id
         name
         lastName
@@ -53,15 +53,16 @@ const GET_PROJECT_BYID_TOADMIN = gql`
       status
       phase
       startDate
-      leader{
+      leader {
         _id
         name
+        lastName
       }
     }
   }
 `;
 
-const GET_PROJECTS_OF_LEADER= gql`
+const GET_PROJECTS_OF_LEADER = gql`
   query Query {
     projectByLeaderId {
       _id
@@ -89,7 +90,7 @@ const GET_PROJECTS_OF_LEADER= gql`
 
 const GET_PROJECTS_BY_STATUS = gql`
   query projectByStatus($inStatus: projectStatus!) {
-    projectByStatus(status: $inStatus){
+    projectByStatus(status: $inStatus) {
       _id
       name
       generalObjective
@@ -98,14 +99,21 @@ const GET_PROJECTS_BY_STATUS = gql`
 `;
 
 const GET_PROJECTS_OFASTUDENT = gql`
-  query projectsStudentEnrolled{
-    projectsStudentEnrolled{
+  query projectsStudentEnrolled {
+    projectsStudentEnrolled {
       _id
       name
       generalObjective
     }
   }
-`;	
+`;
 
 // afrp- ojo con el leader{...}
-export { GET_PROJECTS_ALL, GET_PROJECT_BYID, GET_PROJECT_BYID_TOADMIN, GET_PROJECTS_OF_LEADER, GET_PROJECTS_BY_STATUS, GET_PROJECTS_OFASTUDENT};
+export {
+  GET_PROJECTS_ALL,
+  GET_PROJECT_BYID,
+  GET_PROJECT_BYID_TOADMIN,
+  GET_PROJECTS_OF_LEADER,
+  GET_PROJECTS_BY_STATUS,
+  GET_PROJECTS_OFASTUDENT
+};

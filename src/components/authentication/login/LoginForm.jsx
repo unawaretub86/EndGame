@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useContext, useEffect, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useMutation } from '@apollo/client';
 import jwtDecode from 'jwt-decode';
@@ -9,15 +9,7 @@ import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
-import {
-  Link,
-  Stack,
-  Checkbox,
-  TextField,
-  IconButton,
-  InputAdornment,
-  FormControlLabel
-} from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { ContextUser } from '../../../contexts/ContextUser';
 import { LOGIN_USER } from '../../../graphql/users/mutations';
@@ -44,8 +36,7 @@ export default function LoginForm() {
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
-      remember: true
+      password: ''
     },
     validationSchema: LoginSchema,
     onSubmit: async () => {
@@ -66,13 +57,13 @@ export default function LoginForm() {
       } catch (error) {
         console.log('LoginForm ~ error ~~', error);
         if (error.graphQLErrors) {
-          setStAlert({ open: true, isGood: false, txt: 'xERRORx : User not authorized yet' });
+          setStAlert({ open: true, isGood: false, txt: 'Warning : User not authorized yet' });
         }
       }
     }
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
@@ -114,7 +105,7 @@ export default function LoginForm() {
             helperText={touched.password && errors.password}
           />
         </Stack>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
           <FormControlLabel
             control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
             label="Remember me"
@@ -123,14 +114,15 @@ export default function LoginForm() {
           <Link component={RouterLink} variant="subtitle2" to="#">
             Forgot password?
           </Link>
-        </Stack>
+        </Stack> */}
         <LoadingButton
           fullWidth
+          justifyContent="space-between"
           size="large"
           type="submit"
           variant="contained"
           loading={isSubmitting}
-          sx={{ mb: 6 }}
+          sx={{ my: 3 }}
         >
           Login
         </LoadingButton>

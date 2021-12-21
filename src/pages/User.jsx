@@ -8,7 +8,6 @@ import {
   Table,
   Stack,
   Avatar,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -24,7 +23,7 @@ import {
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
+import { UserListHead, UserListToolbar } from '../components/_dashboard/user';
 // our thing
 import { UPDATE_STATE_ADMIN, UPDATE_STATE_LEADER } from '../graphql/users/mutations';
 import { GET_USERS, GET_STUDENTS } from '../graphql/users/queries';
@@ -32,11 +31,11 @@ import { ContextUser } from '../contexts/ContextUser';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: '' },
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'lastName', label: 'lastName', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
+  { id: 'status', label: 'Status', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -70,12 +69,9 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
-
-
 // afr - function to define gql document upon session user role
-function queryUSERS(role){
-  switch(role){
+function queryUSERS(role) {
+  switch (role) {
     case 'admin':
       return GET_USERS;
     case 'leader':
@@ -84,7 +80,6 @@ function queryUSERS(role){
       return GET_USERS;
   }
 }
-
 
 // afr - aquí inicia el componente -----------------------------------
 
@@ -105,7 +100,7 @@ export default function User() {
   // afr - the list to be rendered
   const [stUserList, setStUserList] = useState([]);
   // afr - loading from DDBB with a conditioned query inside the function
-  const { data, loading } = useQuery( queryUSERS(userData.role ));
+  const { data, loading } = useQuery(queryUSERS(userData.role));
   // - setting the list state on data fetching
   useEffect(() => {
     if (data) {
@@ -132,23 +127,23 @@ export default function User() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, name) => {
+  //   const selectedIndex = selected.indexOf(name);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, name);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -176,7 +171,7 @@ export default function User() {
     if (userData.role === 'leader') await mtUpdateStateLeader({ variables: paqueteEnvioBd });
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stUserList.length) : 0;
+  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stUserList.length) : 0;
 
   const filteredUsers = applySortFilter(stUserList, getComparator(order, orderBy), filterName);
 
@@ -189,7 +184,7 @@ export default function User() {
       {!loading ? (
         <Page title="User | Mercurio">
           <Container>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
               <Typography variant="h4" gutterBottom>
                 User
               </Typography>
@@ -203,7 +198,7 @@ export default function User() {
               />
 
               <Scrollbar>
-                <TableContainer sx={{ minWidth: 800 }}>
+                <TableContainer sx={{ minWidth: 300 }}>
                   <Table>
                     <UserListHead
                       order={order}
@@ -229,11 +224,13 @@ export default function User() {
                               selected={isItemSelected}
                               aria-checked={isItemSelected}
                             >
+                              <TableCell />
                               <TableCell padding="checkbox">
-                                <Checkbox
+                                <Typography>&nbsp;</Typography>
+                                {/* <Checkbox
                                   checked={isItemSelected}
                                   onChange={(event) => handleClick(event, name)}
-                                />
+                                /> */}
                               </TableCell>
                               <TableCell component="th" scope="row" padding="none">
                                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -249,7 +246,7 @@ export default function User() {
                               <TableCell align="left">{lastName}</TableCell>
                               <TableCell align="left">{role}</TableCell>
                               <TableCell align="left">
-                                <FormControl fullWidth>
+                                <FormControl minWidth>
                                   <InputLabel
                                     variant="standard"
                                     htmlFor="uncontrolled-native"
@@ -274,23 +271,21 @@ export default function User() {
                                   </NativeSelect>
                                 </FormControl>
                               </TableCell>
-
-                              <TableCell align="right">
-                                <UserMoreMenu />
-                              </TableCell>
+                              {/* <TableCell align="right">{/* <UserMoreMenu /> */}
+                              {/* </TableCell> */}
                             </TableRow>
                           );
                         })}
-                      {emptyRows > 0 && (
+                      {/* {emptyRows > 0 && (
                         <TableRow style={{ height: 53 * emptyRows }}>
                           <TableCell colSpan={6} />
                         </TableRow>
-                      )}
+                      )} */}
                     </TableBody>
                     {isUserNotFound && (
                       <TableBody>
                         <TableRow>
-                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <TableCell align="center" colSpan={4} sx={{ py: 3 }}>
                             <SearchNotFound searchQuery={filterName} />
                           </TableCell>
                         </TableRow>
