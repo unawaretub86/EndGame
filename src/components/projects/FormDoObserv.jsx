@@ -7,79 +7,61 @@ import { useQuery, useMutation } from '@apollo/client';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
-import { Stack, TextField, Typography } from '@mui/material';
+import { Box, Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import PropTypes from 'prop-types';
 // our components
 import AlertAndres from '../generic-containers/AlertAndres';
 // import { CREATE_PROJECT } from '../../graphql/projects/prj-mutations';
-import { ContextUser } from '../../contexts/ContextUser';
 import { ContextModal } from '../../contexts/ContextModal';
-import { GET_ENROLLMENTS_OFSTUDENT } from '../../graphql/enrollments/enr-queries';
-import { GET_PROJECT_BYID_TOADMIN } from '../../graphql/projects/prj-queries';
-import { CREATE_ADVANCE } from '../../graphql/advances/ad-mutations';
+import { ADD_OBSERVATION } from '../../graphql/advances/ad-mutations';
+import { ADVANCE_BY_ID } from '../../graphql/advances/ad-queries';
 
 // ----------------------------------------------------------------------
 
 FormDoObserv.propTypes = {
   dataID: PropTypes.string,
-  prjTitle: PropTypes.string
+  student: PropTypes.string,
+  project: PropTypes.string,
 };
-export default function FormDoObserv({ dataID = "61ba698b15b2c5df73cce96f" }) {
+export default function FormDoObserv({ dataID, student, project }) {
   
   const { stModal, setStModal } = React.useContext(ContextModal);
   const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: 'ñ' });
-  const { userData } = React.useContext(ContextUser);
-  const [stProjectData, setStProjectData] = useState({name: 'abelardo'});
-  const [stThisEnrollment, setStThisEnrollment] = useState({});
-  const [ createAdvance ] = useMutation(CREATE_ADVANCE);
+  const [stAdvanceData, setStAdvanceData] = useState({});
+  const [ mtObserveAdvance ] = useMutation(ADD_OBSERVATION);
   
-  const { data : dataPrj } = useQuery(GET_PROJECT_BYID_TOADMIN,
+  const { data } = useQuery(ADVANCE_BY_ID,
     {
       variables: { id: dataID },
       onCompleted: (data) => {
         console.log('FormDoAdvnc ~ getPRJ ~ data ~ ', data);
-        setStProjectData(data.projectById);
+        setStAdvanceData(data.advaceById);
+        formik.setFieldValue('observations', data.advaceById.observations);
       },
       fetchPolicy: 'network-only'
     }
   )
-
-  useQuery(GET_ENROLLMENTS_OFSTUDENT,
-    {
-      variables: { user_id: userData._id },
-      onCompleted: (data) => {
-        console.log('FormDoAdvnc ~ getENR ~ data ~ ', data);
-        const allEnrollments = data.enrollmentByUserId;
-        const thisEnrollment = allEnrollments.find(enr => enr.project_id === dataID);
-        console.log('FormDoAdvnc ~ getENR ~ thisEnrollment ~ ', thisEnrollment);
-        setStThisEnrollment(thisEnrollment);
-      },
-      fetchPolicy: 'network-only'
-    }
-  )
-
 
   const RegisterSchema = Yup.object().shape({
-    description: Yup.string().required('Advance is required').min(5, 'Too Short!')
+    observations: Yup.string().required('Observation is required').min(5, 'Too Short!')
   });
 
   const formik = useFormik({
     initialValues: {
-      description: ''
+      observations: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: async () => {
       const toSend = {
-        enrollment_id: stThisEnrollment._id,
-        description: formik.values.description,
-        addDate: new Date(),
+        advaceById: dataID,
+        observations: formik.values.observations
       };
       console.log("FormDoAdvnc ~ toSend: ", toSend);
-      const resp = await createAdvance({variables : {input: toSend}});
+      const resp = await mtObserveAdvance({variables : {input: toSend}});
       console.log("FormDoAdvnc ~ resp: ", resp);
       if (resp) {
-        setStAlert({ open: true, isGood: true, txt: 'Advance created successfully' });
+        setStAlert({ open: true, isGood: true, txt: 'Oservation done successfully' });
         setTimeout(() => {
           setStModal({ ...stModal, open: false });
         }, 1000);
@@ -87,7 +69,9 @@ export default function FormDoObserv({ dataID = "61ba698b15b2c5df73cce96f" }) {
     }
   });
 
-  if(!dataPrj) return <div>Loading...</div>;
+
+
+  if(!data) return <div>Loading...</div>;
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
@@ -96,35 +80,45 @@ export default function FormDoObserv({ dataID = "61ba698b15b2c5df73cce96f" }) {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <AlertAndres sx={{ mb: 2 }} open={stAlert.open} isGood={stAlert.isGood} txt={stAlert.txt} />
-        <Stack spacing={3}>
-          <Stack sx={{ mt: 3 }} direction={{ xs: 'column', sm: 'row' }}>
+        <Stack spacing={1}>
+          <Stack sx={{ mt: 1, mb: 2 }}
+                 direction={{ xs: 'column', sm: 'row' }}
+                 justifyContent='space-around'
+                 >
             <Typography variant="h10">
               Advance made by :{' '}
               <strong>
                 <i>
-                  {userData.name} {userData.lastName}
+                  {student}
                 </i>
               </strong>
             </Typography>
-          </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }}>
             <Typography variant="h10">
               To the project :{' '}
               <i>
-                <strong>{stProjectData.name}</strong>
+                <strong>{project}</strong>
               </i>
             </Typography>
           </Stack>
+          Advancement description:
+          <Box component="span" sx={{ p: 2, border: '1px dashed grey', mb:3 }}>
+            <Typography variant="h10">
+              {stAdvanceData.description}
+            </Typography>
+          </Box>
+          <Typography variant="h10">
+            Enter your observation
+          </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               multiline
               fullWidth
               aria-label="minimum height"
-              rows={4}
-              label="Advancement Description"
-              {...getFieldProps('description')}
-              error={Boolean(touched.description && errors.description)}
-              helperText={touched.description && errors.description}
+              rows={3}
+              label="Observation for the advance"
+              {...getFieldProps('observations')}
+              error={Boolean(touched.observations && errors.observations)}
+              helperText={touched.observations && errors.observations}
               placeholder="Write your advance here"
             />
           </Stack>

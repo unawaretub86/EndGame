@@ -6,6 +6,8 @@ const GET_ADVANCES = gql`
       _id
       addDate
       leaderDate
+      description
+      observations
       enrollment {
         project {
           name
@@ -19,4 +21,16 @@ const GET_ADVANCES = gql`
   }
 `;
 
-export { GET_ADVANCES };
+const ADVANCE_BY_ID = gql`
+  query Query($id: ID!) {
+    advaceById(_id: $id) {
+      _id
+      addDate
+      leaderDate
+      description
+      observations
+    }
+  }
+`;
+
+export { GET_ADVANCES, ADVANCE_BY_ID };

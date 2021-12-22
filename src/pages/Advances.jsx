@@ -95,7 +95,9 @@ export default function Advances() {
               project: adv.enrollment.project.name,
               student: adv.enrollment.student.name.concat(' ', adv.enrollment.student.lastName),
               addDate: adv.addDate,
-              leaderDate: adv.leaderDate
+              leaderDate: adv.leaderDate,
+              description: adv.description,
+              observations: adv.observations
             }
           )
         );
@@ -240,7 +242,7 @@ export default function Advances() {
                             <IconButton ref={ref} onClick={() => 
                               setStModal({
                                 title: 'Observe Advance',
-                                content: <FormDoObserv/>,
+                                content: <FormDoObserv dataID={_id} project={project} student={student}/>,
                                 open: true
                               })
                             }>
