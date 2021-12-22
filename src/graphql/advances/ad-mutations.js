@@ -16,5 +16,13 @@ const ADD_OBSERVATION = gql`
     }
 `;
 
+const UPDATE_ADVANCE = gql`
+    mutation updateAdvance($input: updateAdvanceInput!) {
+        updateAdvance(input: $input) {
+            _id
+        }
+    }
+`;
 
-export { CREATE_ADVANCE, ADD_OBSERVATION };
+
+export { CREATE_ADVANCE, ADD_OBSERVATION, UPDATE_ADVANCE };

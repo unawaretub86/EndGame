@@ -7,14 +7,15 @@ import { useQuery, useMutation } from '@apollo/client';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
-import { Box, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import PropTypes from 'prop-types';
 // our components
 import AlertAndres from '../generic-containers/AlertAndres';
 // import { CREATE_PROJECT } from '../../graphql/projects/prj-mutations';
 import { ContextModal } from '../../contexts/ContextModal';
-import { ADD_OBSERVATION } from '../../graphql/advances/ad-mutations';
+import { ContextUser } from '../../contexts/ContextUser';
+import { ADD_OBSERVATION, UPDATE_ADVANCE } from '../../graphql/advances/ad-mutations';
 import { ADVANCE_BY_ID } from '../../graphql/advances/ad-queries';
 
 // ----------------------------------------------------------------------
@@ -28,40 +29,43 @@ export default function FormDoObserv({ dataID, student, project }) {
   
   const { stModal, setStModal } = React.useContext(ContextModal);
   const [stAlert, setStAlert] = useState({ open: false, isGood: true, txt: 'ñ' });
-  const [stAdvanceData, setStAdvanceData] = useState({});
   const [ mtObserveAdvance ] = useMutation(ADD_OBSERVATION);
+  const [ mtUpdateDescription ] = useMutation(UPDATE_ADVANCE);
+  const { userData } = React.useContext(ContextUser);
+
   
   const { data } = useQuery(ADVANCE_BY_ID,
     {
       variables: { id: dataID },
       onCompleted: (data) => {
         console.log('FormDoAdvnc ~ getPRJ ~ data ~ ', data);
-        setStAdvanceData(data.advaceById);
         formik.setFieldValue('observations', data.advaceById.observations || '');
+        formik.setFieldValue('description', data.advaceById.description || '');
       },
       fetchPolicy: 'network-only'
     }
   )
 
   const RegisterSchema = Yup.object().shape({
-    observations: Yup.string().required('Observation is required').min(5, 'Too Short!')
+    observations: Yup.string().required('Observation is required').min(5, 'Too Short!'),
+    description: Yup.string().required('Description is required').min(5, 'Too Short!')
   });
 
   const formik = useFormik({
     initialValues: {
-      observations: ''
+      observations: '',
+      description: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: async () => {
-      const toSend = {
-        advaceById: dataID,
-        observations: formik.values.observations
-      };
+      const toSend = userData.role === 'leader' ? { advaceById: dataID, observations: formik.values.observations}
+                                                : { advaceById: dataID, description: formik.values.description};
       console.log("FormDoAdvnc ~ toSend: ", toSend);
-      const resp = await mtObserveAdvance({variables : {input: toSend}});
+      const resp = userData.role === 'leader' ? await mtObserveAdvance({variables : {input: toSend}})
+                                              : await mtUpdateDescription({variables : {input: toSend}});
       console.log("FormDoAdvnc ~ resp: ", resp);
       if (resp) {
-        setStAlert({ open: true, isGood: true, txt: 'Oservation done successfully' });
+        setStAlert({ open: true, isGood: true, txt: 'Submition done successfully' });
         setTimeout(() => {
           setStModal({ ...stModal, open: false });
         }, 1000);
@@ -99,17 +103,27 @@ export default function FormDoObserv({ dataID, student, project }) {
               </i>
             </Typography>
           </Stack>
-          Advancement description:
-          <Box component="span" sx={{ p: 2, border: '1px dashed grey', mb:3 }}>
-            <Typography variant="h10">
-              {stAdvanceData.description}
-            </Typography>
-          </Box>
+          Student description:
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <TextField
+              multiline
+              fullWidth
+              disabled={userData.role === 'leader'}
+              aria-label="minimum height"
+              rows={3}
+              label="Observation for the advance"
+              {...getFieldProps('description')}
+              error={Boolean(touched.description && errors.description)}
+              helperText={touched.description && errors.description}
+              placeholder="Write your advance here"
+            />
+          </Stack>
           <Typography variant="h10">
-            Enter your observation
+            Leader observation
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
+              disabled={userData.role === 'student'}
               multiline
               fullWidth
               aria-label="minimum height"
@@ -118,7 +132,7 @@ export default function FormDoObserv({ dataID, student, project }) {
               {...getFieldProps('observations')}
               error={Boolean(touched.observations && errors.observations)}
               helperText={touched.observations && errors.observations}
-              placeholder="Write your advance here"
+              placeholder="...Observation here..."
             />
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -129,7 +143,7 @@ export default function FormDoObserv({ dataID, student, project }) {
               variant="contained"
               loading={isSubmitting}
             >
-              Submit advancement
+              Submit data
             </LoadingButton>
           </Stack>
         </Stack>
