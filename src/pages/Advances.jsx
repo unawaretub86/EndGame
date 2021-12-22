@@ -14,7 +14,8 @@ import {
   Typography,
   TableContainer,
   IconButton,
-  TablePagination
+  TablePagination,
+  Button
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 // components
@@ -24,7 +25,10 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { ProjectListHead, ProjectListToolbar } from '../components/_dashboard/enrollments';
 //
-import { GET_ADVANCES } from '../graphql/advances/ad-queries';
+import { ADVANCES_BY_LEADER_ID } from '../graphql/advances/ad-queries';
+import { ContextModal } from '../contexts/ContextModal';
+import ModalWindow from '../components/generic-containers/ModalWindow';
+import FormDoObserv from '../components/projects/FormDoObserv';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -62,7 +66,7 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_project) => _project.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_project) => _project.project.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -75,9 +79,34 @@ export default function Advances() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [dataAdvances, setDataAdvances] = useState([]);
   const ref = useRef(null);
+  const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
 
-  const { data, error, loading } = useQuery(GET_ADVANCES);
+  const { data, error, loading } = useQuery(ADVANCES_BY_LEADER_ID,
+    {
+      onCompleted: (data) => {
+        console.log("Advc - data ",data);
+        const rawData = data.advancesByLeaderId;
+        const realData = rawData.map((adv) =>
+          (
+            {
+              _id: adv._id,
+              project: adv.enrollment.project.name,
+              student: adv.enrollment.student.name.concat(' ', adv.enrollment.student.lastName),
+              addDate: adv.addDate,
+              leaderDate: adv.leaderDate,
+              description: adv.description,
+              observations: adv.observations
+            }
+          )
+        );
+        setDataAdvances(realData);
+      }
+    }
+  );
+
+
   console.log(data);
   useEffect(() => {
     if (error) {
@@ -86,8 +115,6 @@ export default function Advances() {
   }, [error]);
 
   if (loading) return <div>Loading....</div>;
-
-  const dataAdvances = data.allAdvances;
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -143,6 +170,15 @@ export default function Advances() {
 
   return (
     <Page title="Advances | Mercurio">
+      <ContextModal.Provider value={{ stModal, setStModal }}>
+      <ModalWindow
+          titleModal={stModal.title}
+          contentModal={stModal.content}
+          openModal={stModal.open}
+        />
+      <Button onClick={() => setStModal({ title: 'Add Advance', content: <p>Hola Modal</p>, open: true })}>
+        Add Advance
+      </Button>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -173,7 +209,7 @@ export default function Advances() {
                   {filteredProjects
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { _id, enrollment, addDate, leaderDate } = row;
+                      const { _id, project, student, addDate, leaderDate } = row;
                       const isItemSelected = selected.indexOf(addDate) !== -1;
 
                       return (
@@ -195,15 +231,21 @@ export default function Advances() {
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={1}>
                               <Typography variant="subtitle2" noWrap>
-                                {enrollment.project.name}
+                                {project}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{enrollment.student.name}</TableCell>
+                          <TableCell align="left">{student}</TableCell>
                           <TableCell align="left">{addDate}</TableCell>
                           <TableCell align="left">{leaderDate}</TableCell>
                           <TableCell align="right">
-                            <IconButton ref={ref}>
+                            <IconButton ref={ref} onClick={() => 
+                              setStModal({
+                                title: 'Observe Advance',
+                                content: <FormDoObserv dataID={_id} project={project} student={student}/>,
+                                open: true
+                              })
+                            }>
                               <Icon
                                 icon="et:search"
                                 width={30}
@@ -246,6 +288,8 @@ export default function Advances() {
           />
         </Card>
       </Container>
+      <pre>{JSON.stringify(dataAdvances, null, 2)}</pre>
+      </ContextModal.Provider>
     </Page>
   );
 }

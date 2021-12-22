@@ -8,4 +8,13 @@ const CREATE_ADVANCE = gql`
     }
 `;
 
-export { CREATE_ADVANCE };
+const ADD_OBSERVATION = gql`
+    mutation addObservation($input: AddObservationInput!) {
+        addObservation(input: $input) {
+            _id
+        }
+    }
+`;
+
+
+export { CREATE_ADVANCE, ADD_OBSERVATION };
