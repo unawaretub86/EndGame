@@ -37,7 +37,7 @@ export default function FormDoObserv({ dataID, student, project }) {
       onCompleted: (data) => {
         console.log('FormDoAdvnc ~ getPRJ ~ data ~ ', data);
         setStAdvanceData(data.advaceById);
-        formik.setFieldValue('observations', data.advaceById.observations);
+        formik.setFieldValue('observations', data.advaceById.observations || '');
       },
       fetchPolicy: 'network-only'
     }
