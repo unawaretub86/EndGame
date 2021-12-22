@@ -70,7 +70,6 @@ export default function FormDoObserv({ dataID, student, project }) {
   });
 
 
-
   if(!data) return <div>Loading...</div>;
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;

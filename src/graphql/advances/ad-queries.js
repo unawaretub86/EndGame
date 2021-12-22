@@ -33,4 +33,25 @@ const ADVANCE_BY_ID = gql`
   }
 `;
 
-export { GET_ADVANCES, ADVANCE_BY_ID };
+const ADVANCES_BY_LEADER_ID = gql`
+  query Query {
+    advancesByLeaderId {
+      _id
+      addDate
+      leaderDate
+      observations
+      description
+      enrollment {
+        project {
+          name
+        }
+        student {
+          name
+          lastName
+        }
+      }
+    }
+  }
+`;
+
+export { GET_ADVANCES, ADVANCE_BY_ID, ADVANCES_BY_LEADER_ID };

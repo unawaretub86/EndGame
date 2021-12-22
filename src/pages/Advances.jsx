@@ -25,7 +25,7 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { ProjectListHead, ProjectListToolbar } from '../components/_dashboard/enrollments';
 //
-import { GET_ADVANCES } from '../graphql/advances/ad-queries';
+import { ADVANCES_BY_LEADER_ID } from '../graphql/advances/ad-queries';
 import { ContextModal } from '../contexts/ContextModal';
 import ModalWindow from '../components/generic-containers/ModalWindow';
 import FormDoObserv from '../components/projects/FormDoObserv';
@@ -83,11 +83,11 @@ export default function Advances() {
   const ref = useRef(null);
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
 
-  const { data, error, loading } = useQuery(GET_ADVANCES,
+  const { data, error, loading } = useQuery(ADVANCES_BY_LEADER_ID,
     {
       onCompleted: (data) => {
         console.log("Advc - data ",data);
-        const rawData = data.allAdvances;
+        const rawData = data.advancesByLeaderId;
         const realData = rawData.map((adv) =>
           (
             {
