@@ -72,7 +72,6 @@ export default function FormDoAdvnc({ dataID }) {
       const toSend = {
         enrollment_id: stThisEnrollment._id,
         description: formik.values.description,
-        addDate: new Date(),
       };
       console.log("FormDoAdvnc ~ toSend: ", toSend);
       const resp = await createAdvance({variables : {input: toSend}});

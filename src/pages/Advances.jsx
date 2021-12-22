@@ -15,7 +15,6 @@ import {
   TableContainer,
   IconButton,
   TablePagination,
-  Button
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 // components
@@ -25,10 +24,11 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { ProjectListHead, ProjectListToolbar } from '../components/_dashboard/enrollments';
 //
-import { ADVANCES_BY_LEADER_ID } from '../graphql/advances/ad-queries';
+import { ADVANCES_BY_LEADER_ID, ADVANCES_BY_STUDENT_ID } from '../graphql/advances/ad-queries';
 import { ContextModal } from '../contexts/ContextModal';
 import ModalWindow from '../components/generic-containers/ModalWindow';
 import FormDoObserv from '../components/projects/FormDoObserv';
+import { ContextUser } from '../contexts/ContextUser';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -72,6 +72,21 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+
+
+function advanceListQUERY(role){
+  switch(role){
+    case 'leader':
+      return ADVANCES_BY_LEADER_ID;
+    default:
+      return ADVANCES_BY_STUDENT_ID;
+  }
+}
+
+
+
+// --------------------------------------------------Cabecera del componente
+
 export default function Advances() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -82,12 +97,13 @@ export default function Advances() {
   const [dataAdvances, setDataAdvances] = useState([]);
   const ref = useRef(null);
   const [stModal, setStModal] = React.useState({ title: '', content: Function, open: false });
-
-  const { data, error, loading } = useQuery(ADVANCES_BY_LEADER_ID,
+  const { userData } = React.useContext(ContextUser);
+// 
+  const { error, loading } = useQuery(advanceListQUERY(userData.role),
     {
       onCompleted: (data) => {
         console.log("Advc - data ",data);
-        const rawData = data.advancesByLeaderId;
+        const rawData = data.advancesByLeaderId || data.advancesByStudentId;
         const realData = rawData.map((adv) =>
           (
             {
@@ -102,12 +118,11 @@ export default function Advances() {
           )
         );
         setDataAdvances(realData);
-      }
+      },
+      fetchPolicy: 'network-only'
     }
   );
 
-
-  console.log(data);
   useEffect(() => {
     if (error) {
       console.log('Error consulting advances', error);
@@ -176,9 +191,6 @@ export default function Advances() {
           contentModal={stModal.content}
           openModal={stModal.open}
         />
-      <Button onClick={() => setStModal({ title: 'Add Advance', content: <p>Hola Modal</p>, open: true })}>
-        Add Advance
-      </Button>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
