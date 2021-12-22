@@ -14,6 +14,7 @@ import reportWebVitals from './reportWebVitals';
 //
 
 const httpLink = createHttpLink({
+  // uri: 'https://end-game-release.herokuapp.com/graphql'
   uri: 'https://end-game-udea.herokuapp.com/graphql'
 });
 // para postman  > >   content-type: application/json

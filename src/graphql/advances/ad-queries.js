@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 const GET_ADVANCES = gql`
-  query Query {
+  query allAdvances {
     allAdvances {
       _id
       addDate
@@ -54,9 +54,9 @@ const ADVANCES_BY_LEADER_ID = gql`
   }
 `;
 
-const ADVANCES_BY_PROJECT_ID = gql`
-  query Query($id: ID!) {
-    advancesByProjectId(_id: $id) {
+const ADVANCES_BY_STUDENT_ID = gql`
+  query Query {
+    advancesByStudentId {
       _id
       addDate
       leaderDate
@@ -76,4 +76,4 @@ const ADVANCES_BY_PROJECT_ID = gql`
 `;
 
 
-export { GET_ADVANCES, ADVANCE_BY_ID, ADVANCES_BY_LEADER_ID, ADVANCES_BY_PROJECT_ID };
+export { GET_ADVANCES, ADVANCE_BY_ID, ADVANCES_BY_LEADER_ID, ADVANCES_BY_STUDENT_ID };
