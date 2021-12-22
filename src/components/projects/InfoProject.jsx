@@ -107,7 +107,7 @@ export default function InfoProject({ dataID }) {
         </Box>
 
         <Grid container spacing={4} rowSpacing={2}>
-          <Grid item md={6} xs={2}>
+          <Grid item md={12} xs={2}>
             <Typography variant="h10" sx={{ color: '#229A16' }} noWrap>
               Specific objectives : &nbsp;
             </Typography>
